@@ -1802,7 +1802,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	private: vector<int> contacts;
 	private: int userLoggedIn;
 	private: MyForm1^ form1 = gcnew MyForm1;
-	private: SQLiteConnection^ db = gcnew SQLiteConnection("Data Source = D:/College/Data Structure/Project/Database/DataBase.db;Version = 3;");
+	private: SQLiteConnection^ db = gcnew SQLiteConnection("Data Source = DataBase.db;Version = 3;");
 	private: SQLiteCommand^ cmd = gcnew SQLiteCommand(db);
 
 	//store Users into DataBase
@@ -1827,24 +1827,22 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 				for each (Profile ^ pro in profilesRuntime) {
 					if (find(profiles.begin(), profiles.end(), pro) != profiles.end())
 						continue;
-					cmd->CommandText = "INSERT INTO User_Profile VALUES(@desc, @id, @vis, @photo, @log)";
+					cmd->CommandText = "INSERT INTO User_Profile VALUES(@desc, @id, @vis, @photo)";
 					cmd->Parameters->AddWithValue("@id", pro->getID());
 					cmd->Parameters->AddWithValue("@desc", pro->getDesc());
 					cmd->Parameters->AddWithValue("@vis", pro->getVis());
 					cmd->Parameters->AddWithValue("@photo", pro->getPhoto());
-					cmd->Parameters->AddWithValue("@log", pro->getLogged());
 					cmd->ExecuteNonQuery();
 				}
 		}
 		else {
 			for each (Profile ^ pro in profilesRuntime) {
 				if(pro->getLogged() == 1){
-					cmd->CommandText = "UPDATE User_Profile set Description=@desc, Visibility=@vis, IsLogged=@log, Photo=@photo WHERE User_ID_FK=@id";
+					cmd->CommandText = "UPDATE User_Profile set Description=@desc, Visibility=@vis, Photo=@photo WHERE User_ID_FK=@id";
 					cmd->Parameters->AddWithValue("@id", pro->getID());
 					cmd->Parameters->AddWithValue("@desc", pro->getDesc());
 					cmd->Parameters->AddWithValue("@vis", pro->getVis());
 					cmd->Parameters->AddWithValue("@photo", pro->getPhoto());
-					cmd->Parameters->AddWithValue("@log", pro->getLogged());
 					cmd->ExecuteNonQuery();
 				}
 			}
@@ -1894,7 +1892,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			profile->setID(dr->GetInt32(1));
 			profile->setVis(dr->GetInt32(2));
 			profile->setPhoto(dr->GetString(3));
-			profile->setLogged(dr->GetInt32(4));
 			profiles.push_back(profile);
 		};
 		profilesRuntime.assign(profiles.begin(), profiles.end());
@@ -1991,19 +1988,21 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	private: System::Void Register_btn_Click_1(System::Object^ sender, System::EventArgs^ e) {
 		for(int i = 0; i < usersRuntime.size(); i++) {
 			if (usersRuntime[i]->getPhone() == richTextBox1->Text && usersRuntime[i]->getPass() == richTextBox2->Text) {
-				this->loadContacts(usersRuntime[i]->getID());
-				for (int j = 0; j < contacts.size(); j++) {
-					ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-					Card::MyUserControl^ contact = gcnew Card::MyUserControl();
-					//contact->Name = "contact" + ++count;
-					contact->Username = usersRuntime[j]->getFirst() + " " + usersRuntime[j]->getLast();
-					if (profilesRuntime[j]->getPhoto() == "")
-						contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
-					else
-						contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[j]->getPhoto());
-					flowLayoutPanel1->Controls->Add(contact);
+				if(profilesRuntime[i]->getLogged() == 0){
+					this->contacts.clear();
+					this->loadContacts(usersRuntime[i]->getID());
+					for (int j = 0; j < contacts.size(); j++) {
+						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+						Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+						contact->Username = usersRuntime[j]->getFirst() + " " + usersRuntime[j]->getLast();
+						if (profilesRuntime[j]->getPhoto() == "")
+							contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+						else
+							contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[j]->getPhoto());
+						flowLayoutPanel1->Controls->Add(contact);
+						profilesRuntime[i]->setLogged(1);
+					}
 				}
-				profilesRuntime[i]->setLogged(1);
 				UserName->Text = usersRuntime[i]->getFirst() + " " + usersRuntime[i]->getLast();
 				Description->Text = profilesRuntime[i]->getDesc();
 				if(profilesRuntime[i]->getPhoto() != ""){ 
@@ -2020,9 +2019,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	}
 	//log out from this user
 	private: System::Void LogOutBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		for (int i = 0; i < profilesRuntime.size(); i++)
-			if (profilesRuntime[i]->getLogged() == 1)
-				profilesRuntime[i]->setLogged(0);
+		More_Click_1(sender, e);
 		UnLogged->BringToFront();
 	}
 	private: System::Void LogOutLb_Click(System::Object^ sender, System::EventArgs^ e) {

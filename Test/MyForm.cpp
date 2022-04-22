@@ -1,5 +1,6 @@
 #include "MyForm.h"
 #include <unordered_map>
+#include "User.h"
 using namespace System;
 using namespace System::Windows::Forms;
 void startGui() {
@@ -10,7 +11,6 @@ void startGui() {
 [STAThread]
 void main(array<String^>^ args) {
 	startGui();
-	
 }
 
 

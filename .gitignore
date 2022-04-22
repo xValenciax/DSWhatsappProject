@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+#hidden files
+.vs/
+x64

@@ -1,4 +1,4 @@
 ﻿  MyForm.cpp
-D:\College\Data Structure\Project\Testrecent\Test\MyForm.cpp(10,33): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
+D:\College\Data Structure\Project\Testrecent\Test\MyForm.cpp(12,33): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
   ChatInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Test.vcxproj -> D:\College\Data Structure\Project\Testrecent\x64\Debug\Test.exe
