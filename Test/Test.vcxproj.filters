@@ -85,10 +85,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SQLite.Interop.dll" />
     <None Include="DataBase.db" />
     <None Include="CollegeData StructureProjectDatabaseDataBase.db" />
-    <None Include="x64\Debug\msvcr100.dll" />
     <None Include="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Data.dll" />
   </ItemGroup>
 </Project>

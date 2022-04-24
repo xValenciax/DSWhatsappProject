@@ -5,7 +5,7 @@ using namespace System::Windows;
 
 ref class User
 {
-private: int id = 1;
+private: int id;
 public: String^ pass;
 private: String^ First_Name;
 private: String^ Last_Name;

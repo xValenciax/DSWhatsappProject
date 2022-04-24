@@ -1,2 +1,8 @@
-﻿  AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+﻿  pch.cpp
+  AssemblyInfo.cpp
+  Card.cpp
+  MyUserControl.cpp
+  Generating Code...
+  .NETFramework,Version=v4.8.AssemblyAttributes.cpp
+  AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Card.vcxproj -> D:\College\Data Structure\Project\Testrecent\x64\Debug\Card.dll

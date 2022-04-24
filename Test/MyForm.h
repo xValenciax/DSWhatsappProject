@@ -7,10 +7,11 @@
 #include"ChatInfo.h"
 #include"ChatRoom.h"
 #include"Message.h"
-#include"UserChatRoom.h"
 #include"Status.h"
+#include"UserChatRoom.h"
 #include <cliext/queue>
 #include <cliext/hash_map>
+#include <cliext/map>
 namespace Test {
 
 	using namespace System;
@@ -524,16 +525,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->CLose = (gcnew System::Windows::Forms::Button());
 			this->AppTitle = (gcnew System::Windows::Forms::Label());
 			this->MainContainer = (gcnew System::Windows::Forms::Panel());
-			this->UserProfile = (gcnew System::Windows::Forms::Panel());
-			this->label3 = (gcnew System::Windows::Forms::Label());
-			this->button6 = (gcnew System::Windows::Forms::Button());
-			this->Edit = (gcnew System::Windows::Forms::Button());
-			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
-			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
-			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->Description = (gcnew System::Windows::Forms::RichTextBox());
-			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->LoggedIn = (gcnew System::Windows::Forms::Panel());
 			this->ChatContainer = (gcnew System::Windows::Forms::Panel());
 			this->Messages = (gcnew System::Windows::Forms::Panel());
@@ -559,6 +550,16 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->More = (gcnew System::Windows::Forms::Button());
 			this->NewChat = (gcnew System::Windows::Forms::Button());
 			this->Status = (gcnew System::Windows::Forms::Button());
+			this->UserProfile = (gcnew System::Windows::Forms::Panel());
+			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->button6 = (gcnew System::Windows::Forms::Button());
+			this->Edit = (gcnew System::Windows::Forms::Button());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
+			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->Description = (gcnew System::Windows::Forms::RichTextBox());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->UnLogged = (gcnew System::Windows::Forms::Panel());
 			this->UlChatContainer = (gcnew System::Windows::Forms::Panel());
 			this->LoginBox = (gcnew System::Windows::Forms::Panel());
@@ -603,8 +604,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->UlStory = (gcnew System::Windows::Forms::Button());
 			this->TitleBar->SuspendLayout();
 			this->MainContainer->SuspendLayout();
-			this->UserProfile->SuspendLayout();
-			this->groupBox1->SuspendLayout();
 			this->LoggedIn->SuspendLayout();
 			this->ChatContainer->SuspendLayout();
 			this->TextBottom->SuspendLayout();
@@ -612,6 +611,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->ChatBar->SuspendLayout();
 			this->MoreList->SuspendLayout();
 			this->userSettings->SuspendLayout();
+			this->UserProfile->SuspendLayout();
+			this->groupBox1->SuspendLayout();
 			this->UnLogged->SuspendLayout();
 			this->UlChatContainer->SuspendLayout();
 			this->LoginBox->SuspendLayout();
@@ -716,153 +717,14 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			// 
 			// MainContainer
 			// 
-			this->MainContainer->Controls->Add(this->UserProfile);
 			this->MainContainer->Controls->Add(this->LoggedIn);
+			this->MainContainer->Controls->Add(this->UserProfile);
 			this->MainContainer->Controls->Add(this->UnLogged);
 			this->MainContainer->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->MainContainer->Location = System::Drawing::Point(0, 41);
 			this->MainContainer->Name = L"MainContainer";
 			this->MainContainer->Size = System::Drawing::Size(1230, 697);
 			this->MainContainer->TabIndex = 0;
-			// 
-			// UserProfile
-			// 
-			this->UserProfile->Controls->Add(this->label3);
-			this->UserProfile->Controls->Add(this->button6);
-			this->UserProfile->Controls->Add(this->Edit);
-			this->UserProfile->Controls->Add(this->groupBox1);
-			this->UserProfile->Controls->Add(this->label2);
-			this->UserProfile->Controls->Add(this->Description);
-			this->UserProfile->Controls->Add(this->label1);
-			this->UserProfile->Location = System::Drawing::Point(240, 65);
-			this->UserProfile->Name = L"UserProfile";
-			this->UserProfile->Size = System::Drawing::Size(990, 629);
-			this->UserProfile->TabIndex = 4;
-			// 
-			// label3
-			// 
-			this->label3->AutoSize = true;
-			this->label3->BackColor = System::Drawing::Color::White;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label3->Location = System::Drawing::Point(135, 570);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(0, 29);
-			this->label3->TabIndex = 8;
-			this->label3->Visible = false;
-			// 
-			// button6
-			// 
-			this->button6->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button6->FlatAppearance->BorderSize = 0;
-			this->button6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->button6->ForeColor = System::Drawing::Color::White;
-			this->button6->Location = System::Drawing::Point(325, 506);
-			this->button6->Name = L"button6";
-			this->button6->Size = System::Drawing::Size(341, 48);
-			this->button6->TabIndex = 7;
-			this->button6->Text = L"Change Profile Photo";
-			this->button6->UseVisualStyleBackColor = false;
-			this->button6->Click += gcnew System::EventHandler(this, &MyForm::button6_Click);
-			// 
-			// Edit
-			// 
-			this->Edit->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->Edit->FlatAppearance->BorderSize = 0;
-			this->Edit->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->Edit->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->Edit->ForeColor = System::Drawing::Color::White;
-			this->Edit->Location = System::Drawing::Point(434, 428);
-			this->Edit->Name = L"Edit";
-			this->Edit->Size = System::Drawing::Size(123, 48);
-			this->Edit->TabIndex = 6;
-			this->Edit->Text = L"Edit";
-			this->Edit->UseVisualStyleBackColor = false;
-			this->Edit->Click += gcnew System::EventHandler(this, &MyForm::Edit_Click);
-			// 
-			// groupBox1
-			// 
-			this->groupBox1->Controls->Add(this->radioButton2);
-			this->groupBox1->Controls->Add(this->radioButton1);
-			this->groupBox1->Location = System::Drawing::Point(318, 273);
-			this->groupBox1->Name = L"groupBox1";
-			this->groupBox1->Size = System::Drawing::Size(437, 77);
-			this->groupBox1->TabIndex = 5;
-			this->groupBox1->TabStop = false;
-			// 
-			// radioButton2
-			// 
-			this->radioButton2->AutoSize = true;
-			this->radioButton2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->radioButton2->ForeColor = System::Drawing::Color::White;
-			this->radioButton2->Location = System::Drawing::Point(234, 19);
-			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(178, 43);
-			this->radioButton2->TabIndex = 6;
-			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"Unvisible";
-			this->radioButton2->UseVisualStyleBackColor = true;
-			// 
-			// radioButton1
-			// 
-			this->radioButton1->AutoSize = true;
-			this->radioButton1->Checked = true;
-			this->radioButton1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->radioButton1->ForeColor = System::Drawing::Color::White;
-			this->radioButton1->Location = System::Drawing::Point(30, 21);
-			this->radioButton1->Name = L"radioButton1";
-			this->radioButton1->Size = System::Drawing::Size(140, 43);
-			this->radioButton1->TabIndex = 5;
-			this->radioButton1->TabStop = true;
-			this->radioButton1->Text = L"Visible";
-			this->radioButton1->UseVisualStyleBackColor = true;
-			// 
-			// label2
-			// 
-			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label2->ForeColor = System::Drawing::Color::White;
-			this->label2->Location = System::Drawing::Point(81, 297);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(160, 39);
-			this->label2->TabIndex = 2;
-			this->label2->Text = L"Visibility :";
-			// 
-			// Description
-			// 
-			this->Description->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->Description->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->Description->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->Description->ForeColor = System::Drawing::Color::White;
-			this->Description->Location = System::Drawing::Point(318, 82);
-			this->Description->MaxLength = 200;
-			this->Description->Name = L"Description";
-			this->Description->ReadOnly = true;
-			this->Description->Size = System::Drawing::Size(442, 96);
-			this->Description->TabIndex = 1;
-			this->Description->Text = L"";
-			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(81, 98);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(206, 39);
-			this->label1->TabIndex = 0;
-			this->label1->Text = L"Description :";
 			// 
 			// LoggedIn
 			// 
@@ -918,7 +780,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->richTextBox7->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
 			this->richTextBox7->Size = System::Drawing::Size(635, 51);
 			this->richTextBox7->TabIndex = 0;
-			this->richTextBox7->Text = L"Enter Your  message";
+			this->richTextBox7->Text = L"Enter Your message";
 			this->richTextBox7->ZoomFactor = 1.5F;
 			this->richTextBox7->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox7_Enter);
 			this->richTextBox7->Leave += gcnew System::EventHandler(this, &MyForm::richTextBox7_Leave);
@@ -1194,6 +1056,145 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->Status->TabIndex = 12;
 			this->Status->UseVisualStyleBackColor = false;
 			this->Status->Click += gcnew System::EventHandler(this, &MyForm::Status_Click);
+			// 
+			// UserProfile
+			// 
+			this->UserProfile->Controls->Add(this->label3);
+			this->UserProfile->Controls->Add(this->button6);
+			this->UserProfile->Controls->Add(this->Edit);
+			this->UserProfile->Controls->Add(this->groupBox1);
+			this->UserProfile->Controls->Add(this->label2);
+			this->UserProfile->Controls->Add(this->Description);
+			this->UserProfile->Controls->Add(this->label1);
+			this->UserProfile->Location = System::Drawing::Point(240, 65);
+			this->UserProfile->Name = L"UserProfile";
+			this->UserProfile->Size = System::Drawing::Size(990, 629);
+			this->UserProfile->TabIndex = 4;
+			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->BackColor = System::Drawing::Color::White;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label3->Location = System::Drawing::Point(135, 570);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(0, 29);
+			this->label3->TabIndex = 8;
+			this->label3->Visible = false;
+			// 
+			// button6
+			// 
+			this->button6->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button6->FlatAppearance->BorderSize = 0;
+			this->button6->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button6->ForeColor = System::Drawing::Color::White;
+			this->button6->Location = System::Drawing::Point(325, 506);
+			this->button6->Name = L"button6";
+			this->button6->Size = System::Drawing::Size(341, 48);
+			this->button6->TabIndex = 7;
+			this->button6->Text = L"Change Profile Photo";
+			this->button6->UseVisualStyleBackColor = false;
+			this->button6->Click += gcnew System::EventHandler(this, &MyForm::button6_Click);
+			// 
+			// Edit
+			// 
+			this->Edit->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->Edit->FlatAppearance->BorderSize = 0;
+			this->Edit->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->Edit->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Edit->ForeColor = System::Drawing::Color::White;
+			this->Edit->Location = System::Drawing::Point(434, 428);
+			this->Edit->Name = L"Edit";
+			this->Edit->Size = System::Drawing::Size(123, 48);
+			this->Edit->TabIndex = 6;
+			this->Edit->Text = L"Edit";
+			this->Edit->UseVisualStyleBackColor = false;
+			this->Edit->Click += gcnew System::EventHandler(this, &MyForm::Edit_Click);
+			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->radioButton2);
+			this->groupBox1->Controls->Add(this->radioButton1);
+			this->groupBox1->Location = System::Drawing::Point(318, 273);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(437, 77);
+			this->groupBox1->TabIndex = 5;
+			this->groupBox1->TabStop = false;
+			// 
+			// radioButton2
+			// 
+			this->radioButton2->AutoSize = true;
+			this->radioButton2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->radioButton2->ForeColor = System::Drawing::Color::White;
+			this->radioButton2->Location = System::Drawing::Point(234, 19);
+			this->radioButton2->Name = L"radioButton2";
+			this->radioButton2->Size = System::Drawing::Size(178, 43);
+			this->radioButton2->TabIndex = 6;
+			this->radioButton2->TabStop = true;
+			this->radioButton2->Text = L"Unvisible";
+			this->radioButton2->UseVisualStyleBackColor = true;
+			// 
+			// radioButton1
+			// 
+			this->radioButton1->AutoSize = true;
+			this->radioButton1->Checked = true;
+			this->radioButton1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->radioButton1->ForeColor = System::Drawing::Color::White;
+			this->radioButton1->Location = System::Drawing::Point(30, 21);
+			this->radioButton1->Name = L"radioButton1";
+			this->radioButton1->Size = System::Drawing::Size(140, 43);
+			this->radioButton1->TabIndex = 5;
+			this->radioButton1->TabStop = true;
+			this->radioButton1->Text = L"Visible";
+			this->radioButton1->UseVisualStyleBackColor = true;
+			// 
+			// label2
+			// 
+			this->label2->AutoSize = true;
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label2->ForeColor = System::Drawing::Color::White;
+			this->label2->Location = System::Drawing::Point(81, 297);
+			this->label2->Name = L"label2";
+			this->label2->Size = System::Drawing::Size(160, 39);
+			this->label2->TabIndex = 2;
+			this->label2->Text = L"Visibility :";
+			// 
+			// Description
+			// 
+			this->Description->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->Description->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->Description->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->Description->ForeColor = System::Drawing::Color::White;
+			this->Description->Location = System::Drawing::Point(318, 82);
+			this->Description->MaxLength = 200;
+			this->Description->Name = L"Description";
+			this->Description->ReadOnly = true;
+			this->Description->Size = System::Drawing::Size(442, 96);
+			this->Description->TabIndex = 1;
+			this->Description->Text = L"";
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 20, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->ForeColor = System::Drawing::Color::White;
+			this->label1->Location = System::Drawing::Point(81, 98);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(206, 39);
+			this->label1->TabIndex = 0;
+			this->label1->Text = L"Description :";
 			// 
 			// UnLogged
 			// 
@@ -1760,10 +1761,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->TitleBar->ResumeLayout(false);
 			this->TitleBar->PerformLayout();
 			this->MainContainer->ResumeLayout(false);
-			this->UserProfile->ResumeLayout(false);
-			this->UserProfile->PerformLayout();
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
 			this->LoggedIn->ResumeLayout(false);
 			this->ChatContainer->ResumeLayout(false);
 			this->TextBottom->ResumeLayout(false);
@@ -1773,6 +1770,10 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->MoreList->ResumeLayout(false);
 			this->MoreList->PerformLayout();
 			this->userSettings->ResumeLayout(false);
+			this->UserProfile->ResumeLayout(false);
+			this->UserProfile->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->UnLogged->ResumeLayout(false);
 			this->UlChatContainer->ResumeLayout(false);
 			this->LoginBox->ResumeLayout(false);
@@ -1794,14 +1795,16 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 		}
 #pragma endregion
 	
-	static int log, id;
-	private: vector<Profile^> profiles;
-	private: vector<User^> users;
-	private: vector<Profile^> profilesRuntime;
-	private: vector<User^> usersRuntime;
-	private: vector<int> contacts;
+	static   int log, id;
 	private: int userLoggedIn;
+	private: vector<User^> users;
+	private: vector<int> contacts;
+	private: vector<ChatRoom^> chat;
+	private: vector<ChatInfo^> info;
+	private: vector<Profile^> profiles;
+	private: vector<User^> usersRuntime;
 	private: MyForm1^ form1 = gcnew MyForm1;
+	private: vector<Profile^> profilesRuntime;
 	private: SQLiteConnection^ db = gcnew SQLiteConnection("Data Source = DataBase.db;Version = 3;");
 	private: SQLiteCommand^ cmd = gcnew SQLiteCommand(db);
 
@@ -1847,6 +1850,20 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 				}
 			}
 		}
+		db->Close();
+	}
+	//load chats
+	private: void loadChatRooms() {
+		db->Open();
+		cmd->CommandText = "SELECT * FROM ChatRoom";
+		SQLiteDataReader^ dr = cmd->ExecuteReader();
+		while (dr->Read()) {
+			ChatRoom^ ch = gcnew ChatRoom;
+			ch->setCHID(dr->GetInt32(0));
+			ch->setCHType(dr->GetInt32(1));
+			chat.push_back(ch);
+		}
+		dr->Close();
 		db->Close();
 	}
 	//load Contacts
@@ -1903,6 +1920,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 
 		loadUsersFromDB();
 		loadProfilesFromDB();
+		loadChatRooms();
 		UnLogged->BringToFront();
 	}
 	private: System::Void btn_Click() {
@@ -1928,10 +1946,13 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			status->WindowState = FormWindowState::Normal;
 		status->Show();
 	}
+	private: System::Void Contact_Click(System::Object^ sender, System::EventArgs^ e) {
+		LoggedIn->BringToFront();
+	}
 	//add new contact
-	private: int count = 1;
 	private: System::Void NewChat_Click(System::Object^ sender, System::EventArgs^ e) {
 		db->Open();
+		ChatRoom^ ch = gcnew ChatRoom;
 		MyForm2^ frm2 = gcnew MyForm2();
 		frm2->StartPosition = FormStartPosition::CenterScreen;
 		frm2->ShowDialog();
@@ -1944,8 +1965,11 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 					contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
 				else
 					contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[i]->getPhoto());
+				contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
 				flowLayoutPanel1->Controls->Add(contact);
-
+				ch->setCHID(chat.size() + 1);
+				ch->setCHType(2);
+				chat.push_back(ch);
 				cmd->CommandText = "INSERT INTO UserContacts VALUES(@user, @contact)";
 				cmd->Parameters->AddWithValue("@user", usersRuntime[userLoggedIn]->getID());
 				cmd->Parameters->AddWithValue("@contact", usersRuntime[i]->getID());
@@ -1953,6 +1977,26 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 				cmd->CommandText = "INSERT INTO UserContacts VALUES(@user, @contact)";
 				cmd->Parameters->AddWithValue("@user", usersRuntime[i]->getID());
 				cmd->Parameters->AddWithValue("@contact", usersRuntime[userLoggedIn]->getID());
+				cmd->ExecuteNonQuery();
+				cmd->CommandText = "INSERT INTO ChatRoom VALUES(@CH_ID, @CH_Type)";
+				cmd->Parameters->AddWithValue("@CH_ID", ch->getCHID());
+				cmd->Parameters->AddWithValue("@CH_Type", ch->getCHType());
+				cmd->ExecuteNonQuery();
+				cmd->CommandText = "INSERT INTO ChatRoomInfo VALUES(0, @User_ID_FK, @CH_ID_FK)";
+				cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
+				cmd->Parameters->AddWithValue("@User_ID_FK", usersRuntime[userLoggedIn]->getID());
+				cmd->ExecuteNonQuery();
+				cmd->CommandText = "INSERT INTO ChatRoomInfo VALUES(0, @User_ID_FK, @CH_ID_FK)";
+				cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
+				cmd->Parameters->AddWithValue("@User_ID_FK", usersRuntime[i]->getID());
+				cmd->ExecuteNonQuery();
+				cmd->CommandText = "INSERT INTO User_ChatRoom VALUES(@User_ID_FK, @CH_ID_FK)";
+				cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
+				cmd->Parameters->AddWithValue("@User_ID_FK", usersRuntime[userLoggedIn]->getID());
+				cmd->ExecuteNonQuery();
+				cmd->CommandText = "INSERT INTO User_ChatRoom VALUES(@User_ID_FK, @CH_ID_FK)";
+				cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
+				cmd->Parameters->AddWithValue("@User_ID_FK", usersRuntime[i]->getID());
 				cmd->ExecuteNonQuery();
 				MessageBox::Show(contact->Username + " Added Successfully!");
 				db->Close();;
@@ -1962,10 +2006,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 		db->Close();
 		MessageBox::Show("Contact Doesn't Exist!");
 	}
+
 	//register button
 	private: System::Void button5_Click(System::Object^ sender, System::EventArgs^ e) {
 		User^ user = gcnew User();
 		Profile^ profile = gcnew Profile();
+		user->setID(usersRuntime.size()+1);
 		user->setFirst(richTextBox6->Text);
 		user->setLast(richTextBox5->Text);
 		user->setPhone(richTextBox3->Text);
@@ -1975,7 +2021,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 		else{
 			usersRuntime.push_back(user);
 			LoginBox->BringToFront();
-			profile->setID(usersRuntime.size());
+			profile->setID(usersRuntime.size()+1);
 			profile->setDesc("");
 			profile->setLogged(0);
 			profile->setPhoto("");
@@ -1992,6 +2038,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 					this->contacts.clear();
 					this->loadContacts(usersRuntime[i]->getID());
 					for (int j = 0; j < contacts.size(); j++) {
+						if (j == i)
+							continue;
 						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 						Card::MyUserControl^ contact = gcnew Card::MyUserControl();
 						contact->Username = usersRuntime[j]->getFirst() + " " + usersRuntime[j]->getLast();
@@ -1999,6 +2047,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 							contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
 						else
 							contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[j]->getPhoto());
+						contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
 						flowLayoutPanel1->Controls->Add(contact);
 						profilesRuntime[i]->setLogged(1);
 					}
@@ -2019,7 +2068,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	}
 	//log out from this user
 	private: System::Void LogOutBtn_Click(System::Object^ sender, System::EventArgs^ e) {
-		More_Click_1(sender, e);
+		Application::Restart();
 		UnLogged->BringToFront();
 	}
 	private: System::Void LogOutLb_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -2148,7 +2197,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	}
 	//closes entire app
 	private: System::Void CLose_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->LogOutBtn_Click(sender, e);
 		storeUsersIntoDB();
 		storeProfilesIntoDB();
 		profilesRuntime.clear();
