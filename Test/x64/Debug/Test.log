@@ -1,4 +1,16 @@
-﻿  MyForm.cpp
+﻿  ChatInfo.cpp
+  ChatRoom.cpp
+  Message.cpp
+  MyForm.cpp
 D:\College\Data Structure\Project\Testrecent\Test\MyForm.cpp(11,33): warning C4829: Possibly incorrect parameters to function main. Consider 'int main(Platform::Array<Platform::String^>^ argv)'
+  MyForm1.cpp
+  MyForm2.cpp
+  MyForm3.cpp
+  Profile.cpp
+  Status.cpp
+  User.cpp
+  UserChatRoom.cpp
+  .NETFramework,Version=v4.8.AssemblyAttributes.cpp
+  Generating Code...
   ChatInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   Test.vcxproj -> D:\College\Data Structure\Project\Testrecent\x64\Debug\Test.exe

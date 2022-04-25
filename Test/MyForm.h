@@ -263,6 +263,8 @@ private: System::Windows::Forms::Button^ ProfilePic;
 private: System::Windows::Forms::Label^ label3;
 private: System::Windows::Forms::Label^ label4;
 private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
+private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel3;
+private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 
 
 
@@ -602,10 +604,13 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->UlCredentials = (gcnew System::Windows::Forms::Button());
 			this->UlContacts = (gcnew System::Windows::Forms::Button());
 			this->UlStory = (gcnew System::Windows::Forms::Button());
+			this->flowLayoutPanel2 = (gcnew System::Windows::Forms::FlowLayoutPanel());
+			this->flowLayoutPanel3 = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->TitleBar->SuspendLayout();
 			this->MainContainer->SuspendLayout();
 			this->LoggedIn->SuspendLayout();
 			this->ChatContainer->SuspendLayout();
+			this->Messages->SuspendLayout();
 			this->TextBottom->SuspendLayout();
 			this->ChatTopBar->SuspendLayout();
 			this->ChatBar->SuspendLayout();
@@ -749,6 +754,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			// 
 			// Messages
 			// 
+			this->Messages->Controls->Add(this->flowLayoutPanel3);
+			this->Messages->Controls->Add(this->flowLayoutPanel2);
 			this->Messages->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->Messages->Location = System::Drawing::Point(0, 66);
 			this->Messages->Name = L"Messages";
@@ -783,6 +790,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->richTextBox7->Text = L"Enter Your message";
 			this->richTextBox7->ZoomFactor = 1.5F;
 			this->richTextBox7->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox7_Enter);
+			this->richTextBox7->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::richTextBox7_KeyDown);
 			this->richTextBox7->Leave += gcnew System::EventHandler(this, &MyForm::richTextBox7_Leave);
 			// 
 			// panel2
@@ -965,6 +973,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->Profile_lb->Size = System::Drawing::Size(120, 29);
 			this->Profile_lb->TabIndex = 19;
 			this->Profile_lb->Text = L"My Profile";
+			this->Profile_lb->Click += gcnew System::EventHandler(this, &MyForm::Profile_btn_Click);
 			// 
 			// flowLayoutPanel1
 			// 
@@ -1744,6 +1753,23 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->UlStory->UseVisualStyleBackColor = false;
 			this->UlStory->Click += gcnew System::EventHandler(this, &MyForm::Status_Click);
 			// 
+			// flowLayoutPanel2
+			// 
+			this->flowLayoutPanel2->Location = System::Drawing::Point(3, -1);
+			this->flowLayoutPanel2->Name = L"flowLayoutPanel2";
+			this->flowLayoutPanel2->Size = System::Drawing::Size(494, 544);
+			this->flowLayoutPanel2->TabIndex = 0;
+			// 
+			// flowLayoutPanel3
+			// 
+			this->flowLayoutPanel3->FlowDirection = System::Windows::Forms::FlowDirection::BottomUp;
+			this->flowLayoutPanel3->Location = System::Drawing::Point(503, -1);
+			this->flowLayoutPanel3->Name = L"flowLayoutPanel3";
+			this->flowLayoutPanel3->Padding = System::Windows::Forms::Padding(0, 10, 0, 0);
+			this->flowLayoutPanel3->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->flowLayoutPanel3->Size = System::Drawing::Size(485, 544);
+			this->flowLayoutPanel3->TabIndex = 1;
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -1763,6 +1789,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 			this->MainContainer->ResumeLayout(false);
 			this->LoggedIn->ResumeLayout(false);
 			this->ChatContainer->ResumeLayout(false);
+			this->Messages->ResumeLayout(false);
 			this->TextBottom->ResumeLayout(false);
 			this->ChatTopBar->ResumeLayout(false);
 			this->ChatTopBar->PerformLayout();
@@ -1948,6 +1975,15 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	}
 	private: System::Void Contact_Click(System::Object^ sender, System::EventArgs^ e) {
 		LoggedIn->BringToFront();
+		if(sender != nullptr){
+			Card::MyUserControl^ tempCard = dynamic_cast<Card::MyUserControl^>(sender);
+			if(tempCard->Username != UserName->Text)
+				UserName->Text = tempCard->Username;
+			if(ProfilePic->BackgroundImage != tempCard->pictureBox9->BackgroundImage){
+				ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+				ProfilePic->BackgroundImage = tempCard->pictureBox9->BackgroundImage;
+			}
+		}
 	}
 	//add new contact
 	private: System::Void NewChat_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -2021,7 +2057,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 		else{
 			usersRuntime.push_back(user);
 			LoginBox->BringToFront();
-			profile->setID(usersRuntime.size()+1);
+			profile->setID(usersRuntime.size());
 			profile->setDesc("");
 			profile->setLogged(0);
 			profile->setPhoto("");
@@ -2037,8 +2073,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 				if(profilesRuntime[i]->getLogged() == 0){
 					this->contacts.clear();
 					this->loadContacts(usersRuntime[i]->getID());
-					for (int j = 0; j < contacts.size(); j++) {
-						if (j == i)
+					for (int j = 0; j <= contacts.size(); j++) {
+						if (j == i || contacts.size() == 0)
 							continue;
 						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 						Card::MyUserControl^ contact = gcnew Card::MyUserControl();
@@ -2233,6 +2269,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	//switch to register form button
 	private: System::Void button3_Click(System::Object^ sender, System::EventArgs^ e) {
 		RegBox->BringToFront();
+	}
+	private: System::Void richTextBox7_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (e->KeyCode == Keys::Enter) {
+			MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+			msgBox->mssg->Text = richTextBox7->Text;
+		}
 	}
 };
 }

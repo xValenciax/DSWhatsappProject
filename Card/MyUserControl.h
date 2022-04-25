@@ -23,7 +23,6 @@ namespace Card {
 			//TODO: Add the constructor code here
 			//
 		}
-
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -35,7 +34,7 @@ namespace Card {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Label^ label9;
+	public: System::Windows::Forms::Label^ label9;
 	protected:
 	public: System::Windows::Forms::PictureBox^ pictureBox9;
 

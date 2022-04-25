@@ -35,7 +35,7 @@ namespace MessageComponent {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Label^ mssg;
+	public: System::Windows::Forms::Label^ mssg;
 	protected:
 
 	private:
