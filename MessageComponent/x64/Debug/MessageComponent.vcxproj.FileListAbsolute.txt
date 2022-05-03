@@ -1,0 +1,3 @@
+D:\College\Data Structure\Project\Testrecent\MessageComponent\x64\Debug\MessageComponent.vcxproj.AssemblyReference.cache
+D:\College\Data Structure\Project\Testrecent\MessageComponent\x64\Debug\MessageComponent.MyUserControl.resources
+D:\College\Data Structure\Project\Testrecent\MessageComponent\x64\Debug\MessageComponent.vcxproj.GenerateResource.cache

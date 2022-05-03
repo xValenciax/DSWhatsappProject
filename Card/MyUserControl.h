@@ -34,7 +34,9 @@ namespace Card {
 				delete components;
 			}
 		}
-	public: System::Windows::Forms::Label^ label9;
+	private: System::Windows::Forms::Label^ label9;
+	public: System::Windows::Forms::Label^ userID;
+	public: System::Windows::Forms::Label^ chatID;
 	protected:
 	public: System::Windows::Forms::PictureBox^ pictureBox9;
 
@@ -53,6 +55,8 @@ namespace Card {
 		{
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyUserControl::typeid));
 			this->label9 = (gcnew System::Windows::Forms::Label());
+			this->userID = (gcnew System::Windows::Forms::Label());
+			this->chatID = (gcnew System::Windows::Forms::Label());
 			this->pictureBox9 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox9))->BeginInit();
 			this->SuspendLayout();
@@ -68,6 +72,20 @@ namespace Card {
 			this->label9->Size = System::Drawing::Size(53, 20);
 			this->label9->TabIndex = 19;
 			this->label9->Text = L"Guest";
+			// 
+			// userID
+			// 
+			this->userID->Location = System::Drawing::Point(0, 0);
+			this->userID->Name = L"userID";
+			this->userID->Size = System::Drawing::Size(100, 23);
+			this->userID->TabIndex = 0;
+			// 
+			// chatID
+			// 
+			this->chatID->Location = System::Drawing::Point(0, 0);
+			this->chatID->Name = L"chatID";
+			this->chatID->Size = System::Drawing::Size(100, 23);
+			this->chatID->TabIndex = 0;
 			// 
 			// pictureBox9
 			// 
@@ -104,5 +122,5 @@ namespace Card {
 			label9->Text = text;
 		}
 	}
-	};
+};
 }

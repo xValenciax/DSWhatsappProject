@@ -3,15 +3,13 @@
 #include "MyForm1.h"
 #include "MyForm2.h"
 #include "User.h"
+#include "msg.h"
+#include "msgStatus.h"
 #include "Profile.h"
-#include"ChatInfo.h"
-#include"ChatRoom.h"
-#include"Message.h"
-#include"Status.h"
-#include"UserChatRoom.h"
+#include "ChatInfo.h"
+#include "ChatRoom.h"
+#include "UserChatRoom.h"
 #include <cliext/queue>
-#include <cliext/hash_map>
-#include <cliext/map>
 namespace Test {
 
 	using namespace System;
@@ -263,8 +261,16 @@ private: System::Windows::Forms::Button^ ProfilePic;
 private: System::Windows::Forms::Label^ label3;
 private: System::Windows::Forms::Label^ label4;
 private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
-private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel3;
+
 private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
+private: System::Windows::Forms::Label^ seenlast;
+
+
+
+
+
+
+
 
 
 
@@ -530,10 +536,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			this->LoggedIn = (gcnew System::Windows::Forms::Panel());
 			this->ChatContainer = (gcnew System::Windows::Forms::Panel());
 			this->Messages = (gcnew System::Windows::Forms::Panel());
+			this->flowLayoutPanel2 = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->TextBottom = (gcnew System::Windows::Forms::Panel());
 			this->richTextBox7 = (gcnew System::Windows::Forms::RichTextBox());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->ChatTopBar = (gcnew System::Windows::Forms::Panel());
+			this->seenlast = (gcnew System::Windows::Forms::Label());
 			this->ProfilePic = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->UserName = (gcnew System::Windows::Forms::Label());
@@ -604,8 +612,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			this->UlCredentials = (gcnew System::Windows::Forms::Button());
 			this->UlContacts = (gcnew System::Windows::Forms::Button());
 			this->UlStory = (gcnew System::Windows::Forms::Button());
-			this->flowLayoutPanel2 = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->flowLayoutPanel3 = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->TitleBar->SuspendLayout();
 			this->MainContainer->SuspendLayout();
 			this->LoggedIn->SuspendLayout();
@@ -754,13 +760,26 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			// 
 			// Messages
 			// 
-			this->Messages->Controls->Add(this->flowLayoutPanel3);
 			this->Messages->Controls->Add(this->flowLayoutPanel2);
 			this->Messages->Dock = System::Windows::Forms::DockStyle::Fill;
 			this->Messages->Location = System::Drawing::Point(0, 66);
 			this->Messages->Name = L"Messages";
 			this->Messages->Size = System::Drawing::Size(991, 543);
 			this->Messages->TabIndex = 2;
+			// 
+			// flowLayoutPanel2
+			// 
+			this->flowLayoutPanel2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->flowLayoutPanel2->AutoScroll = true;
+			this->flowLayoutPanel2->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
+			this->flowLayoutPanel2->Location = System::Drawing::Point(7, 5);
+			this->flowLayoutPanel2->Name = L"flowLayoutPanel2";
+			this->flowLayoutPanel2->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->flowLayoutPanel2->Size = System::Drawing::Size(977, 533);
+			this->flowLayoutPanel2->TabIndex = 0;
+			this->flowLayoutPanel2->WrapContents = false;
 			// 
 			// TextBottom
 			// 
@@ -782,12 +801,13 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			this->richTextBox7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->richTextBox7->ForeColor = System::Drawing::Color::White;
-			this->richTextBox7->Location = System::Drawing::Point(181, 17);
+			this->richTextBox7->Location = System::Drawing::Point(178, 17);
 			this->richTextBox7->Name = L"richTextBox7";
-			this->richTextBox7->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Vertical;
+			this->richTextBox7->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
 			this->richTextBox7->Size = System::Drawing::Size(635, 51);
 			this->richTextBox7->TabIndex = 0;
 			this->richTextBox7->Text = L"Enter Your message";
+			this->richTextBox7->UseWaitCursor = true;
 			this->richTextBox7->ZoomFactor = 1.5F;
 			this->richTextBox7->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox7_Enter);
 			this->richTextBox7->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::richTextBox7_KeyDown);
@@ -806,6 +826,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			// 
 			this->ChatTopBar->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->ChatTopBar->Controls->Add(this->seenlast);
 			this->ChatTopBar->Controls->Add(this->ProfilePic);
 			this->ChatTopBar->Controls->Add(this->button1);
 			this->ChatTopBar->Controls->Add(this->UserName);
@@ -814,6 +835,17 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			this->ChatTopBar->Name = L"ChatTopBar";
 			this->ChatTopBar->Size = System::Drawing::Size(991, 66);
 			this->ChatTopBar->TabIndex = 0;
+			// 
+			// seenlast
+			// 
+			this->seenlast->AutoSize = true;
+			this->seenlast->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->seenlast->ForeColor = System::Drawing::Color::White;
+			this->seenlast->Location = System::Drawing::Point(666, 28);
+			this->seenlast->Name = L"seenlast";
+			this->seenlast->Size = System::Drawing::Size(0, 20);
+			this->seenlast->TabIndex = 19;
 			// 
 			// ProfilePic
 			// 
@@ -977,11 +1009,14 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			// 
 			// flowLayoutPanel1
 			// 
+			this->flowLayoutPanel1->AutoScroll = true;
 			this->flowLayoutPanel1->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->flowLayoutPanel1->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
 			this->flowLayoutPanel1->Location = System::Drawing::Point(0, 66);
 			this->flowLayoutPanel1->Name = L"flowLayoutPanel1";
 			this->flowLayoutPanel1->Size = System::Drawing::Size(239, 631);
 			this->flowLayoutPanel1->TabIndex = 15;
+			this->flowLayoutPanel1->WrapContents = false;
 			// 
 			// userSettings
 			// 
@@ -1239,6 +1274,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			// 
 			// panel3
 			// 
+			this->panel3->Anchor = System::Windows::Forms::AnchorStyles::None;
 			this->panel3->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
 			this->panel3->Controls->Add(this->richTextBox2);
@@ -1248,7 +1284,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			this->panel3->Controls->Add(this->richTextBox1);
 			this->panel3->Controls->Add(this->label13);
 			this->panel3->Controls->Add(this->label14);
-			this->panel3->Location = System::Drawing::Point(207, 55);
+			this->panel3->Location = System::Drawing::Point(208, 60);
 			this->panel3->Name = L"panel3";
 			this->panel3->Size = System::Drawing::Size(570, 423);
 			this->panel3->TabIndex = 0;
@@ -1577,10 +1613,11 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			// 
 			// pictureBox9
 			// 
+			this->pictureBox9->Dock = System::Windows::Forms::DockStyle::Left;
 			this->pictureBox9->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox9.Image")));
-			this->pictureBox9->Location = System::Drawing::Point(28, 5);
+			this->pictureBox9->Location = System::Drawing::Point(0, 0);
 			this->pictureBox9->Name = L"pictureBox9";
-			this->pictureBox9->Size = System::Drawing::Size(100, 60);
+			this->pictureBox9->Size = System::Drawing::Size(100, 66);
 			this->pictureBox9->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->pictureBox9->TabIndex = 16;
 			this->pictureBox9->TabStop = false;
@@ -1753,23 +1790,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			this->UlStory->UseVisualStyleBackColor = false;
 			this->UlStory->Click += gcnew System::EventHandler(this, &MyForm::Status_Click);
 			// 
-			// flowLayoutPanel2
-			// 
-			this->flowLayoutPanel2->Location = System::Drawing::Point(3, -1);
-			this->flowLayoutPanel2->Name = L"flowLayoutPanel2";
-			this->flowLayoutPanel2->Size = System::Drawing::Size(494, 544);
-			this->flowLayoutPanel2->TabIndex = 0;
-			// 
-			// flowLayoutPanel3
-			// 
-			this->flowLayoutPanel3->FlowDirection = System::Windows::Forms::FlowDirection::BottomUp;
-			this->flowLayoutPanel3->Location = System::Drawing::Point(503, -1);
-			this->flowLayoutPanel3->Name = L"flowLayoutPanel3";
-			this->flowLayoutPanel3->Padding = System::Windows::Forms::Padding(0, 10, 0, 0);
-			this->flowLayoutPanel3->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
-			this->flowLayoutPanel3->Size = System::Drawing::Size(485, 544);
-			this->flowLayoutPanel3->TabIndex = 1;
-			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
@@ -1821,20 +1841,55 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 
 		}
 #pragma endregion
-	
+
+	private: int msg_user_id;
+	private: int msg_chat_id;
 	static   int log, id;
 	private: int userLoggedIn;
+	private: String^ userLoggedInName;
+	private: String^ userLoggedInPic;
 	private: vector<User^> users;
+	private: vector<UserChatRoom^> user_chatroom;
 	private: vector<int> contacts;
 	private: vector<ChatRoom^> chat;
 	private: vector<ChatInfo^> info;
 	private: vector<Profile^> profiles;
 	private: vector<User^> usersRuntime;
-	private: MyForm1^ form1 = gcnew MyForm1;
+	private: vector<msg^> msgsRuntime;
+	private: vector<msgStatus^> status;
+	private: vector<msgStatus^> statusRuntime;
+	private: vector<ChatInfo^> infoRuntime;
 	private: vector<Profile^> profilesRuntime;
+	private: MyForm1^ form1 = gcnew MyForm1;
 	private: SQLiteConnection^ db = gcnew SQLiteConnection("Data Source = DataBase.db;Version = 3;");
 	private: SQLiteCommand^ cmd = gcnew SQLiteCommand(db);
+	private: vector< System::Drawing::Color> colors;
+	
 
+	//generates Colors to vector
+	private: void generateColors() {
+		colors.push_back(System::Drawing::Color::Red);
+		colors.push_back(System::Drawing::Color::Blue);
+		colors.push_back(System::Drawing::Color::Yellow);
+		colors.push_back(System::Drawing::Color::Green);
+		colors.push_back(System::Drawing::Color::Purple);
+		colors.push_back(System::Drawing::Color::Pink);
+		colors.push_back(System::Drawing::Color::White);
+		colors.push_back(System::Drawing::Color::BlanchedAlmond);
+		colors.push_back(System::Drawing::Color::Beige);
+		colors.push_back(System::Drawing::Color::Indigo);
+	}
+	//store status into DataBase
+	private: void storeStatusIntoDB() {
+		db->Open();
+		for each(msgStatus^ state in statusRuntime){
+			if(state->getSeen() == 1){
+				cmd->CommandText = "UPDATE Status set Seen=1 WHERE TRUE";
+				cmd->ExecuteNonQuery();
+			}
+		}
+		db->Close();
+	}
 	//store Users into DataBase
 	private: void storeUsersIntoDB() {
 		db->Open();
@@ -1942,12 +1997,80 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 		dr->Close();
 		db->Close();
 	}
+	//load messages from database
+	private: void loadMessagesFromDB(int chat) {
+		msgsRuntime.clear();
+		db->Open();
+		cmd->CommandText = "SELECT * FROM Message WHERE CH_ID_FK=@chat";
+		cmd->Parameters->AddWithValue("@chat", chat);
+		SQLiteDataReader^ dr = cmd->ExecuteReader();
+		while (dr->Read()) {
+			msg^ message = gcnew msg();
+			message->setMsgID(dr->GetInt32(0));
+			message->setMsg(dr->GetString(1));
+			message->setChatID(dr->GetInt32(2));
+			message->setUserID(dr->GetInt32(3));
+			msgsRuntime.push_back(message);
+		};
+		dr->Close();
+		db->Close();
+	}
+	//load status from database
+	private: void loadStatusFromDB() {
+		db->Open();
+		cmd->CommandText = "SELECT * FROM Status";
+		SQLiteDataReader^ dr = cmd->ExecuteReader();
+		while (dr->Read()) {
+			msgStatus^ state = gcnew msgStatus();
+			state->setDate(dr->GetString(0));
+			state->setTime(dr->GetString(1));
+			state->setSeen(dr->GetInt32(2));
+			state->setMsg_ID(dr->GetInt32(3));
+			status.push_back(state);
+		};
+		statusRuntime.assign(status.begin(), status.end());
+		dr->Close();
+		db->Close();
+	}
+	//load chat info for each user from database
+	private: void loadChatInfoFromDB() {
+		infoRuntime.clear();
+		db->Open();
+		cmd->CommandText = "SELECT * FROM ChatRoomInfo";
+		SQLiteDataReader^ dr = cmd->ExecuteReader();
+		while (dr->Read()) {
+			ChatInfo^ info = gcnew ChatInfo();
+			info->setLastSeen(dr->GetString(0));
+			info->setUserID(dr->GetInt32(1));
+			info->setCHID(dr->GetInt32(2));
+			infoRuntime.push_back(info);
+		}
+		dr->Close();
+		db->Close();
+	}
+	//load chatroom for each user from database
+	private: void loaduserchatFromDB() {
+		user_chatroom.clear();
+		db->Open();
+		cmd->CommandText = "SELECT * FROM User_ChatRoom";
+		SQLiteDataReader^ dr = cmd->ExecuteReader();
+		while (dr->Read()) {
+			UserChatRoom^ us = gcnew UserChatRoom();
+			us->setUserID(dr->GetInt32(0));
+			us->setCHID(dr->GetInt32(1));
+			user_chatroom.push_back(us);
+		}
+		dr->Close();
+		db->Close();
+	}
 	//form Load
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
-
 		loadUsersFromDB();
 		loadProfilesFromDB();
+		loaduserchatFromDB();
 		loadChatRooms();
+		loadStatusFromDB();
+		loadChatInfoFromDB();
 		UnLogged->BringToFront();
 	}
 	private: System::Void btn_Click() {
@@ -1973,7 +2096,9 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			status->WindowState = FormWindowState::Normal;
 		status->Show();
 	}
+	//click contact
 	private: System::Void Contact_Click(System::Object^ sender, System::EventArgs^ e) {
+		flowLayoutPanel2->Controls->Clear();
 		LoggedIn->BringToFront();
 		if(sender != nullptr){
 			Card::MyUserControl^ tempCard = dynamic_cast<Card::MyUserControl^>(sender);
@@ -1982,6 +2107,58 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 			if(ProfilePic->BackgroundImage != tempCard->pictureBox9->BackgroundImage){
 				ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 				ProfilePic->BackgroundImage = tempCard->pictureBox9->BackgroundImage;
+			}
+			msg_user_id = System::Int16::Parse(tempCard->userID->Text);
+			msg_chat_id = System::Int16::Parse(tempCard->chatID->Text);
+			for each (ChatInfo ^ inf in infoRuntime) {
+				if (inf->getUserID() == msg_user_id) {
+					seenlast->Text = "Last Seen: " + inf->getLast();
+				}
+			}
+		}
+		loadMessagesFromDB(msg_chat_id);
+		
+		for each (msg ^ message in msgsRuntime) {
+
+			if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
+				MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+				msgBox->timelbl->Text = statusRuntime[statusRuntime.size()-1]->getTime();
+				msgBox->mssg->Text = message->getMsg();
+				msgBox->seenicon->Visible = true;
+				msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
+				msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+				for each (msgStatus ^ state in statusRuntime) {
+					if (state->getMsg_ID() == message->getMsgID()) {
+						if (state->getSeen() == 1) {
+							msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+						}
+					}
+				}
+				if (msgBox->Text->Length <= richTextBox7->Width)
+					richTextBox7->Multiline = false;
+				else
+					richTextBox7->Multiline = true;
+				flowLayoutPanel2->Controls->Add(msgBox);
+				richTextBox7->Clear();
+			}
+			else if (message->getUserIDFK() == msg_user_id) {
+				MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+				for each (msgStatus ^ state in statusRuntime) {
+					if (state->getMsg_ID() == message->getMsgID()) {
+						state->setSeen(1);
+					}
+				}
+				msgBox->timelbl->Text = statusRuntime[statusRuntime.size()-1]->getTime();
+				msgBox->mssg->Text = message->getMsg();
+				msgBox->user->Text = usersRuntime[msg_user_id-1]->getFirst();
+				msgBox->seenicon->Visible = false;
+				msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+				if (msgBox->Text->Length <= richTextBox7->Width)
+					richTextBox7->Multiline = false;
+				else
+					richTextBox7->Multiline = true;
+				flowLayoutPanel2->Controls->Add(msgBox);
+				richTextBox7->Clear();
 			}
 		}
 	}
@@ -2001,11 +2178,13 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 					contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
 				else
 					contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[i]->getPhoto());
+				contact->userID->Text = usersRuntime[i]->getID().ToString();
 				contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
-				flowLayoutPanel1->Controls->Add(contact);
 				ch->setCHID(chat.size() + 1);
 				ch->setCHType(2);
+				contact->chatID->Text = ch->getCHID().ToString();
 				chat.push_back(ch);
+				flowLayoutPanel1->Controls->Add(contact);
 				cmd->CommandText = "INSERT INTO UserContacts VALUES(@user, @contact)";
 				cmd->Parameters->AddWithValue("@user", usersRuntime[userLoggedIn]->getID());
 				cmd->Parameters->AddWithValue("@contact", usersRuntime[i]->getID());
@@ -2071,6 +2250,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 		for(int i = 0; i < usersRuntime.size(); i++) {
 			if (usersRuntime[i]->getPhone() == richTextBox1->Text && usersRuntime[i]->getPass() == richTextBox2->Text) {
 				if(profilesRuntime[i]->getLogged() == 0){
+					userLoggedIn = i;
 					this->contacts.clear();
 					this->loadContacts(usersRuntime[i]->getID());
 					for (int j = 0; j <= contacts.size(); j++) {
@@ -2083,6 +2263,14 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 							contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
 						else
 							contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[j]->getPhoto());
+						contact->userID->Text = usersRuntime[j]->getID().ToString();
+						for each (UserChatRoom^ uchat in user_chatroom) {
+							if (uchat->getUserID() == usersRuntime[userLoggedIn]->getID() && uchat->getTaken()==0) {
+								contact->chatID->Text = uchat->getCHID().ToString();
+								uchat->setTaken(1);
+								break;
+							}
+						}
 						contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
 						flowLayoutPanel1->Controls->Add(contact);
 						profilesRuntime[i]->setLogged(1);
@@ -2091,10 +2279,11 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 				UserName->Text = usersRuntime[i]->getFirst() + " " + usersRuntime[i]->getLast();
 				Description->Text = profilesRuntime[i]->getDesc();
 				if(profilesRuntime[i]->getPhoto() != ""){ 
+					userLoggedInPic = profilesRuntime[i]->getPhoto();
 					ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 					ProfilePic->BackgroundImage = gcnew Bitmap(profilesRuntime[i]->getPhoto());
 	 			}
-				userLoggedIn = i;
+				userLoggedInName = UserName->Text;
 				LoggedIn->BringToFront();
 				UserProfile->BringToFront();
 				return;
@@ -2102,8 +2291,44 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 		}
 		MessageBox::Show("Login Failed, Erorr!");
 	}
+	//set last seen
+	private: System::Void Lastseen() {
+		int Hour, Seconds;
+		String^ zone;
+		String^ Minutes;
+		DateTime localDate = DateTime::Now;
+		Minutes = localDate.Minute.ToString();
+		Seconds = localDate.Second;
+		if (localDate.Hour == 0) {
+			Hour = 12;
+			zone = "AM";
+		}
+		else if (localDate.Hour >= 1 && localDate.Hour < 12) {
+			Hour = localDate.Hour;
+			zone = "AM";
+		}
+		else if (localDate.Hour >= 13 && localDate.Hour <= 23) {
+			Hour = localDate.Hour - 12;
+			zone = "PM";
+		}
+		if (localDate.Minute >= 0 && localDate.Minute <= 9)
+			Minutes = "0" + localDate.Minute.ToString();
+		for each (ChatInfo ^ inf in infoRuntime) {
+			if (inf->getUserID() == usersRuntime[userLoggedIn]->getID()) {
+				inf->setLastSeen(Hour.ToString() + ":" + Minutes + ":" + Seconds + zone);
+			}
+		}
+		db->Open();
+		cmd->CommandText = "UPDATE ChatRoomInfo set Last_Seen=@time WHERE User_ID_FK=@id";
+		cmd->Parameters->AddWithValue("@time", Hour.ToString() + ":" + Minutes + ":" + Seconds + zone);
+		cmd->Parameters->AddWithValue("@id", usersRuntime[userLoggedIn]->getID());
+		cmd->ExecuteNonQuery();
+		db->Close();
+	}
 	//log out from this user
 	private: System::Void LogOutBtn_Click(System::Object^ sender, System::EventArgs^ e) {
+		storeStatusIntoDB();
+		Lastseen();
 		Application::Restart();
 		UnLogged->BringToFront();
 	}
@@ -2205,7 +2430,13 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 		}
 	}
 	//Button to go to Profile
-	private: System::Void Profile_btn_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void Profile_btn_Click(System::Object^ sender, System::EventArgs^ e) { 
+		seenlast->Text = "";
+		UserName->Text = userLoggedInName;
+		if (profilesRuntime[userLoggedIn]->getPhoto() == "")
+			ProfilePic->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\account.png");
+		else
+			ProfilePic->BackgroundImage = gcnew Bitmap(userLoggedInPic);
 		UserProfile->BringToFront();
 	}
 	bool isSaved = false;
@@ -2235,6 +2466,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 	private: System::Void CLose_Click(System::Object^ sender, System::EventArgs^ e) {
 		storeUsersIntoDB();
 		storeProfilesIntoDB();
+		storeStatusIntoDB();
+		Lastseen();
 		profilesRuntime.clear();
 		usersRuntime.clear();
 		Environment::Exit(0);
@@ -2271,9 +2504,75 @@ private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel2;
 		RegBox->BringToFront();
 	}
 	private: System::Void richTextBox7_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		if (e->KeyCode == Keys::Enter) {
+		int Hour, Seconds;
+		String^ zone;
+		String^ Minutes;
+		if (e->KeyCode == Keys::Enter && richTextBox7->Text != "") {
 			MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+			DateTime localDate = DateTime::Now;
+			Minutes = localDate.Minute.ToString();
+			Seconds = localDate.Second;
+			if (localDate.Hour == 0){
+				Hour = 12;
+				zone = "AM";
+			}
+			else if (localDate.Hour >= 1 && localDate.Hour < 12){
+				Hour = localDate.Hour;
+				zone = "AM";
+			}
+			else if (localDate.Hour >= 13 && localDate.Hour <= 23){
+				Hour = localDate.Hour - 12;
+				zone = "PM";
+			}
+			if (localDate.Minute >= 0 && localDate.Minute <= 9)
+				Minutes = "0" + localDate.Minute.ToString();
+			msgBox->timelbl->Text = Hour.ToString() + ":" + Minutes + " " + zone;
 			msgBox->mssg->Text = richTextBox7->Text;
+			msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
+			msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+			if(msgBox->Text->Length <= richTextBox7->Width)
+				richTextBox7->Multiline = false;
+			else
+				richTextBox7->Multiline = true;
+			flowLayoutPanel2->Controls->Add(msgBox);
+			richTextBox7->Clear();
+			msg^ message = gcnew msg;
+			message->setUserID(usersRuntime[userLoggedIn]->getID());
+			message->setChatID(msg_chat_id);
+			message->setMsg(msgBox->mssg->Text);
+			db->Open();
+			cmd->CommandText = "SELECT * FROM messagesCount";
+			SQLiteDataReader^ dr = cmd->ExecuteReader();
+			if (dr->Read())
+				message->setMsgID(dr->GetInt32(0));
+			dr->Close();
+			cmd->CommandText = "UPDATE messagesCount set count=@cnt WHERE TRUE";
+			cmd->Parameters->AddWithValue("@cnt", message->getMsgID() + 1);
+			cmd->ExecuteNonQuery();
+			db->Close();
+
+			msgsRuntime.push_back(message);
+
+			msgStatus^ stat = gcnew msgStatus;
+			stat->setDate(localDate.Year.ToString() + "/" + localDate.Month.ToString() + "/" + localDate.Day.ToString());
+			stat->setTime(Hour.ToString() + ":" + Minutes + ":" + Seconds.ToString() + " " + zone);
+			stat->setMsg_ID(message->getMsgID());
+			stat->setSeen(0);
+			statusRuntime.push_back(stat);
+			db->Open();
+			cmd->CommandText = "INSERT INTO Message VALUES(@msgid, @text, @chatID, @userID)";
+			cmd->Parameters->AddWithValue("@msgid", message->getMsgID());
+			cmd->Parameters->AddWithValue("@text", message->getMsg());
+			cmd->Parameters->AddWithValue("@userID", message->getUserIDFK());
+			cmd->Parameters->AddWithValue("@chatID", message->getChatID());
+			cmd->ExecuteNonQuery();
+			cmd->CommandText = "INSERT INTO Status VALUES(@Date, @Time, @seen, @msgID)";
+			cmd->Parameters->AddWithValue("@Date", stat->getDate());
+			cmd->Parameters->AddWithValue("@Time", stat->getTime());
+			cmd->Parameters->AddWithValue("@seen", stat->getSeen());
+			cmd->Parameters->AddWithValue("@msgID", stat->getMsg_ID());
+			cmd->ExecuteNonQuery();
+			db->Close();
 		}
 	}
 };

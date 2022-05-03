@@ -126,20 +126,20 @@
   <ItemGroup>
     <ClCompile Include="ChatInfo.cpp" />
     <ClCompile Include="ChatRoom.cpp" />
-    <ClCompile Include="Message.cpp" />
+    <ClCompile Include="msg.cpp" />
+    <ClCompile Include="msgStatus.cpp" />
     <ClCompile Include="MyForm.cpp" />
     <ClCompile Include="MyForm1.cpp" />
     <ClCompile Include="MyForm2.cpp" />
-    <ClCompile Include="MyForm3.cpp" />
     <ClCompile Include="Profile.cpp" />
-    <ClCompile Include="Status.cpp" />
     <ClCompile Include="User.cpp" />
     <ClCompile Include="UserChatRoom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ChatInfo.h" />
     <ClInclude Include="ChatRoom.h" />
-    <ClInclude Include="Message.h" />
+    <ClInclude Include="msg.h" />
+    <ClInclude Include="msgStatus.h" />
     <ClInclude Include="MyForm.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -149,11 +149,7 @@
     <ClInclude Include="MyForm2.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="MyForm3.h">
-      <FileType>CppForm</FileType>
-    </ClInclude>
     <ClInclude Include="Profile.h" />
-    <ClInclude Include="Status.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UserChatRoom.h" />
   </ItemGroup>
