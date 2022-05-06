@@ -1,3 +1,8 @@
-﻿  MyUserControl.cpp
+﻿  pch.cpp
+  AssemblyInfo.cpp
+  MessageComponent.cpp
+  MyUserControl.cpp
+  Generating Code...
+  .NETFramework,Version=v4.8.AssemblyAttributes.cpp
   AssemblyInfo.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
   MessageComponent.vcxproj -> D:\College\Data Structure\Project\Testrecent\x64\Debug\MessageComponent.dll

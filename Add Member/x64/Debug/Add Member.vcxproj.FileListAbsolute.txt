@@ -1,0 +1,3 @@
+D:\College\Data Structure\Project\Testrecent\Add Member\x64\Debug\Add Member.vcxproj.AssemblyReference.cache
+D:\College\Data Structure\Project\Testrecent\Add Member\x64\Debug\AddMember.membercpp.resources
+D:\College\Data Structure\Project\Testrecent\Add Member\x64\Debug\Add Member.vcxproj.GenerateResource.cache

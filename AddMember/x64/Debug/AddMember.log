@@ -1,0 +1,8 @@
+﻿  pch.cpp
+  AddMember.cpp
+  AssemblyInfo.cpp
+  member.cpp
+  Generating Code...
+  .NETFramework,Version=v4.8.AssemblyAttributes.cpp
+  AddMember.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  AddMember.vcxproj -> D:\College\Data Structure\Project\Testrecent\x64\Debug\AddMember.dll

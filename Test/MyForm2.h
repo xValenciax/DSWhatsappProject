@@ -207,6 +207,7 @@ namespace Test {
 			this->Contact->Size = System::Drawing::Size(208, 35);
 			this->Contact->TabIndex = 7;
 			this->Contact->Text = L"+20";
+			this->Contact->TextChanged += gcnew System::EventHandler(this, &MyForm2::Contact_TextChanged);
 			this->Contact->Enter += gcnew System::EventHandler(this, &MyForm2::Contact_Enter);
 			this->Contact->Leave += gcnew System::EventHandler(this, &MyForm2::Contact_Leave);
 			// 
@@ -222,6 +223,7 @@ namespace Test {
 			this->label13->TabIndex = 6;
 			this->label13->Text = L"Phone Number :";
 			this->label13->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->label13->Click += gcnew System::EventHandler(this, &MyForm2::label13_Click);
 			// 
 			// label14
 			// 
@@ -289,6 +291,10 @@ public: String^ getContact(){
 }
 private: System::Void Add_Contact_Click(System::Object^ sender, System::EventArgs^ e) {
 	Close();
+}
+private: System::Void Contact_TextChanged(System::Object^ sender, System::EventArgs^ e) {
+}
+private: System::Void label13_Click(System::Object^ sender, System::EventArgs^ e) {
 }
 };
 }

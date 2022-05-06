@@ -22,5 +22,6 @@ D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.vcxproj.Suggest
 D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.MyForm.resources
 D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.MyForm1.resources
 D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.MyForm2.resources
+D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.MyForm3.resources
 D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.vcxproj.GenerateResource.cache
 D:\College\Data Structure\Project\Testrecent\Test\x64\Debug\Test.vcxproj.CopyComplete

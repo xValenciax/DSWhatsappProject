@@ -1,10 +1,13 @@
   Test.MyForm.resources - Embedded, ContainedInManifestFile, 
   Test.MyForm1.resources - Embedded, ContainedInManifestFile, 
   Test.MyForm2.resources - Embedded, ContainedInManifestFile, 
+  Test.MyForm3.resources - Embedded, ContainedInManifestFile, 
 ImageRuntimeVersion: v4.0.30319
 Assembly Test, Version=0.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=SHA1, flags=PublicKey
 Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly Add Member, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=None, flags=None
 Assembly Card, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=None, flags=None
@@ -24,22 +27,32 @@ Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=
 	hash=None, flags=None
 Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
-Assembly MessageComponent, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
-	hash=None, flags=None
 Assembly Microsoft.VisualC.STLCLR, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
 	hash=None, flags=None
 Class Test.MyForm1: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.Windows.Forms.Panel storyText : Public
+    System.Windows.Forms.Panel PicStory : Public
 Class Test.MyForm2: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
     getContact(): PrivateScope, Public, HideBySig
+Class Test.MyForm3: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    getProfilePic(): PrivateScope, Public, HideBySig
+    getGroupName(): PrivateScope, Public, HideBySig
+    getDesc(): PrivateScope, Public, HideBySig
 Class Test.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
     System.Windows.Forms.Panel LoggedIn : Public
+    System.Windows.Forms.Panel PicStory : Public
+    System.Windows.Forms.Panel storyText : Public
   Methods:
     Minimize_Click(Object, EventArgs): PrivateScope, Public, HideBySig
