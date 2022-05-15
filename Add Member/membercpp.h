@@ -64,7 +64,7 @@ namespace AddMember {
 			this->Contact->Name = L"Contact";
 			this->Contact->Size = System::Drawing::Size(208, 35);
 			this->Contact->TabIndex = 9;
-			this->Contact->Text = L"+20";
+			this->Contact->Text = L"";
 			// 
 			// label13
 			// 

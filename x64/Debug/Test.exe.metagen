@@ -43,10 +43,14 @@ Class Test.MyForm2: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
 Class Test.MyForm3: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1 : Public
+    AddMember.membercpp membercpp1 : Public
   Methods:
     getProfilePic(): PrivateScope, Public, HideBySig
     getGroupName(): PrivateScope, Public, HideBySig
     getDesc(): PrivateScope, Public, HideBySig
+    getMembers(): PrivateScope, Public, HideBySig
 Class Test.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

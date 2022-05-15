@@ -126,6 +126,7 @@
   <ItemGroup>
     <ClCompile Include="ChatInfo.cpp" />
     <ClCompile Include="ChatRoom.cpp" />
+    <ClCompile Include="Group.cpp" />
     <ClCompile Include="msg.cpp" />
     <ClCompile Include="msgStatus.cpp" />
     <ClCompile Include="MyForm.cpp" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="ChatInfo.h" />
     <ClInclude Include="ChatRoom.h" />
+    <ClInclude Include="Group.h" />
     <ClInclude Include="msg.h" />
     <ClInclude Include="msgStatus.h" />
     <ClInclude Include="MyForm.h">

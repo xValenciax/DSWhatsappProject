@@ -5,6 +5,7 @@ using namespace System::Windows;
 ref class ChatInfo
 {
 private: String^ lastSeen;
+private: String^ lastOpened;
 private: int CH_ID_FK = 1;
 private: int User_ID_Type = 1;
 
@@ -16,6 +17,9 @@ public: int getID() {
 public: String^ getLast() {
 	return this->lastSeen;
 }
+public: String^ getOpened() {
+	return this->lastOpened;
+}
 public: void setCHID(int id) {
 	this->CH_ID_FK = id;
 }
@@ -24,6 +28,9 @@ public: void setUserID(int type) {
 }
 public: void setLastSeen(String^ last) {
 	this->lastSeen = last;
+}
+public: void setLastOpened(String^ opened) {
+	this->lastOpened = opened;
 }
 };
 

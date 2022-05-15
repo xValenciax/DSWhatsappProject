@@ -37,8 +37,10 @@ namespace Card {
 	private: System::Windows::Forms::Label^ label9;
 	public: System::Windows::Forms::Label^ userID;
 	public: System::Windows::Forms::Label^ chatID;
+	public: System::Windows::Forms::Label^ chatType;
 	protected:
 	public: System::Windows::Forms::PictureBox^ pictureBox9;
+
 
 	private:
 		/// <summary>
@@ -57,6 +59,7 @@ namespace Card {
 			this->label9 = (gcnew System::Windows::Forms::Label());
 			this->userID = (gcnew System::Windows::Forms::Label());
 			this->chatID = (gcnew System::Windows::Forms::Label());
+			this->chatType = (gcnew System::Windows::Forms::Label());
 			this->pictureBox9 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox9))->BeginInit();
 			this->SuspendLayout();
@@ -86,6 +89,13 @@ namespace Card {
 			this->chatID->Name = L"chatID";
 			this->chatID->Size = System::Drawing::Size(100, 23);
 			this->chatID->TabIndex = 0;
+			// 
+			// chatType
+			// 
+			this->chatType->Location = System::Drawing::Point(0, 0);
+			this->chatType->Name = L"chatType";
+			this->chatType->Size = System::Drawing::Size(100, 23);
+			this->chatType->TabIndex = 0;
 			// 
 			// pictureBox9
 			// 

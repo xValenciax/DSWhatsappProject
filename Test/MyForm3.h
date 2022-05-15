@@ -45,7 +45,7 @@ namespace Test {
 	private: System::Windows::Forms::Button^ button6;
 	private: System::Windows::Forms::RichTextBox^ Description;
 	private: System::Windows::Forms::Label^ label1;
-	private: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
+	public: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: System::Windows::Forms::Label^ label14;
@@ -61,7 +61,8 @@ namespace Test {
 	private: System::Windows::Forms::Button^ Minimize;
 	private: System::Windows::Forms::Panel^ TItleBar_border;
 	private: System::Windows::Forms::Panel^ TitleBar;
-	private: AddMember::membercpp^ membercpp1;
+	public: AddMember::membercpp^ membercpp1;
+	private:System::Windows::Forms::Label^ imagePath;
 
 
 
@@ -99,6 +100,7 @@ namespace Test {
 			this->membercpp1 = (gcnew AddMember::membercpp());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->imagePath = (gcnew System::Windows::Forms::Label());
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->label14 = (gcnew System::Windows::Forms::Label());
 			this->Add_Contact = (gcnew System::Windows::Forms::Button());
@@ -388,19 +390,11 @@ private: System::Void Maximize_Click(System::Object^ sender, System::EventArgs^ 
 private: System::Void CLose_Click(System::Object^ sender, System::EventArgs^ e) {
 	this->Close();
 }
-private: System::Void Contact_Enter(System::Object^ sender, System::EventArgs^ e) {
-	dynamic_cast<AddMember::membercpp^>(sender)->Text = "";
-}
-private: System::Void Contact_Leave(System::Object^ sender, System::EventArgs^ e) {
-	if (dynamic_cast<AddMember::membercpp^>(sender)->Text == "")
-		dynamic_cast<AddMember::membercpp^>(sender)->Text = "+20";
-}
 private: System::Void pictureBox1_Click(System::Object^ sender, System::EventArgs^ e) {
 	AddMember::membercpp^ add = gcnew AddMember::membercpp;
-	add->Contact->Enter += gcnew System::EventHandler(this, &MyForm3::Contact_Enter);
-	add->Contact->Leave += gcnew System::EventHandler(this, &MyForm3::Contact_Leave);
 	flowLayoutPanel1->Controls->Add(add);
 }
+
 private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e) {
 	OpenFileDialog^ open = gcnew OpenFileDialog();
 
@@ -412,18 +406,22 @@ private: System::Void button6_Click(System::Object^ sender, System::EventArgs^ e
 		ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 		ProfilePic->BackgroundImage = gcnew Bitmap(open->FileName);
 	}
+	imagePath->Text = open->FileName;
 }
 private: System::Void Add_Contact_Click(System::Object^ sender, System::EventArgs^ e) {
 	Close();
 }
 public: String^ getProfilePic() {
-	return ProfilePic->BackgroundImage->ToString();
+	return imagePath->Text;
 }
 public: String^ getGroupName() {
 	return Description->Text;
 }
 public: String^ getDesc() {
 	return richTextBox1->Text;
+}
+public: int getMembers() {
+	return flowLayoutPanel1->Controls->Count;
 }
 };
 }

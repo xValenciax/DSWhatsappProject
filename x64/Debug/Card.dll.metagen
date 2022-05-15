@@ -22,6 +22,7 @@ Class Card.MyUserControl: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   Fields:
     System.Windows.Forms.Label userID : Public
     System.Windows.Forms.Label chatID : Public
+    System.Windows.Forms.Label chatType : Public
     System.Windows.Forms.PictureBox pictureBox9 : Public
   Properties:
     System.String Username 'get set' : 

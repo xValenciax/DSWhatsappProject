@@ -20,7 +20,12 @@ Class MessageComponent.MyUserControl: AutoLayout, AnsiClass, Class, Public, Befo
   :System.Windows.Forms.UserControl
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
-    System.Windows.Forms.Label mssg : Public
     System.Windows.Forms.Label timelbl : Public
     System.Windows.Forms.Label user : Public
+    System.Windows.Forms.Label msg_id : Public
     System.Windows.Forms.PictureBox seenicon : Public
+    System.Windows.Forms.Button more : Public
+    System.Windows.Forms.Label mssg : Public
+    System.ComponentModel.Container components : Public
+  Methods:
+    InitializeComponent(): PrivateScope, Public, HideBySig
