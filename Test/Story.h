@@ -9,6 +9,7 @@ private:String^ StoryImage;
 private:String^ StoryText;
 private: DateTime^ realTime;
 private:int User_ID_FK;
+private:int Story_ID;
 
 public: void setTime(String^ time) {
 	this->StoryTime = time;
@@ -25,6 +26,9 @@ public: void setText(String^ Text) {
 public: void setID(int id) {
 	this->User_ID_FK = id;
 }
+public: void setStoryID(int st) {
+	this->Story_ID = st;
+}
 public: String^ getTime() {
 	return this->StoryTime;
 }
@@ -39,6 +43,9 @@ public: DateTime^ getRealTime() {
 }
 public: int getID() {
 	return this->User_ID_FK;
+}
+public: int getStoryID() {
+	return this->Story_ID;
 }
 
 };

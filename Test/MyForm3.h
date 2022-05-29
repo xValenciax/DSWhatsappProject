@@ -42,19 +42,19 @@ namespace Test {
 
 
 
-	private: System::Windows::Forms::Button^ button6;
-	private: System::Windows::Forms::RichTextBox^ Description;
+	public: System::Windows::Forms::Button^ button6;
+	public: System::Windows::Forms::RichTextBox^ Description;
 	private: System::Windows::Forms::Label^ label1;
 	public: System::Windows::Forms::FlowLayoutPanel^ flowLayoutPanel1;
 	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::RichTextBox^ richTextBox1;
+	public: System::Windows::Forms::RichTextBox^ richTextBox1;
 	private: System::Windows::Forms::Label^ label14;
 
 
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 
 	private: System::Windows::Forms::Button^ Add_Contact;
-	private: System::Windows::Forms::Button^ ProfilePic;
+	public: System::Windows::Forms::Button^ ProfilePic;
 	private: System::Windows::Forms::Label^ AppTitle;
 	private: System::Windows::Forms::Button^ CLose;
 	private: System::Windows::Forms::Button^ Maximize;
@@ -200,6 +200,13 @@ namespace Test {
 			this->label2->Size = System::Drawing::Size(206, 39);
 			this->label2->TabIndex = 21;
 			this->label2->Text = L"Description :";
+			// 
+			// imagePath
+			// 
+			this->imagePath->Location = System::Drawing::Point(0, 0);
+			this->imagePath->Name = L"imagePath";
+			this->imagePath->Size = System::Drawing::Size(100, 23);
+			this->imagePath->TabIndex = 0;
 			// 
 			// richTextBox1
 			// 
@@ -423,5 +430,12 @@ public: String^ getDesc() {
 public: int getMembers() {
 	return flowLayoutPanel1->Controls->Count;
 }
+public: void setName(String^ name) {
+	Description->Text = name;
+}	  
+public: void setDescription(String^ desc) {
+	richTextBox1->Text = desc;
+}
+
 };
 }

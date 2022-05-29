@@ -190,6 +190,9 @@
     <ProjectReference Include="..\MessageComponent\MessageComponent.vcxproj">
       <Project>{d61b4b61-6654-4e7c-a377-3d056143e738}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\RecAudioComponent\RecAudioComponent.vcxproj">
+      <Project>{6f68ca18-e41d-4e06-9401-f1e4619ed3b1}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

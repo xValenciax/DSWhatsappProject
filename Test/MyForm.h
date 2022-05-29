@@ -13,6 +13,7 @@
 #include "Story.h"
 #include "Group.h"
 #include <cliext/queue>
+
 namespace Test {
 
 	using namespace System;
@@ -29,6 +30,20 @@ namespace Test {
 	/// </summary>
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
+	[System::Runtime::InteropServices::DllImport("winmm.dll")]
+	static long mciSendString(String^ MciCommand, String^ MciReturn, int MciReturnLength, IntPtr^ CallBack);
+	private: System::Windows::Forms::Panel^ RecPn;
+
+	private: System::Windows::Forms::Label^ RecLbl;
+	private: System::Windows::Forms::Button^ AddGroupMembers;
+	private: System::Windows::Forms::FlowLayoutPanel^ GroupMembers;
+
+
+
+
+
+
+		   String^ record = "";
 	public:
 		MyForm(void)
 		{
@@ -38,7 +53,6 @@ namespace Test {
 			// 
 			//
 		}
-
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -315,11 +329,16 @@ private: System::Windows::Forms::PictureBox^ pictureBox1;
 private: System::Windows::Forms::PictureBox^ pictureBox3;
 private: System::Windows::Forms::Label^ StoryTime;
 private: System::Windows::Forms::TextBox^ textBox1;
-private: System::Windows::Forms::Button^ button16;
-private: System::Windows::Forms::Button^ button17;
+
+
 private: System::Windows::Forms::FlowLayoutPanel^ emojeList;
 private: System::Windows::Forms::Button^ button18;
 private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
+private: System::Windows::Forms::ToolTip^ LoginPhone;
+private: System::Windows::Forms::Button^ voice_rec;
+
+
+private: System::ComponentModel::IContainer^ components;
 
 
 
@@ -590,7 +609,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
-		System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -599,6 +618,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MyForm::typeid));
 			this->TitleBar = (gcnew System::Windows::Forms::Panel());
 			this->TItleBar_border = (gcnew System::Windows::Forms::Panel());
@@ -607,43 +627,20 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->CLose = (gcnew System::Windows::Forms::Button());
 			this->AppTitle = (gcnew System::Windows::Forms::Label());
 			this->MainContainer = (gcnew System::Windows::Forms::Panel());
-			this->StoryPanel = (gcnew System::Windows::Forms::Panel());
-			this->StoriesContainer = (gcnew System::Windows::Forms::Panel());
-			this->button18 = (gcnew System::Windows::Forms::Button());
-			this->panel4 = (gcnew System::Windows::Forms::Panel());
-			this->StoryTime = (gcnew System::Windows::Forms::Label());
-			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
-			this->richTextBox9 = (gcnew System::Windows::Forms::RichTextBox());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			this->button15 = (gcnew System::Windows::Forms::Button());
-			this->PicStory = (gcnew System::Windows::Forms::Panel());
-			this->StoryPic = (gcnew System::Windows::Forms::Button());
-			this->button9 = (gcnew System::Windows::Forms::Button());
-			this->button10 = (gcnew System::Windows::Forms::Button());
-			this->storyText = (gcnew System::Windows::Forms::Panel());
-			this->label8 = (gcnew System::Windows::Forms::Label());
-			this->button11 = (gcnew System::Windows::Forms::Button());
-			this->richTextBox8 = (gcnew System::Windows::Forms::RichTextBox());
-			this->storySeen = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->StatusList = (gcnew System::Windows::Forms::Panel());
-			this->label20 = (gcnew System::Windows::Forms::Label());
-			this->StoriesPn = (gcnew System::Windows::Forms::FlowLayoutPanel());
-			this->userStories = (gcnew Card::MyUserControl());
-			this->button12 = (gcnew System::Windows::Forms::Button());
-			this->button13 = (gcnew System::Windows::Forms::Button());
-			this->button14 = (gcnew System::Windows::Forms::Button());
+			this->GroupMembers = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->LoggedIn = (gcnew System::Windows::Forms::Panel());
 			this->ChatContainer = (gcnew System::Windows::Forms::Panel());
 			this->Messages = (gcnew System::Windows::Forms::Panel());
+			this->RecPn = (gcnew System::Windows::Forms::Panel());
+			this->RecLbl = (gcnew System::Windows::Forms::Label());
 			this->emojeList = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->flowLayoutPanel2 = (gcnew System::Windows::Forms::FlowLayoutPanel());
 			this->TextBottom = (gcnew System::Windows::Forms::Panel());
-			this->button17 = (gcnew System::Windows::Forms::Button());
-			this->button16 = (gcnew System::Windows::Forms::Button());
+			this->voice_rec = (gcnew System::Windows::Forms::Button());
 			this->richTextBox7 = (gcnew System::Windows::Forms::RichTextBox());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->ChatTopBar = (gcnew System::Windows::Forms::Panel());
+			this->AddGroupMembers = (gcnew System::Windows::Forms::Button());
 			this->seenlast = (gcnew System::Windows::Forms::Label());
 			this->ProfilePic = (gcnew System::Windows::Forms::Button());
 			this->button1 = (gcnew System::Windows::Forms::Button());
@@ -680,6 +677,32 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->Description = (gcnew System::Windows::Forms::RichTextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->StoryPanel = (gcnew System::Windows::Forms::Panel());
+			this->StoriesContainer = (gcnew System::Windows::Forms::Panel());
+			this->button18 = (gcnew System::Windows::Forms::Button());
+			this->panel4 = (gcnew System::Windows::Forms::Panel());
+			this->StoryTime = (gcnew System::Windows::Forms::Label());
+			this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
+			this->richTextBox9 = (gcnew System::Windows::Forms::RichTextBox());
+			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
+			this->button15 = (gcnew System::Windows::Forms::Button());
+			this->PicStory = (gcnew System::Windows::Forms::Panel());
+			this->StoryPic = (gcnew System::Windows::Forms::Button());
+			this->button9 = (gcnew System::Windows::Forms::Button());
+			this->button10 = (gcnew System::Windows::Forms::Button());
+			this->storyText = (gcnew System::Windows::Forms::Panel());
+			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->button11 = (gcnew System::Windows::Forms::Button());
+			this->richTextBox8 = (gcnew System::Windows::Forms::RichTextBox());
+			this->storySeen = (gcnew System::Windows::Forms::FlowLayoutPanel());
+			this->StatusList = (gcnew System::Windows::Forms::Panel());
+			this->label20 = (gcnew System::Windows::Forms::Label());
+			this->StoriesPn = (gcnew System::Windows::Forms::FlowLayoutPanel());
+			this->userStories = (gcnew Card::MyUserControl());
+			this->button12 = (gcnew System::Windows::Forms::Button());
+			this->button13 = (gcnew System::Windows::Forms::Button());
+			this->button14 = (gcnew System::Windows::Forms::Button());
 			this->UnLogged = (gcnew System::Windows::Forms::Panel());
 			this->UlChatContainer = (gcnew System::Windows::Forms::Panel());
 			this->panel12 = (gcnew System::Windows::Forms::Panel());
@@ -727,8 +750,20 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->DescName = (gcnew System::Windows::Forms::Label());
 			this->DescPic = (gcnew System::Windows::Forms::PictureBox());
 			this->DescText = (gcnew System::Windows::Forms::RichTextBox());
+			this->LoginPhone = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->TitleBar->SuspendLayout();
 			this->MainContainer->SuspendLayout();
+			this->LoggedIn->SuspendLayout();
+			this->ChatContainer->SuspendLayout();
+			this->Messages->SuspendLayout();
+			this->RecPn->SuspendLayout();
+			this->TextBottom->SuspendLayout();
+			this->ChatTopBar->SuspendLayout();
+			this->ChatBar->SuspendLayout();
+			this->MoreList->SuspendLayout();
+			this->userSettings->SuspendLayout();
+			this->UserProfile->SuspendLayout();
+			this->groupBox1->SuspendLayout();
 			this->StoryPanel->SuspendLayout();
 			this->StoriesContainer->SuspendLayout();
 			this->panel4->SuspendLayout();
@@ -738,16 +773,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->PicStory->SuspendLayout();
 			this->storyText->SuspendLayout();
 			this->StatusList->SuspendLayout();
-			this->LoggedIn->SuspendLayout();
-			this->ChatContainer->SuspendLayout();
-			this->Messages->SuspendLayout();
-			this->TextBottom->SuspendLayout();
-			this->ChatTopBar->SuspendLayout();
-			this->ChatBar->SuspendLayout();
-			this->MoreList->SuspendLayout();
-			this->userSettings->SuspendLayout();
-			this->UserProfile->SuspendLayout();
-			this->groupBox1->SuspendLayout();
 			this->UnLogged->SuspendLayout();
 			this->UlChatContainer->SuspendLayout();
 			this->panel12->SuspendLayout();
@@ -854,9 +879,10 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			// 
 			// MainContainer
 			// 
-			this->MainContainer->Controls->Add(this->StoryPanel);
+			this->MainContainer->Controls->Add(this->GroupMembers);
 			this->MainContainer->Controls->Add(this->LoggedIn);
 			this->MainContainer->Controls->Add(this->UserProfile);
+			this->MainContainer->Controls->Add(this->StoryPanel);
 			this->MainContainer->Controls->Add(this->UnLogged);
 			this->MainContainer->Controls->Add(this->contactDesc);
 			this->MainContainer->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -865,360 +891,15 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->MainContainer->Size = System::Drawing::Size(1230, 697);
 			this->MainContainer->TabIndex = 0;
 			// 
-			// StoryPanel
+			// GroupMembers
 			// 
-			this->StoryPanel->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->StoryPanel->Controls->Add(this->StoriesContainer);
-			this->StoryPanel->Controls->Add(this->StatusList);
-			this->StoryPanel->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->StoryPanel->Location = System::Drawing::Point(0, 0);
-			this->StoryPanel->Name = L"StoryPanel";
-			this->StoryPanel->Size = System::Drawing::Size(1230, 697);
-			this->StoryPanel->TabIndex = 8;
-			// 
-			// StoriesContainer
-			// 
-			this->StoriesContainer->Controls->Add(this->button18);
-			this->StoriesContainer->Controls->Add(this->panel4);
-			this->StoriesContainer->Controls->Add(this->button15);
-			this->StoriesContainer->Controls->Add(this->PicStory);
-			this->StoriesContainer->Controls->Add(this->storyText);
-			this->StoriesContainer->Controls->Add(this->storySeen);
-			this->StoriesContainer->Dock = System::Windows::Forms::DockStyle::Fill;
-			this->StoriesContainer->Location = System::Drawing::Point(295, 0);
-			this->StoriesContainer->Name = L"StoriesContainer";
-			this->StoriesContainer->Size = System::Drawing::Size(935, 697);
-			this->StoriesContainer->TabIndex = 13;
-			// 
-			// button18
-			// 
-			this->button18->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button18->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->button18->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button18.BackgroundImage")));
-			this->button18->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button18->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button18->FlatAppearance->BorderSize = 0;
-			this->button18->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button18->Location = System::Drawing::Point(409, 635);
-			this->button18->Name = L"button18";
-			this->button18->Size = System::Drawing::Size(116, 42);
-			this->button18->TabIndex = 16;
-			this->button18->UseVisualStyleBackColor = false;
-			this->button18->Click += gcnew System::EventHandler(this, &MyForm::button18_Click);
-			// 
-			// panel4
-			// 
-			this->panel4->Controls->Add(this->StoryTime);
-			this->panel4->Controls->Add(this->pictureBox3);
-			this->panel4->Controls->Add(this->richTextBox9);
-			this->panel4->Controls->Add(this->pictureBox1);
-			this->panel4->Controls->Add(this->pictureBox2);
-			this->panel4->Location = System::Drawing::Point(99, 92);
-			this->panel4->Name = L"panel4";
-			this->panel4->Size = System::Drawing::Size(780, 500);
-			this->panel4->TabIndex = 15;
-			// 
-			// StoryTime
-			// 
-			this->StoryTime->AutoSize = true;
-			this->StoryTime->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->StoryTime->ForeColor = System::Drawing::Color::White;
-			this->StoryTime->Location = System::Drawing::Point(68, 43);
-			this->StoryTime->Name = L"StoryTime";
-			this->StoryTime->Size = System::Drawing::Size(0, 29);
-			this->StoryTime->TabIndex = 21;
-			// 
-			// pictureBox3
-			// 
-			this->pictureBox3->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.BackgroundImage")));
-			this->pictureBox3->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->pictureBox3->Location = System::Drawing::Point(3, 225);
-			this->pictureBox3->Name = L"pictureBox3";
-			this->pictureBox3->Size = System::Drawing::Size(62, 51);
-			this->pictureBox3->TabIndex = 20;
-			this->pictureBox3->TabStop = false;
-			this->pictureBox3->Click += gcnew System::EventHandler(this, &MyForm::pictureBox3_Click);
-			// 
-			// richTextBox9
-			// 
-			this->richTextBox9->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+			this->GroupMembers->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->richTextBox9->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->richTextBox9->ForeColor = System::Drawing::Color::White;
-			this->richTextBox9->ImeMode = System::Windows::Forms::ImeMode::KatakanaHalf;
-			this->richTextBox9->Location = System::Drawing::Point(158, 127);
-			this->richTextBox9->MaxLength = 200;
-			this->richTextBox9->Name = L"richTextBox9";
-			this->richTextBox9->ReadOnly = true;
-			this->richTextBox9->Size = System::Drawing::Size(480, 247);
-			this->richTextBox9->TabIndex = 19;
-			this->richTextBox9->Text = L"";
-			// 
-			// pictureBox1
-			// 
-			this->pictureBox1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->pictureBox1->Location = System::Drawing::Point(161, 126);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(0, 0);
-			this->pictureBox1->TabIndex = 18;
-			this->pictureBox1->TabStop = false;
-			// 
-			// pictureBox2
-			// 
-			this->pictureBox2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.BackgroundImage")));
-			this->pictureBox2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->pictureBox2->Location = System::Drawing::Point(715, 225);
-			this->pictureBox2->Name = L"pictureBox2";
-			this->pictureBox2->Size = System::Drawing::Size(62, 51);
-			this->pictureBox2->TabIndex = 16;
-			this->pictureBox2->TabStop = false;
-			this->pictureBox2->Click += gcnew System::EventHandler(this, &MyForm::pictureBox2_Click);
-			// 
-			// button15
-			// 
-			this->button15->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button15->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->button15->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button15.BackgroundImage")));
-			this->button15->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button15->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button15->FlatAppearance->BorderSize = 0;
-			this->button15->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button15->Location = System::Drawing::Point(866, 21);
-			this->button15->Name = L"button15";
-			this->button15->Size = System::Drawing::Size(62, 26);
-			this->button15->TabIndex = 14;
-			this->button15->UseVisualStyleBackColor = false;
-			this->button15->Click += gcnew System::EventHandler(this, &MyForm::button15_Click);
-			// 
-			// PicStory
-			// 
-			this->PicStory->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->PicStory->Controls->Add(this->StoryPic);
-			this->PicStory->Controls->Add(this->button9);
-			this->PicStory->Controls->Add(this->button10);
-			this->PicStory->Location = System::Drawing::Point(66, 111);
-			this->PicStory->Name = L"PicStory";
-			this->PicStory->Size = System::Drawing::Size(0, 0);
-			this->PicStory->TabIndex = 1;
-			// 
-			// StoryPic
-			// 
-			this->StoryPic->Anchor = System::Windows::Forms::AnchorStyles::None;
-			this->StoryPic->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->StoryPic->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"StoryPic.BackgroundImage")));
-			this->StoryPic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->StoryPic->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->StoryPic->FlatAppearance->BorderSize = 0;
-			this->StoryPic->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->StoryPic->Location = System::Drawing::Point(-91, -161);
-			this->StoryPic->Name = L"StoryPic";
-			this->StoryPic->Size = System::Drawing::Size(183, 112);
-			this->StoryPic->TabIndex = 19;
-			this->StoryPic->UseVisualStyleBackColor = false;
-			// 
-			// button9
-			// 
-			this->button9->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button9->FlatAppearance->BorderSize = 0;
-			this->button9->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->button9->ForeColor = System::Drawing::Color::White;
-			this->button9->Location = System::Drawing::Point(317, 270);
-			this->button9->Name = L"button9";
-			this->button9->Size = System::Drawing::Size(123, 48);
-			this->button9->TabIndex = 18;
-			this->button9->Text = L"Add";
-			this->button9->UseVisualStyleBackColor = false;
-			this->button9->Click += gcnew System::EventHandler(this, &MyForm::button9_Click);
-			// 
-			// button10
-			// 
-			this->button10->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button10->FlatAppearance->BorderSize = 0;
-			this->button10->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->button10->ForeColor = System::Drawing::Color::White;
-			this->button10->Location = System::Drawing::Point(208, 188);
-			this->button10->Name = L"button10";
-			this->button10->Size = System::Drawing::Size(341, 48);
-			this->button10->TabIndex = 17;
-			this->button10->Text = L"Choose Picture";
-			this->button10->UseVisualStyleBackColor = false;
-			this->button10->Click += gcnew System::EventHandler(this, &MyForm::button10_Click);
-			// 
-			// storyText
-			// 
-			this->storyText->Controls->Add(this->label8);
-			this->storyText->Controls->Add(this->button11);
-			this->storyText->Controls->Add(this->richTextBox8);
-			this->storyText->Location = System::Drawing::Point(66, 84);
-			this->storyText->Name = L"storyText";
-			this->storyText->Size = System::Drawing::Size(0, 0);
-			this->storyText->TabIndex = 0;
-			// 
-			// label8
-			// 
-			this->label8->AutoSize = true;
-			this->label8->Font = (gcnew System::Drawing::Font(L"Monotype Corsiva", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label8->ForeColor = System::Drawing::Color::White;
-			this->label8->Location = System::Drawing::Point(257, 40);
-			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(243, 41);
-			this->label8->TabIndex = 16;
-			this->label8->Text = L"Write Your Story";
-			this->label8->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			// 
-			// button11
-			// 
-			this->button11->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button11->FlatAppearance->BorderSize = 0;
-			this->button11->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->button11->ForeColor = System::Drawing::Color::White;
-			this->button11->Location = System::Drawing::Point(317, 380);
-			this->button11->Name = L"button11";
-			this->button11->Size = System::Drawing::Size(123, 48);
-			this->button11->TabIndex = 7;
-			this->button11->Text = L"Add";
-			this->button11->UseVisualStyleBackColor = false;
-			this->button11->Click += gcnew System::EventHandler(this, &MyForm::button11_Click);
-			// 
-			// richTextBox8
-			// 
-			this->richTextBox8->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->richTextBox8->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->richTextBox8->ForeColor = System::Drawing::Color::White;
-			this->richTextBox8->Location = System::Drawing::Point(22, 106);
-			this->richTextBox8->MaxLength = 200;
-			this->richTextBox8->Name = L"richTextBox8";
-			this->richTextBox8->Size = System::Drawing::Size(705, 240);
-			this->richTextBox8->TabIndex = 2;
-			this->richTextBox8->Text = L"";
-			// 
-			// storySeen
-			// 
-			this->storySeen->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->storySeen->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
-			this->storySeen->Location = System::Drawing::Point(264, 97);
-			this->storySeen->Name = L"storySeen";
-			this->storySeen->Size = System::Drawing::Size(406, 502);
-			this->storySeen->TabIndex = 17;
-			// 
-			// StatusList
-			// 
-			this->StatusList->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->StatusList->Controls->Add(this->label20);
-			this->StatusList->Controls->Add(this->StoriesPn);
-			this->StatusList->Controls->Add(this->userStories);
-			this->StatusList->Controls->Add(this->button12);
-			this->StatusList->Controls->Add(this->button13);
-			this->StatusList->Controls->Add(this->button14);
-			this->StatusList->Dock = System::Windows::Forms::DockStyle::Left;
-			this->StatusList->Location = System::Drawing::Point(0, 0);
-			this->StatusList->Name = L"StatusList";
-			this->StatusList->Size = System::Drawing::Size(295, 697);
-			this->StatusList->TabIndex = 12;
-			// 
-			// label20
-			// 
-			this->label20->AutoSize = true;
-			this->label20->Font = (gcnew System::Drawing::Font(L"Monotype Corsiva", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label20->ForeColor = System::Drawing::Color::White;
-			this->label20->Location = System::Drawing::Point(94, 88);
-			this->label20->Name = L"label20";
-			this->label20->Size = System::Drawing::Size(107, 41);
-			this->label20->TabIndex = 23;
-			this->label20->Text = L"Stories";
-			this->label20->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
-			// 
-			// StoriesPn
-			// 
-			this->StoriesPn->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
-			this->StoriesPn->Location = System::Drawing::Point(3, 145);
-			this->StoriesPn->Name = L"StoriesPn";
-			this->StoriesPn->Size = System::Drawing::Size(289, 552);
-			this->StoriesPn->TabIndex = 23;
-			// 
-			// userStories
-			// 
-			this->userStories->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
-				static_cast<System::Int32>(static_cast<System::Byte>(77)));
-			this->userStories->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->userStories->Location = System::Drawing::Point(2, 7);
-			this->userStories->Name = L"userStories";
-			this->userStories->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
-			this->userStories->Size = System::Drawing::Size(290, 66);
-			this->userStories->TabIndex = 21;
-			this->userStories->Username = L"My Stories";
-			this->userStories->Click += gcnew System::EventHandler(this, &MyForm::userStories_Click);
-			// 
-			// button12
-			// 
-			this->button12->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button12->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button12->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button12->Enabled = false;
-			this->button12->FlatAppearance->BorderSize = 0;
-			this->button12->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button12->Location = System::Drawing::Point(3, 121);
-			this->button12->Name = L"button12";
-			this->button12->Size = System::Drawing::Size(289, 44);
-			this->button12->TabIndex = 20;
-			this->button12->UseVisualStyleBackColor = false;
-			// 
-			// button13
-			// 
-			this->button13->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button13->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button13->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button13->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button13->FlatAppearance->BorderSize = 0;
-			this->button13->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button13->Location = System::Drawing::Point(157, 71);
-			this->button13->Name = L"button13";
-			this->button13->Size = System::Drawing::Size(44, 41);
-			this->button13->TabIndex = 18;
-			this->button13->UseVisualStyleBackColor = false;
-			// 
-			// button14
-			// 
-			this->button14->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button14->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button14->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button14->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button14->FlatAppearance->BorderSize = 0;
-			this->button14->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button14->Location = System::Drawing::Point(9, 72);
-			this->button14->Name = L"button14";
-			this->button14->Size = System::Drawing::Size(44, 41);
-			this->button14->TabIndex = 14;
-			this->button14->UseVisualStyleBackColor = false;
+			this->GroupMembers->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
+			this->GroupMembers->Location = System::Drawing::Point(859, 68);
+			this->GroupMembers->Name = L"GroupMembers";
+			this->GroupMembers->Size = System::Drawing::Size(0, 0);
+			this->GroupMembers->TabIndex = 9;
 			// 
 			// LoggedIn
 			// 
@@ -1243,6 +924,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			// 
 			// Messages
 			// 
+			this->Messages->Controls->Add(this->RecPn);
 			this->Messages->Controls->Add(this->emojeList);
 			this->Messages->Controls->Add(this->flowLayoutPanel2);
 			this->Messages->Dock = System::Windows::Forms::DockStyle::Fill;
@@ -1250,6 +932,28 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->Messages->Name = L"Messages";
 			this->Messages->Size = System::Drawing::Size(991, 543);
 			this->Messages->TabIndex = 2;
+			// 
+			// RecPn
+			// 
+			this->RecPn->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->RecPn->Controls->Add(this->RecLbl);
+			this->RecPn->Location = System::Drawing::Point(817, 516);
+			this->RecPn->Name = L"RecPn";
+			this->RecPn->Size = System::Drawing::Size(0, 0);
+			this->RecPn->TabIndex = 19;
+			// 
+			// RecLbl
+			// 
+			this->RecLbl->AutoSize = true;
+			this->RecLbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->RecLbl->ForeColor = System::Drawing::Color::White;
+			this->RecLbl->Location = System::Drawing::Point(11, 4);
+			this->RecLbl->Name = L"RecLbl";
+			this->RecLbl->Size = System::Drawing::Size(97, 20);
+			this->RecLbl->TabIndex = 0;
+			this->RecLbl->Text = L"Recording...";
 			// 
 			// emojeList
 			// 
@@ -1279,8 +983,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			// 
 			this->TextBottom->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->TextBottom->Controls->Add(this->button17);
-			this->TextBottom->Controls->Add(this->button16);
+			this->TextBottom->Controls->Add(this->voice_rec);
 			this->TextBottom->Controls->Add(this->richTextBox7);
 			this->TextBottom->Controls->Add(this->panel2);
 			this->TextBottom->Dock = System::Windows::Forms::DockStyle::Bottom;
@@ -1289,38 +992,22 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->TextBottom->Size = System::Drawing::Size(991, 88);
 			this->TextBottom->TabIndex = 1;
 			// 
-			// button17
+			// voice_rec
 			// 
-			this->button17->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button17->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+			this->voice_rec->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->voice_rec->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button17->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button17.BackgroundImage")));
-			this->button17->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button17->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button17->FlatAppearance->BorderSize = 0;
-			this->button17->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button17->Location = System::Drawing::Point(148, 17);
-			this->button17->Name = L"button17";
-			this->button17->Size = System::Drawing::Size(67, 54);
-			this->button17->TabIndex = 17;
-			this->button17->UseVisualStyleBackColor = false;
-			// 
-			// button16
-			// 
-			this->button16->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
-			this->button16->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
-				static_cast<System::Int32>(static_cast<System::Byte>(47)));
-			this->button16->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button16.BackgroundImage")));
-			this->button16->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			this->button16->Cursor = System::Windows::Forms::Cursors::Hand;
-			this->button16->FlatAppearance->BorderSize = 0;
-			this->button16->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button16->Location = System::Drawing::Point(36, 17);
-			this->button16->Name = L"button16";
-			this->button16->Size = System::Drawing::Size(67, 54);
-			this->button16->TabIndex = 16;
-			this->button16->UseVisualStyleBackColor = false;
-			this->button16->Click += gcnew System::EventHandler(this, &MyForm::button16_Click);
+			this->voice_rec->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"voice_rec.BackgroundImage")));
+			this->voice_rec->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->voice_rec->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->voice_rec->FlatAppearance->BorderSize = 0;
+			this->voice_rec->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->voice_rec->Location = System::Drawing::Point(875, 17);
+			this->voice_rec->Name = L"voice_rec";
+			this->voice_rec->Size = System::Drawing::Size(67, 54);
+			this->voice_rec->TabIndex = 18;
+			this->voice_rec->UseVisualStyleBackColor = false;
+			this->voice_rec->Click += gcnew System::EventHandler(this, &MyForm::record_voice);
 			// 
 			// richTextBox7
 			// 
@@ -1331,10 +1018,10 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->richTextBox7->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->richTextBox7->ForeColor = System::Drawing::Color::White;
-			this->richTextBox7->Location = System::Drawing::Point(338, 17);
+			this->richTextBox7->Location = System::Drawing::Point(54, 17);
 			this->richTextBox7->Name = L"richTextBox7";
 			this->richTextBox7->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
-			this->richTextBox7->Size = System::Drawing::Size(635, 51);
+			this->richTextBox7->Size = System::Drawing::Size(782, 51);
 			this->richTextBox7->TabIndex = 0;
 			this->richTextBox7->Text = L"Enter Your message";
 			this->richTextBox7->ZoomFactor = 1.5F;
@@ -1355,6 +1042,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			// 
 			this->ChatTopBar->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->ChatTopBar->Controls->Add(this->AddGroupMembers);
 			this->ChatTopBar->Controls->Add(this->seenlast);
 			this->ChatTopBar->Controls->Add(this->ProfilePic);
 			this->ChatTopBar->Controls->Add(this->button1);
@@ -1364,6 +1052,24 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->ChatTopBar->Name = L"ChatTopBar";
 			this->ChatTopBar->Size = System::Drawing::Size(991, 66);
 			this->ChatTopBar->TabIndex = 0;
+			// 
+			// AddGroupMembers
+			// 
+			this->AddGroupMembers->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->AddGroupMembers->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->AddGroupMembers->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"AddGroupMembers.BackgroundImage")));
+			this->AddGroupMembers->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->AddGroupMembers->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->AddGroupMembers->FlatAppearance->BorderSize = 0;
+			this->AddGroupMembers->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->AddGroupMembers->Location = System::Drawing::Point(832, 11);
+			this->AddGroupMembers->Name = L"AddGroupMembers";
+			this->AddGroupMembers->Size = System::Drawing::Size(71, 45);
+			this->AddGroupMembers->TabIndex = 20;
+			this->AddGroupMembers->UseVisualStyleBackColor = false;
+			this->AddGroupMembers->Visible = false;
+			this->AddGroupMembers->Click += gcnew System::EventHandler(this, &MyForm::AddGroupMembers_Click);
 			// 
 			// seenlast
 			// 
@@ -1882,6 +1588,361 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->label1->TabIndex = 0;
 			this->label1->Text = L"Description :";
 			// 
+			// StoryPanel
+			// 
+			this->StoryPanel->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->StoryPanel->Controls->Add(this->StoriesContainer);
+			this->StoryPanel->Controls->Add(this->StatusList);
+			this->StoryPanel->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->StoryPanel->Location = System::Drawing::Point(0, 0);
+			this->StoryPanel->Name = L"StoryPanel";
+			this->StoryPanel->Size = System::Drawing::Size(1230, 697);
+			this->StoryPanel->TabIndex = 8;
+			// 
+			// StoriesContainer
+			// 
+			this->StoriesContainer->Controls->Add(this->button18);
+			this->StoriesContainer->Controls->Add(this->panel4);
+			this->StoriesContainer->Controls->Add(this->button15);
+			this->StoriesContainer->Controls->Add(this->PicStory);
+			this->StoriesContainer->Controls->Add(this->storyText);
+			this->StoriesContainer->Controls->Add(this->storySeen);
+			this->StoriesContainer->Dock = System::Windows::Forms::DockStyle::Fill;
+			this->StoriesContainer->Location = System::Drawing::Point(295, 0);
+			this->StoriesContainer->Name = L"StoriesContainer";
+			this->StoriesContainer->Size = System::Drawing::Size(935, 697);
+			this->StoriesContainer->TabIndex = 13;
+			// 
+			// button18
+			// 
+			this->button18->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->button18->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->button18->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button18.BackgroundImage")));
+			this->button18->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->button18->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->button18->FlatAppearance->BorderSize = 0;
+			this->button18->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button18->Location = System::Drawing::Point(409, 635);
+			this->button18->Name = L"button18";
+			this->button18->Size = System::Drawing::Size(116, 42);
+			this->button18->TabIndex = 16;
+			this->button18->UseVisualStyleBackColor = false;
+			this->button18->Click += gcnew System::EventHandler(this, &MyForm::button18_Click);
+			// 
+			// panel4
+			// 
+			this->panel4->Controls->Add(this->StoryTime);
+			this->panel4->Controls->Add(this->pictureBox3);
+			this->panel4->Controls->Add(this->richTextBox9);
+			this->panel4->Controls->Add(this->pictureBox1);
+			this->panel4->Controls->Add(this->pictureBox2);
+			this->panel4->Location = System::Drawing::Point(99, 92);
+			this->panel4->Name = L"panel4";
+			this->panel4->Size = System::Drawing::Size(780, 500);
+			this->panel4->TabIndex = 15;
+			// 
+			// StoryTime
+			// 
+			this->StoryTime->AutoSize = true;
+			this->StoryTime->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->StoryTime->ForeColor = System::Drawing::Color::White;
+			this->StoryTime->Location = System::Drawing::Point(68, 43);
+			this->StoryTime->Name = L"StoryTime";
+			this->StoryTime->Size = System::Drawing::Size(0, 29);
+			this->StoryTime->TabIndex = 21;
+			// 
+			// pictureBox3
+			// 
+			this->pictureBox3->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.BackgroundImage")));
+			this->pictureBox3->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->pictureBox3->Location = System::Drawing::Point(3, 225);
+			this->pictureBox3->Name = L"pictureBox3";
+			this->pictureBox3->Size = System::Drawing::Size(62, 51);
+			this->pictureBox3->TabIndex = 20;
+			this->pictureBox3->TabStop = false;
+			this->pictureBox3->Click += gcnew System::EventHandler(this, &MyForm::pictureBox3_Click);
+			// 
+			// richTextBox9
+			// 
+			this->richTextBox9->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->richTextBox9->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->richTextBox9->ForeColor = System::Drawing::Color::White;
+			this->richTextBox9->ImeMode = System::Windows::Forms::ImeMode::KatakanaHalf;
+			this->richTextBox9->Location = System::Drawing::Point(158, 127);
+			this->richTextBox9->MaxLength = 200;
+			this->richTextBox9->Name = L"richTextBox9";
+			this->richTextBox9->ReadOnly = true;
+			this->richTextBox9->Size = System::Drawing::Size(480, 247);
+			this->richTextBox9->TabIndex = 19;
+			this->richTextBox9->Text = L"";
+			// 
+			// pictureBox1
+			// 
+			this->pictureBox1->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->pictureBox1->Location = System::Drawing::Point(161, 126);
+			this->pictureBox1->Name = L"pictureBox1";
+			this->pictureBox1->Size = System::Drawing::Size(0, 0);
+			this->pictureBox1->TabIndex = 18;
+			this->pictureBox1->TabStop = false;
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.BackgroundImage")));
+			this->pictureBox2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->pictureBox2->Location = System::Drawing::Point(715, 225);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(62, 51);
+			this->pictureBox2->TabIndex = 16;
+			this->pictureBox2->TabStop = false;
+			this->pictureBox2->Click += gcnew System::EventHandler(this, &MyForm::pictureBox2_Click);
+			// 
+			// button15
+			// 
+			this->button15->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->button15->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->button15->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"button15.BackgroundImage")));
+			this->button15->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->button15->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->button15->FlatAppearance->BorderSize = 0;
+			this->button15->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button15->Location = System::Drawing::Point(866, 21);
+			this->button15->Name = L"button15";
+			this->button15->Size = System::Drawing::Size(62, 26);
+			this->button15->TabIndex = 14;
+			this->button15->UseVisualStyleBackColor = false;
+			this->button15->Click += gcnew System::EventHandler(this, &MyForm::button15_Click);
+			// 
+			// PicStory
+			// 
+			this->PicStory->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->PicStory->Controls->Add(this->StoryPic);
+			this->PicStory->Controls->Add(this->button9);
+			this->PicStory->Controls->Add(this->button10);
+			this->PicStory->Location = System::Drawing::Point(66, 111);
+			this->PicStory->Name = L"PicStory";
+			this->PicStory->Size = System::Drawing::Size(0, 0);
+			this->PicStory->TabIndex = 1;
+			// 
+			// StoryPic
+			// 
+			this->StoryPic->Anchor = System::Windows::Forms::AnchorStyles::None;
+			this->StoryPic->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->StoryPic->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"StoryPic.BackgroundImage")));
+			this->StoryPic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->StoryPic->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->StoryPic->FlatAppearance->BorderSize = 0;
+			this->StoryPic->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->StoryPic->Location = System::Drawing::Point(-91, -161);
+			this->StoryPic->Name = L"StoryPic";
+			this->StoryPic->Size = System::Drawing::Size(183, 112);
+			this->StoryPic->TabIndex = 19;
+			this->StoryPic->UseVisualStyleBackColor = false;
+			// 
+			// button9
+			// 
+			this->button9->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button9->FlatAppearance->BorderSize = 0;
+			this->button9->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button9->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button9->ForeColor = System::Drawing::Color::White;
+			this->button9->Location = System::Drawing::Point(317, 270);
+			this->button9->Name = L"button9";
+			this->button9->Size = System::Drawing::Size(123, 48);
+			this->button9->TabIndex = 18;
+			this->button9->Text = L"Add";
+			this->button9->UseVisualStyleBackColor = false;
+			this->button9->Click += gcnew System::EventHandler(this, &MyForm::button9_Click);
+			// 
+			// button10
+			// 
+			this->button10->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button10->FlatAppearance->BorderSize = 0;
+			this->button10->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button10->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button10->ForeColor = System::Drawing::Color::White;
+			this->button10->Location = System::Drawing::Point(208, 188);
+			this->button10->Name = L"button10";
+			this->button10->Size = System::Drawing::Size(341, 48);
+			this->button10->TabIndex = 17;
+			this->button10->Text = L"Choose Picture";
+			this->button10->UseVisualStyleBackColor = false;
+			this->button10->Click += gcnew System::EventHandler(this, &MyForm::button10_Click);
+			// 
+			// storyText
+			// 
+			this->storyText->Controls->Add(this->label8);
+			this->storyText->Controls->Add(this->button11);
+			this->storyText->Controls->Add(this->richTextBox8);
+			this->storyText->Location = System::Drawing::Point(66, 84);
+			this->storyText->Name = L"storyText";
+			this->storyText->Size = System::Drawing::Size(0, 0);
+			this->storyText->TabIndex = 0;
+			// 
+			// label8
+			// 
+			this->label8->AutoSize = true;
+			this->label8->Font = (gcnew System::Drawing::Font(L"Monotype Corsiva", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label8->ForeColor = System::Drawing::Color::White;
+			this->label8->Location = System::Drawing::Point(257, 40);
+			this->label8->Name = L"label8";
+			this->label8->Size = System::Drawing::Size(243, 41);
+			this->label8->TabIndex = 16;
+			this->label8->Text = L"Write Your Story";
+			this->label8->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// button11
+			// 
+			this->button11->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button11->FlatAppearance->BorderSize = 0;
+			this->button11->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 16, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->button11->ForeColor = System::Drawing::Color::White;
+			this->button11->Location = System::Drawing::Point(317, 380);
+			this->button11->Name = L"button11";
+			this->button11->Size = System::Drawing::Size(123, 48);
+			this->button11->TabIndex = 7;
+			this->button11->Text = L"Add";
+			this->button11->UseVisualStyleBackColor = false;
+			this->button11->Click += gcnew System::EventHandler(this, &MyForm::button11_Click);
+			// 
+			// richTextBox8
+			// 
+			this->richTextBox8->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->richTextBox8->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->richTextBox8->ForeColor = System::Drawing::Color::White;
+			this->richTextBox8->Location = System::Drawing::Point(22, 106);
+			this->richTextBox8->MaxLength = 200;
+			this->richTextBox8->Name = L"richTextBox8";
+			this->richTextBox8->Size = System::Drawing::Size(705, 240);
+			this->richTextBox8->TabIndex = 2;
+			this->richTextBox8->Text = L"";
+			// 
+			// storySeen
+			// 
+			this->storySeen->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->storySeen->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
+			this->storySeen->Location = System::Drawing::Point(264, 97);
+			this->storySeen->Name = L"storySeen";
+			this->storySeen->Size = System::Drawing::Size(406, 502);
+			this->storySeen->TabIndex = 17;
+			// 
+			// StatusList
+			// 
+			this->StatusList->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->StatusList->Controls->Add(this->label20);
+			this->StatusList->Controls->Add(this->StoriesPn);
+			this->StatusList->Controls->Add(this->userStories);
+			this->StatusList->Controls->Add(this->button12);
+			this->StatusList->Controls->Add(this->button13);
+			this->StatusList->Controls->Add(this->button14);
+			this->StatusList->Dock = System::Windows::Forms::DockStyle::Left;
+			this->StatusList->Location = System::Drawing::Point(0, 0);
+			this->StatusList->Name = L"StatusList";
+			this->StatusList->Size = System::Drawing::Size(295, 697);
+			this->StatusList->TabIndex = 12;
+			// 
+			// label20
+			// 
+			this->label20->AutoSize = true;
+			this->label20->Font = (gcnew System::Drawing::Font(L"Monotype Corsiva", 20, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label20->ForeColor = System::Drawing::Color::White;
+			this->label20->Location = System::Drawing::Point(94, 88);
+			this->label20->Name = L"label20";
+			this->label20->Size = System::Drawing::Size(107, 41);
+			this->label20->TabIndex = 23;
+			this->label20->Text = L"Stories";
+			this->label20->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
+			// StoriesPn
+			// 
+			this->StoriesPn->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
+			this->StoriesPn->Location = System::Drawing::Point(3, 145);
+			this->StoriesPn->Name = L"StoriesPn";
+			this->StoriesPn->Size = System::Drawing::Size(289, 552);
+			this->StoriesPn->TabIndex = 23;
+			// 
+			// userStories
+			// 
+			this->userStories->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(51)), static_cast<System::Int32>(static_cast<System::Byte>(77)),
+				static_cast<System::Int32>(static_cast<System::Byte>(77)));
+			this->userStories->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->userStories->Location = System::Drawing::Point(2, 7);
+			this->userStories->Name = L"userStories";
+			this->userStories->Padding = System::Windows::Forms::Padding(20, 0, 0, 0);
+			this->userStories->Size = System::Drawing::Size(290, 66);
+			this->userStories->TabIndex = 21;
+			this->userStories->Username = L"My Stories";
+			this->userStories->Click += gcnew System::EventHandler(this, &MyForm::userStories_Click);
+			// 
+			// button12
+			// 
+			this->button12->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->button12->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button12->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->button12->Enabled = false;
+			this->button12->FlatAppearance->BorderSize = 0;
+			this->button12->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button12->Location = System::Drawing::Point(3, 121);
+			this->button12->Name = L"button12";
+			this->button12->Size = System::Drawing::Size(289, 44);
+			this->button12->TabIndex = 20;
+			this->button12->UseVisualStyleBackColor = false;
+			// 
+			// button13
+			// 
+			this->button13->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->button13->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button13->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->button13->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->button13->FlatAppearance->BorderSize = 0;
+			this->button13->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button13->Location = System::Drawing::Point(157, 71);
+			this->button13->Name = L"button13";
+			this->button13->Size = System::Drawing::Size(44, 41);
+			this->button13->TabIndex = 18;
+			this->button13->UseVisualStyleBackColor = false;
+			// 
+			// button14
+			// 
+			this->button14->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
+			this->button14->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
+				static_cast<System::Int32>(static_cast<System::Byte>(47)));
+			this->button14->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+			this->button14->Cursor = System::Windows::Forms::Cursors::Hand;
+			this->button14->FlatAppearance->BorderSize = 0;
+			this->button14->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button14->Location = System::Drawing::Point(9, 72);
+			this->button14->Name = L"button14";
+			this->button14->Size = System::Drawing::Size(44, 41);
+			this->button14->TabIndex = 14;
+			this->button14->UseVisualStyleBackColor = false;
+			// 
 			// UnLogged
 			// 
 			this->UnLogged->Controls->Add(this->UlChatContainer);
@@ -2064,7 +2125,9 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->richTextBox1->Size = System::Drawing::Size(225, 30);
 			this->richTextBox1->TabIndex = 13;
 			this->richTextBox1->Text = L"+20";
+			this->LoginPhone->SetToolTip(this->richTextBox1, L"Only Numbers Allowed");
 			this->richTextBox1->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox1_Enter);
+			this->richTextBox1->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::richTextBox1_KeyDown);
 			this->richTextBox1->Leave += gcnew System::EventHandler(this, &MyForm::richTextBox1_Leave);
 			// 
 			// label13
@@ -2173,6 +2236,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->richTextBox5->TabIndex = 6;
 			this->richTextBox5->Text = L"Last Name";
 			this->richTextBox5->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox5_Enter);
+			this->richTextBox5->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::richTextBox6_KeyDown);
 			this->richTextBox5->Leave += gcnew System::EventHandler(this, &MyForm::richTextBox5_Leave);
 			// 
 			// richTextBox6
@@ -2185,6 +2249,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->richTextBox6->TabIndex = 5;
 			this->richTextBox6->Text = L"First Name";
 			this->richTextBox6->Enter += gcnew System::EventHandler(this, &MyForm::richTextBox6_Enter);
+			this->richTextBox6->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::richTextBox6_KeyDown);
 			this->richTextBox6->Leave += gcnew System::EventHandler(this, &MyForm::richTextBox6_Leave);
 			// 
 			// label15
@@ -2508,6 +2573,22 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->TitleBar->ResumeLayout(false);
 			this->TitleBar->PerformLayout();
 			this->MainContainer->ResumeLayout(false);
+			this->LoggedIn->ResumeLayout(false);
+			this->ChatContainer->ResumeLayout(false);
+			this->Messages->ResumeLayout(false);
+			this->RecPn->ResumeLayout(false);
+			this->RecPn->PerformLayout();
+			this->TextBottom->ResumeLayout(false);
+			this->ChatTopBar->ResumeLayout(false);
+			this->ChatTopBar->PerformLayout();
+			this->ChatBar->ResumeLayout(false);
+			this->MoreList->ResumeLayout(false);
+			this->MoreList->PerformLayout();
+			this->userSettings->ResumeLayout(false);
+			this->UserProfile->ResumeLayout(false);
+			this->UserProfile->PerformLayout();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->StoryPanel->ResumeLayout(false);
 			this->StoriesContainer->ResumeLayout(false);
 			this->panel4->ResumeLayout(false);
@@ -2520,20 +2601,6 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->storyText->PerformLayout();
 			this->StatusList->ResumeLayout(false);
 			this->StatusList->PerformLayout();
-			this->LoggedIn->ResumeLayout(false);
-			this->ChatContainer->ResumeLayout(false);
-			this->Messages->ResumeLayout(false);
-			this->TextBottom->ResumeLayout(false);
-			this->ChatTopBar->ResumeLayout(false);
-			this->ChatTopBar->PerformLayout();
-			this->ChatBar->ResumeLayout(false);
-			this->MoreList->ResumeLayout(false);
-			this->MoreList->PerformLayout();
-			this->userSettings->ResumeLayout(false);
-			this->UserProfile->ResumeLayout(false);
-			this->UserProfile->PerformLayout();
-			this->groupBox1->ResumeLayout(false);
-			this->groupBox1->PerformLayout();
 			this->UnLogged->ResumeLayout(false);
 			this->UlChatContainer->ResumeLayout(false);
 			this->panel12->ResumeLayout(false);
@@ -2556,6 +2623,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			this->ResumeLayout(false);
 
 		}
+
 #pragma endregion
 
 	private: int msg_user_id;
@@ -2565,12 +2633,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 	private: int userLoggedIn;
 	private: bool emoj;
 	private: String^ userLoggedInName;
+	private: vector<int> seenlist;
 	private: String^ userLoggedInPic;
 	private: vector<User^> users;
 	private: vector<UserChatRoom^> user_chatroom;
 	private: vector<Group^> groupChats;
 	private: vector<int> contacts;
-	//private: vector<vector<int>> seenStories;
 	private: vector<ChatRoom^> chat;
 	private: vector<ChatInfo^> info;
 	private: vector<Profile^> profiles;
@@ -2608,11 +2676,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			for each(User^ user in usersRuntime){
 				if (find(users.begin(), users.end(), user) != users.end())
 					continue;
-				cmd->CommandText = "INSERT INTO User(Password, Phone_Number, First_Name, Last_Name) VALUES(@pass, @phone, @first, @last)";
+				cmd->CommandText = "INSERT INTO User(Password, Phone_Number, First_Name, Last_Name, Last_Logged) VALUES(@pass, @phone, @first, @last, @lg)";
 				cmd->Parameters->AddWithValue("@pass", user->getPass());
 				cmd->Parameters->AddWithValue("@phone", user->getPhone());
 				cmd->Parameters->AddWithValue("@first", user->getFirst());
 				cmd->Parameters->AddWithValue("@last", user->getLast());
+				cmd->Parameters->AddWithValue("@lg", user->getLogged());
 				cmd->ExecuteNonQuery();
 			}
 			db->Close();
@@ -2625,7 +2694,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			for each(Story^ story in storiesRuntime){
 				if (find(stories.begin(), stories.end(), story) != stories.end())
 					continue;
-				cmd->CommandText = "INSERT INTO Story VALUES(@time, @image, @text, @id, @real)";
+				cmd->CommandText = "INSERT INTO Story(Time_Of_Story, Image, Story_Text, User_ID_FK, Real_Time) VALUES(@time, @image, @text, @id, @real)";
 				cmd->Parameters->AddWithValue("@time", story->getTime());
 				cmd->Parameters->AddWithValue("@image", story->getImage());
 				cmd->Parameters->AddWithValue("@text", story->getText());
@@ -2667,6 +2736,18 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			db->Close();
 		}
 	}
+	//load seen list
+	private: void loadSeenList(int story) {
+		db->Open();
+		cmd->CommandText = "SELECT User_ID_FK, Time FROM StorySeen WHERE Story_ID_FK=@story";
+		cmd->Parameters->AddWithValue("@story", story);
+		SQLiteDataReader^ dr = cmd->ExecuteReader();
+		while (dr->Read()) {
+			seenlist.push_back(dr->GetInt32(0));
+		}
+		dr->Close();
+		db->Close();
+	}
 	//load chats
 	private: void loadChatRooms() {
 		db->Open();
@@ -2688,11 +2769,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		SQLiteDataReader^ dr = cmd->ExecuteReader();
 		while (dr->Read()) {
 			Story^ story = gcnew Story;
-			story->setTime(dr->GetString(0));
-			story->setImage(dr->GetString(1));
-			story->setText(dr->GetString(2));
-			story->setID(dr->GetInt32(3));
-			story->setrealTime(System::DateTime::Parse(dr->GetString(4)));
+			story->setStoryID(dr->GetInt32(0));
+			story->setTime(dr->GetString(1));
+			story->setImage(dr->GetString(2));
+			story->setText(dr->GetString(3));
+			story->setID(dr->GetInt32(4));
+			story->setrealTime(System::DateTime::Parse(dr->GetString(5)));
 			stories.push_back(story);
 		}
 		storiesRuntime.assign(stories.begin(), stories.end());
@@ -2724,13 +2806,14 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			user->setPhone(dr->GetString(2));
 			user->setLast(dr->GetString(4));
 			user->setFirst(dr->GetString(3));
+			user->setLogged(dr->GetInt32(5));
 			users.push_back(user);
 		}
 		usersRuntime.assign(users.begin(), users.end());
 		dr->Close();
 		db->Close();
 	}
-	//load users from database
+	//load users profile from database
 	private: void loadProfilesFromDB() {
 		db->Open();
 		cmd->CommandText = "SELECT * FROM User_Profile";
@@ -2761,6 +2844,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			message->setMsg(dr->GetString(1));
 			message->setChatID(dr->GetInt32(2));
 			message->setUserID(dr->GetInt32(3));
+			message->setAudio(dr->GetString(4));
 			msgsRuntime.push_back(message);
 		};
 		dr->Close();
@@ -2842,6 +2926,68 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		loaduserGroupFromDB();
 		loadstories();
 		loaduserchatFromDB();
+		for (int i = 0; i < usersRuntime.size(); i++) {
+			if (usersRuntime[i]->getLogged() == 1) {
+				if (profilesRuntime[i]->getLogged() == 0) {
+					if (profilesRuntime[i]->getVis() == 0)
+						radioButton2->Checked = true;
+					userLoggedIn = i;
+					this->contacts.clear();
+					this->loadContacts(usersRuntime[i]->getID());
+					for (int j = 0; j < contacts.size(); j++) {
+						if (contacts.size() == 0)
+							continue;
+						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+						Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+						contact->Username = usersRuntime[contacts[j] - 1]->getFirst() + " " + usersRuntime[contacts[j] - 1]->getLast();
+						if (profilesRuntime[contacts[j] - 1]->getPhoto() == "" || profilesRuntime[contacts[j] - 1]->getVis() == 0)
+							contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+						else
+							contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[contacts[j] - 1]->getPhoto());
+						contact->userID->Text = usersRuntime[contacts[j] - 1]->getID().ToString();
+						for each (UserChatRoom ^ uchat in user_chatroom) {
+							if (uchat->getUserID() == usersRuntime[userLoggedIn]->getID() && uchat->getTaken() == 0) {
+								contact->chatID->Text = uchat->getCHID().ToString();
+								contact->chatType->Text = chat[uchat->getCHID() - 1]->getCHType().ToString();
+								uchat->setTaken(1);
+								break;
+							}
+						}
+						contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
+						flowLayoutPanel1->Controls->Add(contact);
+						profilesRuntime[i]->setLogged(1);
+					}
+					for (int k = 0; k < groupChats.size(); k++) {
+						for each (ChatInfo ^ info in infoRuntime) {
+							if (groupChats[k]->getID() == info->getID()) {
+								if (info->getUserID() == usersRuntime[userLoggedIn]->getID()) {
+									Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+									contact->Username = groupChats[k]->getName();
+									if (groupChats[k]->getPic() == "")
+										contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+									else
+										contact->pictureBox9->BackgroundImage = gcnew Bitmap(groupChats[k]->getPic());
+									contact->chatID->Text = groupChats[k]->getID().ToString();
+									contact->Click += gcnew System::EventHandler(this, &MyForm::Group_Click);
+									flowLayoutPanel1->Controls->Add(contact);
+								}
+							}
+						}
+					}
+					UserName->Text = usersRuntime[i]->getFirst() + " " + usersRuntime[i]->getLast();
+					Description->Text = profilesRuntime[i]->getDesc();
+					if (profilesRuntime[i]->getPhoto() != "") {
+						userLoggedInPic = profilesRuntime[i]->getPhoto();
+						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+						ProfilePic->BackgroundImage = gcnew Bitmap(profilesRuntime[i]->getPhoto());
+					}
+					userLoggedInName = UserName->Text;
+					LoggedIn->BringToFront();
+					UserProfile->BringToFront();
+					return;
+				}
+			}
+		}
 		UnLogged->BringToFront();
 	}
 	//options menu
@@ -2855,12 +3001,15 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			MoreList->Height = 170;
 		}
 	}
+	private: int ContactCLicked;
 	//click contact card
 	private: System::Void Contact_Click(System::Object^ sender, System::EventArgs^ e) {
+		ContactCLicked = 1;
 		flowLayoutPanel2->Controls->Clear();
 		LoggedIn->BringToFront();
 		if(sender != nullptr){
 			Card::MyUserControl^ tempCard = dynamic_cast<Card::MyUserControl^>(sender);
+			AddGroupMembers->Visible = false;
 			if(tempCard->Username != UserName->Text)
 				UserName->Text = tempCard->Username;
 			if(ProfilePic->BackgroundImage != tempCard->pictureBox9->BackgroundImage){
@@ -2872,8 +3021,10 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			db->Open();
 			for each (ChatInfo ^ inf in infoRuntime) {
 				if (inf->getUserID() == msg_user_id) {
-					if(inf->getLast() != "0")
+					if (inf->getLast() != "0")
 						seenlast->Text = "Last Seen: " + inf->getLast();
+					else
+						seenlast->Text = "";
 					DateTime^ local = DateTime::Now;
 					cmd->CommandText = "UPDATE ChatRoomInfo set Last_Opened=@time WHERE User_ID_FK=@id";
 					cmd->Parameters->AddWithValue("@time", local);
@@ -2890,48 +3041,103 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		for each (msg ^ message in msgsRuntime) {
 
 			if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
-				MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-				msgBox->timelbl->Text = statusRuntime[statusRuntime.size()-1]->getTime();
-				msgBox->mssg->Text = message->getMsg();
-				msgBox->seenicon->Visible = true;
-				msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
-				msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-				msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-				msgBox->msg_id->Text = message->getMsgID().ToString();
-				for each (msgStatus ^ state in statusRuntime) {
-					if (state->getMsg_ID() == message->getMsgID()) {
-						if (state->getSeen() == 1) {
-							msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+				if(message->getRec() == ""){
+					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+					msgBox->timelbl->Text = statusRuntime[message->getMsgID() -1]->getTime();
+					msgBox->mssg->Text = message->getMsg();
+					msgBox->seenicon->Visible = true;
+					msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
+					msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+					msgBox->msg_id->Text = message->getMsgID().ToString();
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							if (state->getSeen() == 1) {
+								msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+							}
 						}
 					}
+					if (msgBox->Text->Length <= richTextBox7->Width)
+						richTextBox7->Multiline = false;
+					else
+						richTextBox7->Multiline = true;
+					flowLayoutPanel2->Controls->Add(msgBox);
+					richTextBox7->Clear();
 				}
-				if (msgBox->Text->Length <= richTextBox7->Width)
-					richTextBox7->Multiline = false;
-				else
-					richTextBox7->Multiline = true;
-				flowLayoutPanel2->Controls->Add(msgBox);
-				richTextBox7->Clear();
+				else {
+					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					Rec->seenicon->Visible = true;
+					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+					Rec->msg_id->Text = message->getMsgID().ToString();
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							if (state->getSeen() == 1) {
+								Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+							}
+						}
+					}
+					flowLayoutPanel2->Controls->Add(Rec);
+
+					db->Open();
+					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+					SQLiteDataReader^ dr = cmd->ExecuteReader();
+					if (dr->Read()) {
+						Rec->rec_path->Text = dr->GetString(0);
+					}
+					dr->Close();
+					db->Close();
+				}
 			}
 			else if (message->getUserIDFK() == msg_user_id) {
-				MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-				for each (msgStatus ^ state in statusRuntime) {
-					if (state->getMsg_ID() == message->getMsgID()) {
-						state->setSeen(1);
+				if(message->getRec() == ""){
+					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							state->setSeen(1);
+						}
 					}
+					msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					msgBox->mssg->Text = message->getMsg();
+					msgBox->user->Text = usersRuntime[msg_user_id-1]->getFirst();
+					msgBox->seenicon->Visible = false;
+					msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+					msgBox->msg_id->Text = message->getMsgID().ToString();
+					if (msgBox->Text->Length <= richTextBox7->Width)
+						richTextBox7->Multiline = false;
+					else
+						richTextBox7->Multiline = true;
+					flowLayoutPanel2->Controls->Add(msgBox);
+					richTextBox7->Clear();
 				}
-				msgBox->timelbl->Text = statusRuntime[statusRuntime.size()-1]->getTime();
-				msgBox->mssg->Text = message->getMsg();
-				msgBox->user->Text = usersRuntime[msg_user_id-1]->getFirst();
-				msgBox->seenicon->Visible = false;
-				msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-				msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-				msgBox->msg_id->Text = message->getMsgID().ToString();
-				if (msgBox->Text->Length <= richTextBox7->Width)
-					richTextBox7->Multiline = false;
-				else
-					richTextBox7->Multiline = true;
-				flowLayoutPanel2->Controls->Add(msgBox);
-				richTextBox7->Clear();
+				else {
+					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					Rec->seenicon->Visible = true;
+					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+					Rec->msg_id->Text = message->getMsgID().ToString();
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							if (state->getSeen() == 1) {
+								Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+							}
+						}
+					}
+					flowLayoutPanel2->Controls->Add(Rec);
+					db->Open();
+					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+					SQLiteDataReader^ dr = cmd->ExecuteReader();
+					if(dr->Read()) {
+						Rec->rec_path->Text = dr->GetString(0);
+					}
+					dr->Close();
+					db->Close();
+				}
 			}
 		}
 	}
@@ -2993,6 +3199,10 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			}
 		}
 		db->Close();
+		for each (User ^ us in usersRuntime) {
+			if (us->getPhone() == frm2->getContact())
+				return;
+		}
 		MessageBox::Show("Contact Doesn't Exist!");
 	}
 
@@ -3023,12 +3233,20 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		richTextBox3->Clear();
 		MessageBox::Show("Account Created Successfully!");
  	}
-	private: int seenCount;
+	private: System::Void setLogged(int id, int lg) {
+		db->Open();
+		cmd->CommandText = "UPDATE User set Last_Logged=@lg where User_ID=@id";
+		cmd->Parameters->AddWithValue("@id", id);
+		cmd->Parameters->AddWithValue("@lg", lg);
+		cmd->ExecuteNonQuery();
+		db->Close();
+	}
 	//login button
 	private: System::Void Login_btn_Click_1(System::Object^ sender, System::EventArgs^ e) {
 		for(int i = 0; i < usersRuntime.size(); i++) {
 			if (usersRuntime[i]->getPhone() == richTextBox1->Text && usersRuntime[i]->getPass() == richTextBox2->Text) {
 				if(profilesRuntime[i]->getLogged() == 0){
+					setLogged(usersRuntime[i]->getID(), 1);
 					if (profilesRuntime[i]->getVis() == 0)
 						radioButton2->Checked = true;
 					userLoggedIn = i;
@@ -3096,6 +3314,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		String^ zone;
 		String^ Minutes;
 		DateTime localDate = DateTime::Now;
+		Hour = localDate.Hour;
 		Minutes = localDate.Minute.ToString();
 		Seconds = localDate.Second;
 		if (localDate.Hour == 0) {
@@ -3131,6 +3350,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		storeProfilesIntoDB();
 		storestoriesIntoDB();
 		Lastseen();
+		setLogged(usersRuntime[userLoggedIn]->getID(), 0);
 		Application::Restart();
 		UnLogged->BringToFront();
 	}
@@ -3230,6 +3450,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			ProfilePic->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\account.png");
 		else
 			ProfilePic->BackgroundImage = gcnew Bitmap(userLoggedInPic);
+		MoreList->Width = 0;
+		MoreList->Height = 0;
 		UserProfile->BringToFront();
 	}
 	//change user profile picture
@@ -3247,6 +3469,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 				ProfilePic->BackgroundImage = gcnew Bitmap(open->FileName);
 				button6->Text = "Save Photo To Profile";
 				label3->Text = open->FileName->ToString();
+				userLoggedInPic = open->FileName;
 				isSaved = true;
 			}
 		}
@@ -3306,6 +3529,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		if (e->KeyCode == Keys::Enter && richTextBox7->Text != "") {
 			MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
 			DateTime localDate = DateTime::Now;
+			Hour = localDate.Hour;
 			Minutes = localDate.Minute.ToString();
 			Seconds = localDate.Second;
 			if (localDate.Hour == 0){
@@ -3359,11 +3583,12 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			stat->setSeen(0);
 			statusRuntime.push_back(stat);
 			db->Open();
-			cmd->CommandText = "INSERT INTO Message VALUES(@msgid, @text, @chatID, @userID)";
+			cmd->CommandText = "INSERT INTO Message VALUES(@msgid, @text, @chatID, @userID, @rec)";
 			cmd->Parameters->AddWithValue("@msgid", message->getMsgID());
 			cmd->Parameters->AddWithValue("@text", message->getMsg());
 			cmd->Parameters->AddWithValue("@userID", message->getUserIDFK());
 			cmd->Parameters->AddWithValue("@chatID", message->getChatID());
+			cmd->Parameters->AddWithValue("@rec", "");
 			cmd->ExecuteNonQuery();
 			cmd->CommandText = "INSERT INTO Status VALUES(@Date, @Time, @seen, @msgID)";
 			cmd->Parameters->AddWithValue("@Date", stat->getDate());
@@ -3376,36 +3601,73 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 	}
 	//delete messages
 	private: System::Void msg_Menu(System::Object^ sender, System::EventArgs^ e) {
-		MessageComponent::MyUserControl^ temp = 
-			dynamic_cast<MessageComponent::MyUserControl^>(static_cast<System::Windows::Forms::Button^>(sender)->Parent);
-		for each (msgStatus ^ state in statusRuntime) {
-			if (state->getMsg_ID() == System::Int32::Parse(temp->msg_id->Text)) {
-				if (state->getSeen() != 1) {
-					if (flowLayoutPanel2->Controls->Contains(temp))
-						flowLayoutPanel2->Controls->Remove(temp);
-					db->Open();
-					cmd->CommandText = "DELETE FROM Status WHERE Msg_ID_FK=@id";
-					cmd->Parameters->AddWithValue("@id", System::Int32::Parse(temp->msg_id->Text));
-					cmd->ExecuteNonQuery();
-					cmd->CommandText = "DELETE FROM Message WHERE Msg_ID=@id";
-					cmd->Parameters->AddWithValue("@id", System::Int32::Parse(temp->msg_id->Text));
-					cmd->ExecuteNonQuery();
-					db->Close();
-
+		if (static_cast<System::Windows::Forms::Button^>(sender)->Parent->ToString()->Contains("Rec")) {
+			RecAudioComponent::AudioControl^ temp =
+				dynamic_cast<RecAudioComponent::AudioControl^>(static_cast<System::Windows::Forms::Button^>(sender)->Parent);
+			for each (msgStatus ^ state in statusRuntime) {
+				if (state->getMsg_ID() == System::Int32::Parse(temp->msg_id->Text)) {
+					if (state->getSeen() != 1) {
+						if (flowLayoutPanel2->Controls->Contains(temp))
+							flowLayoutPanel2->Controls->Remove(temp);
+						statusRuntime.erase(statusRuntime.begin() + state->getMsg_ID() - 1);
+						msgsRuntime.erase(msgsRuntime.begin() + state->getMsg_ID() - 1);
+						db->Open();
+						cmd->CommandText = "DELETE FROM Status WHERE Msg_ID_FK=@id";
+						cmd->Parameters->AddWithValue("@id", System::Int32::Parse(temp->msg_id->Text));
+						cmd->ExecuteNonQuery();
+						cmd->CommandText = "DELETE FROM Message WHERE Msg_ID=@id";
+						cmd->Parameters->AddWithValue("@id", System::Int32::Parse(temp->msg_id->Text));
+						cmd->ExecuteNonQuery();
+						cmd->CommandText = "UPDATE MessagesCount set count=@cnt WHERE TRUE";
+						cmd->Parameters->AddWithValue("@cnt", msgsRuntime.size()+1);
+						cmd->ExecuteNonQuery();
+						db->Close();
+					}
+					else
+						MessageBox::Show("Message Can't be deleted right now!");
+					return;
 				}
-				else
-					MessageBox::Show("Message Can't be deleted right now!");
-				return;
+			}
+		}
+		else{
+			MessageComponent::MyUserControl^ temp = 
+				dynamic_cast<MessageComponent::MyUserControl^>(static_cast<System::Windows::Forms::Button^>(sender)->Parent);
+			for each (msgStatus ^ state in statusRuntime) {
+				if (state->getMsg_ID() == System::Int32::Parse(temp->msg_id->Text)) {
+					if (state->getSeen() != 1) {
+						if (flowLayoutPanel2->Controls->Contains(temp))
+							flowLayoutPanel2->Controls->Remove(temp);
+						statusRuntime.erase(statusRuntime.begin() + state->getMsg_ID() - 1);
+						msgsRuntime.erase(msgsRuntime.begin() + state->getMsg_ID() - 1);
+						db->Open();
+						cmd->CommandText = "DELETE FROM Status WHERE Msg_ID_FK=@id";
+						cmd->Parameters->AddWithValue("@id", System::Int32::Parse(temp->msg_id->Text));
+						cmd->ExecuteNonQuery();
+						cmd->CommandText = "DELETE FROM Message WHERE Msg_ID=@id";
+						cmd->Parameters->AddWithValue("@id", System::Int32::Parse(temp->msg_id->Text));
+						cmd->ExecuteNonQuery();
+						cmd->CommandText = "UPDATE MessagesCount set count=@cnt WHERE TRUE";
+						cmd->Parameters->AddWithValue("@cnt", msgsRuntime.size()+1);
+						cmd->ExecuteNonQuery();
+						db->Close();
+
+					}
+					else
+						MessageBox::Show("Message Can't be deleted right now!");
+					return;
+				}
 			}
 		}
 	}
 	//contact profile menu
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (contactDesc->Width == 408 && contactDesc->Height == 330) {
+		if ((contactDesc->Width == 408&& contactDesc->Height == 330) || (GroupMembers->Width == 270 && GroupMembers->Height == 300)) {
 			contactDesc->Width = 0;
 			contactDesc->Height = 0;
+			GroupMembers->Width = 0;
+			GroupMembers->Height = 0;
 		}
-		else{
+		else if(ContactCLicked == 1) {
 			contactDesc->BringToFront();
 			contactDesc->Width = 408;
 			contactDesc->Height = 330;
@@ -3435,12 +3697,43 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 				}
 			}
 		}
+		else if (ContactCLicked == 2) {
+			GroupMembers->BringToFront();
+			GroupMembers->Controls->Clear();
+			GroupMembers->Width = 270;
+			GroupMembers->Height = 300;
+			System::Windows::Forms::Label^ title = gcnew System::Windows::Forms::Label;
+			title->Text = "Members";
+			title->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));;
+			title->ForeColor = System::Drawing::Color::White;
+			title->Margin = System::Windows::Forms::Padding(100, 10, 0, 0);
+			GroupMembers->Controls->Add(title);
+			
+			db->Open();
+			cmd->CommandText = "SELECT User_ID_FK FROM User_ChatRoom WHERE CH_ID_FK=@chat";
+			cmd->Parameters->AddWithValue("@chat", msg_chat_id);
+			SQLiteDataReader^ dr = cmd->ExecuteReader();
+			while(dr->Read()) {
+				ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+				Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+				contact->Username = usersRuntime[dr->GetInt32(0)-1]->getFirst() + " " + usersRuntime[dr->GetInt32(0) - 1]->getLast();
+				if (profilesRuntime[dr->GetInt32(0) - 1]->getPhoto() == "")
+					contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+				else
+					contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[dr->GetInt32(0) - 1]->getPhoto());
+				contact->userID->Text = usersRuntime[dr->GetInt32(0) - 1]->getID().ToString();
+				contact->Width = 200;
+				contact->Margin = System::Windows::Forms::Padding(35, 10, 0, 0);
+				GroupMembers->Controls->Add(contact);
+			}
+			dr->Close();
+			db->Close();
+		}
 	}
-
-
-
 	//contacts stories
 	private: System::Void Contact_story(System::Object^ sender, System::EventArgs^ e) {
+		button18->Visible = false;
 		Card::MyUserControl^ tempCard = dynamic_cast<Card::MyUserControl^>(sender);
 		storyText->Size = System::Drawing::Size(0, 0);
 		PicStory->Size = System::Drawing::Size(0, 0);
@@ -3453,6 +3746,14 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 				long long ticks = date->Ticks - storiesRuntime[i]->getRealTime()->Ticks;
 				if (ticks >= 864000000000) {
 					storiesRuntime.erase(storiesRuntime.begin() + i);
+					db->Open();
+					cmd->CommandText = "DELETE FROM StorySeen WHERE Story_ID_FK=@id";
+					cmd->Parameters->AddWithValue("@Story_ID_FK", storiesRuntime[i]->getStoryID());
+					cmd->ExecuteNonQuery();
+					cmd->CommandText = "DELETE FROM Story WHERE Story_ID=@id";
+					cmd->Parameters->AddWithValue("@id", storiesRuntime[i]->getStoryID());
+					cmd->ExecuteNonQuery();
+					db->Close();
 					continue;
 				}
 				StoryTime->Text = "Time: " + storiesRuntime[i]->getTime();
@@ -3470,7 +3771,47 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 				}
 				firstStory = i;
 				clickedUser = System::Int16::Parse(tempCard->userID->Text);
-				return;
+				db->Open();
+				cmd->CommandText = "SELECT * FROM StorySeen WHERE Story_ID_FK=@story AND User_ID_FK=@id";
+				cmd->Parameters->AddWithValue("@story", storiesRuntime[i]->getStoryID());
+				cmd->Parameters->AddWithValue("@id", usersRuntime[userLoggedIn]->getID());
+				SQLiteDataReader^ dr = cmd->ExecuteReader();
+				if (dr->Read()){
+					dr->Close();
+					db->Close();
+					return;
+				}
+				else{
+					int Hour, Seconds;
+					String^ zone;
+					String^ Minutes;
+					DateTime localDate = DateTime::Now;
+					Hour = localDate.Hour;
+					Minutes = localDate.Minute.ToString();
+					Seconds = localDate.Second;
+					if (localDate.Hour == 0) {
+						Hour = 12;
+						zone = "AM";
+					}
+					else if (localDate.Hour >= 1 && localDate.Hour < 12) {
+						Hour = localDate.Hour;
+						zone = "AM";
+					}
+					else if (localDate.Hour >= 13 && localDate.Hour <= 23) {
+						Hour = localDate.Hour - 12;
+						zone = "PM";
+					}
+					if (localDate.Minute >= 0 && localDate.Minute <= 9)
+						Minutes = "0" + localDate.Minute.ToString();
+
+					dr->Close();
+					cmd->CommandText = "INSERT INTO StorySeen VALUES(@story, @id, @time)";
+					cmd->Parameters->AddWithValue("@story", storiesRuntime[i]->getStoryID());
+					cmd->Parameters->AddWithValue("@id", usersRuntime[userLoggedIn]->getID());
+					cmd->Parameters->AddWithValue("@time", Hour.ToString() + ":" + Minutes + ":" + Seconds.ToString() + " " + zone);
+					cmd->ExecuteNonQuery();
+					db->Close();
+				}
 			}
 		}
 		panel4->Size = System::Drawing::Size(0, 0);
@@ -3478,18 +3819,21 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 	}
 	//story button
 	private: System::Void Status_Click(System::Object^ sender, System::EventArgs^ e) {
+		button18->Visible = false;
 		storyText->Size = System::Drawing::Size(0, 0);
 		PicStory->Size = System::Drawing::Size(0, 0);
 		panel4->Size = System::Drawing::Size(0, 0);
 		storySeen->Size = System::Drawing::Size(0, 0);
 		StoryPanel->BringToFront();
 		this->contacts.clear();
+		StoriesPn->Controls->Clear();
 		this->loadContacts(usersRuntime[userLoggedIn]->getID());
 		for (int j = 0; j <= contacts.size(); j++) {
 			if (j == userLoggedIn || contacts.size() == 0 || find(contacts.begin(), contacts.end(), usersRuntime[j]->getID()) == contacts.end())
 				continue;
 			ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 			Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+			contact->Width = 250;
 			contact->Username = usersRuntime[j]->getFirst() + " " + usersRuntime[j]->getLast();
 			if (profilesRuntime[j]->getPhoto() == "" || profilesRuntime[j]->getVis() == 0)
 				contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
@@ -3500,14 +3844,25 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			StoriesPn->Controls->Add(contact);
 		}
 	}
+	private: bool seenClicked = false;
+	private: bool textStory = false;
+	private: bool picStory = false;
 	//seen story
 	private: System::Void button18_Click(System::Object^ sender, System::EventArgs^ e) {
 		storyText->Size = System::Drawing::Size(0, 0);
 		PicStory->Size = System::Drawing::Size(0, 0);
-		panel4->Size = System::Drawing::Size(0, 0);
-		storySeen->Size = System::Drawing::Size(360, 400);
-		storySeen->Controls->Clear();
-		storySeen->BringToFront();
+		if(!seenClicked){
+			panel4->Size = System::Drawing::Size(0, 0);
+			storySeen->Size = System::Drawing::Size(360, 400);
+			storySeen->BringToFront();
+			seenClicked = true;
+		}
+		else if (seenClicked) {
+			storySeen->Size = System::Drawing::Size(0, 0);
+			panel4->Size = System::Drawing::Size(780, 500);
+			storySeen->SendToBack();
+			seenClicked = false;
+		}
 	}
 	//add new text story
 	private: System::Void TextStory_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -3516,7 +3871,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		storySeen->Size = System::Drawing::Size(0, 0);
 		storyText->Size = System::Drawing::Size(757, 452);
 		StoryPanel->BringToFront();
-
+		textStory = true;
+		picStory = false;
 	}
 	//add new picture story
 	private: System::Void ImageStory_Click(System::Object^ sender, System::EventArgs^ e) {
@@ -3525,6 +3881,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		storySeen->Size = System::Drawing::Size(0, 0);
 		PicStory->Size = System::Drawing::Size(570, 300);
 		StoryPanel->BringToFront();
+		textStory = false;
+		picStory = true;
 	}
 	//choose picture for picture story
 	private: String^ imagePath;
@@ -3608,6 +3966,7 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 	//current user stories
 	private: int firstStory;
 	private: System::Void userStories_Click(System::Object^ sender, System::EventArgs^ e) {
+		button18->Visible = true;
 		storyText->Size = System::Drawing::Size(0, 0);
 		PicStory->Size = System::Drawing::Size(0, 0);
 		panel4->Size = System::Drawing::Size(780, 500);
@@ -3616,8 +3975,16 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			if (storiesRuntime[i]->getID() == usersRuntime[userLoggedIn]->getID()) {
 				DateTime^ date = DateTime::Now;
 				long long ticks = date->Ticks - storiesRuntime[i]->getRealTime()->Ticks;
-				if (ticks >= 864000000000) {
+				if (ticks >= 864000000000 && storiesRuntime.size() > 0) {
 					storiesRuntime.erase(storiesRuntime.begin() + i);
+					db->Open();
+					cmd->CommandText = "DELETE FROM StorySeen WHERE Story_ID_FK=@id";
+					cmd->Parameters->AddWithValue("@Story_ID_FK", storiesRuntime[i]->getStoryID());
+					cmd->ExecuteNonQuery();
+					cmd->CommandText = "DELETE FROM Story WHERE Story_ID=@id";
+					cmd->Parameters->AddWithValue("@id", storiesRuntime[i]->getStoryID());
+					cmd->ExecuteNonQuery();
+					db->Close();
 					continue;
 				}
 				StoryTime->Text = "Time: " + storiesRuntime[i]->getTime();
@@ -3635,6 +4002,21 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 				}
 				firstStory = i;
 				clickedUser = usersRuntime[userLoggedIn]->getID();
+				loadSeenList(storiesRuntime[i]->getStoryID());
+				storySeen->Controls->Clear();
+				for each(int k in seenlist) {
+					ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+					Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+					contact->Username = usersRuntime[k-1]->getFirst() + " " + usersRuntime[k - 1]->getLast();
+					if (profilesRuntime[k - 1]->getPhoto() == "" || profilesRuntime[k - 1]->getVis() == 0)
+						contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+					else
+						contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[k - 1]->getPhoto());
+					contact->userID->Text = usersRuntime[k - 1]->getID().ToString();
+					contact->Width = 200;
+					contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_story);
+					storySeen->Controls->Add(contact);
+				}
 				return;
 			}
 		}
@@ -3647,6 +4029,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		for (int i = 0; i < storiesRuntime.size(); i++) {
 			pictureBox3->Visible = true;
 			if (storiesRuntime[i]->getID() == clickedUser && i > firstStory) {
+				if (storiesRuntime[i]->getID() == storiesRuntime[storiesRuntime.size() - 1]->getID())
+					pictureBox2->Visible = false;
 				StoryTime->Text = "Time: " + storiesRuntime[i]->getTime();
 				if (storiesRuntime[i]->getImage() == "") {
 					if (pictureBox1->Width != 0)
@@ -3668,8 +4052,11 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 	}
 	//go to previous story
 	private: System::Void pictureBox3_Click(System::Object^ sender, System::EventArgs^ e) {
+		pictureBox2->Visible = true;
 		for (int i = firstStory; i >= 0; i--) {
 			if (storiesRuntime[i]->getID() == clickedUser && i < firstStory) {
+				if (storiesRuntime[i]->getID() == storiesRuntime[0]->getID())
+					pictureBox3->Visible = false;
 				StoryTime->Text = "Time: " +storiesRuntime[i]->getTime();
 				if (storiesRuntime[i]->getImage() == "") {
 					if (pictureBox1->Width != 0)
@@ -3691,6 +4078,8 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 	}
 	//create group chat
 	private: System::Void CreateGroup_btn_Click(System::Object^ sender, System::EventArgs^ e) {
+		MoreList->Width = 0;
+		MoreList->Height = 0;
 		MyForm3^ frm3 = gcnew MyForm3;
 		frm3->ShowDialog();
 		Card::MyUserControl^ contact = gcnew Card::MyUserControl();
@@ -3715,10 +4104,19 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 			cmd->Parameters->AddWithValue("@CH_ID", ch->getCHID());
 			cmd->Parameters->AddWithValue("@CH_Type", ch->getCHType());
 			cmd->ExecuteNonQuery();
-			for (int i = 0; i < frm3->flowLayoutPanel1->Controls->Count; i++) {
+			cmd->CommandText = "INSERT INTO User_ChatRoom VALUES(@User_ID_FK, @CH_ID_FK)";
+			cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
+			cmd->Parameters->AddWithValue("@User_ID_FK", usersRuntime[userLoggedIn]->getID());
+			cmd->ExecuteNonQuery();
+
+			cmd->CommandText = "INSERT INTO ChatRoomInfo VALUES(0, @User_ID_FK, @CH_ID_FK, 0)";
+			cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
+			cmd->Parameters->AddWithValue("@User_ID_FK", usersRuntime[userLoggedIn]->getID());
+			cmd->ExecuteNonQuery();
+			for (int i = 0; i < frm3->getMembers(); i++) {
 				AddMember::membercpp^ user = dynamic_cast<AddMember::membercpp^>(frm3->flowLayoutPanel1->Controls[i]);
 				for each (User ^ us in usersRuntime) {
-					if (us->getPhone() == user->Contact->Text) {
+					if (us->getPhone() == user->Contact->Text && us->getID() != usersRuntime[userLoggedIn]->getID()) {
 
 						cmd->CommandText = "INSERT INTO User_ChatRoom VALUES(@User_ID_FK, @CH_ID_FK)";
 						cmd->Parameters->AddWithValue("@CH_ID_FK", ch->getCHID());
@@ -3746,8 +4144,45 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		}
 
 	}
+	//add new group members
+	private: System::Void AddGroupMembers_Click(System::Object^ sender, System::EventArgs^ e) {
+		MyForm3^ frm3 = gcnew MyForm3;
+		for each (Group ^ gp in groupChats) {
+			if (gp->getID() == msg_chat_id) {
+				frm3->ProfilePic->BackgroundImage= gcnew Bitmap(gp->getPic());
+				frm3->setName(gp->getName());
+				frm3->button6->Enabled = false;
+				frm3->Description->ReadOnly = true;
+				frm3->richTextBox1->ReadOnly = true;
+				frm3->setDescription(gp->getDesc());
+				break;
+			}
+		}
+		frm3->ShowDialog();
+		db->Open();
+		for (int i = 0; i < frm3->getMembers(); i++) {
+			AddMember::membercpp^ user = dynamic_cast<AddMember::membercpp^>(frm3->flowLayoutPanel1->Controls[i]);
+			for each (User ^ us in usersRuntime) {
+				if (us->getPhone() == user->Contact->Text->Trim() && us->getID() != usersRuntime[userLoggedIn]->getID()) {
+					cmd->CommandText = "INSERT INTO User_ChatRoom VALUES(@User_ID_FK, @CH_ID_FK)";
+					cmd->Parameters->AddWithValue("@CH_ID_FK", msg_chat_id);
+					cmd->Parameters->AddWithValue("@User_ID_FK", us->getID());
+					cmd->ExecuteNonQuery();
+					cmd->CommandText = "INSERT INTO ChatRoomInfo VALUES(0, @User_ID_FK, @CH_ID_FK, 0)";
+					cmd->Parameters->AddWithValue("@CH_ID_FK", msg_chat_id);
+					cmd->Parameters->AddWithValue("@User_ID_FK", us->getID());
+					cmd->ExecuteNonQuery();
+					break;
+				}
+			}
+		}
+		db->Close();
+	}
+	private: int seenCount;
 	//group card click
 	private: System::Void Group_Click(System::Object^ sender, System::EventArgs^ e) {
+		ContactCLicked = 2;
+		AddGroupMembers->Visible = true;
 		seenlast->Text = "";
 		flowLayoutPanel2->Controls->Clear();
 		LoggedIn->BringToFront();
@@ -3796,66 +4231,143 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		for each (msg ^ message in msgsRuntime) {
 
 			if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
-				MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-				msgBox->timelbl->Text = statusRuntime[statusRuntime.size() - 1]->getTime();
-				msgBox->mssg->Text = message->getMsg();
-				msgBox->seenicon->Visible = true;
-				msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
-				msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-				for each (msgStatus ^ state in statusRuntime) {
-					if (state->getMsg_ID() == message->getMsgID()) {
-						DateTime^ local = DateTime::Now;
-						db->Open();
-						cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
-						cmd->Parameters->AddWithValue("@chat", message->getChatID());
-						SQLiteDataReader^ dr = cmd->ExecuteReader();
-						while (dr->Read()) {
-							if(dr->GetString(0) != "0"){
-								local = System::DateTime::Parse(dr->GetString(0));
-								if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
-									seenCount++;
+				if(message->getRec() == ""){
+					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+					msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					msgBox->mssg->Text = message->getMsg();
+					msgBox->seenicon->Visible = true;
+					msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
+					msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							DateTime^ local = DateTime::Now;
+							db->Open();
+							cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
+							cmd->Parameters->AddWithValue("@chat", message->getChatID());
+							SQLiteDataReader^ dr = cmd->ExecuteReader();
+							while (dr->Read()) {
+								if(dr->GetString(0) != "0"){
+									local = System::DateTime::Parse(dr->GetString(0));
+									if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
+										seenCount++;
+									}
 								}
 							}
-						}
-						dr->Close();
-						db->Close();
-						if (seenCount == msg_chat_type) {
-							state->setSeen(1);
-						}
+							dr->Close();
+							db->Close();
+							if (seenCount == msg_chat_type) {
+								state->setSeen(1);
+							}
 
-					}
-				}
-				for each (msgStatus ^ state in statusRuntime) {
-					if (state->getMsg_ID() == message->getMsgID()) {
-						if (state->getSeen() == 1) {
-							msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
 						}
 					}
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							if (state->getSeen() == 1) {
+								msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+							}
+						}
+					}
+					if (msgBox->Text->Length <= richTextBox7->Width)
+						richTextBox7->Multiline = false;
+					else
+						richTextBox7->Multiline = true;
+					flowLayoutPanel2->Controls->Add(msgBox);
+					richTextBox7->Clear();
 				}
-				if (msgBox->Text->Length <= richTextBox7->Width)
-					richTextBox7->Multiline = false;
-				else
-					richTextBox7->Multiline = true;
-				flowLayoutPanel2->Controls->Add(msgBox);
-				richTextBox7->Clear();
+				else {
+					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					Rec->seenicon->Visible = true;
+					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+					Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+					Rec->msg_id->Text = message->getMsgID().ToString();
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							DateTime^ local = DateTime::Now;
+							db->Open();
+							cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
+							cmd->Parameters->AddWithValue("@chat", message->getChatID());
+							SQLiteDataReader^ dr = cmd->ExecuteReader();
+							while (dr->Read()) {
+								if (dr->GetString(0) != "0") {
+									local = System::DateTime::Parse(dr->GetString(0));
+									if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
+										seenCount++;
+									}
+								}
+							}
+							dr->Close();
+							db->Close();
+							if (seenCount == msg_chat_type) {
+								state->setSeen(1);
+							}
+
+						}
+					}
+					for each (msgStatus ^ state in statusRuntime) {
+						if (state->getMsg_ID() == message->getMsgID()) {
+							if (state->getSeen() == 1) {
+								Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+							}
+						}
+					}
+					flowLayoutPanel2->Controls->Add(Rec);
+
+					db->Open();
+					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+					SQLiteDataReader^ dr = cmd->ExecuteReader();
+					if (dr->Read()) {
+						Rec->rec_path->Text = dr->GetString(0);
+					}
+					dr->Close();
+					db->Close();
+				}
 			}
 			else{
-				MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-				msgBox->timelbl->Text = statusRuntime[statusRuntime.size() - 1]->getTime();
-				msgBox->mssg->Text = message->getMsg();
-				msgBox->user->Text = usersRuntime[message->getUserIDFK() - 1]->getFirst();
-				msgBox->seenicon->Visible = false;
-				msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-				if (msgBox->Text->Length <= richTextBox7->Width)
-					richTextBox7->Multiline = false;
-				else
-					richTextBox7->Multiline = true;
-				flowLayoutPanel2->Controls->Add(msgBox);
-				richTextBox7->Clear();
+				if(message->getRec() == ""){
+					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+					msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					msgBox->mssg->Text = message->getMsg();
+					msgBox->user->Text = usersRuntime[message->getUserIDFK() - 1]->getFirst();
+					msgBox->seenicon->Visible = false;
+					msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+					if (msgBox->Text->Length <= richTextBox7->Width)
+						richTextBox7->Multiline = false;
+					else
+						richTextBox7->Multiline = true;
+					flowLayoutPanel2->Controls->Add(msgBox);
+					richTextBox7->Clear();
+				}
+				else {
+					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+					Rec->seenicon->Visible = true;
+					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+					Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+					Rec->msg_id->Text = message->getMsgID().ToString();
+					flowLayoutPanel2->Controls->Add(Rec);
+
+					db->Open();
+					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+					SQLiteDataReader^ dr = cmd->ExecuteReader();
+					if (dr->Read()) {
+						Rec->rec_path->Text = dr->GetString(0);
+					}
+					dr->Close();
+					db->Close();
+				}
 			}
 		}
 
 	}
+	//emojie list
 	private: System::Void button16_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (emojeList->Size == System::Drawing::Size(0, 0))
 			emojeList->Size = System::Drawing::Size(503, 247);
@@ -3876,10 +4388,135 @@ private: System::Windows::Forms::FlowLayoutPanel^ storySeen;
 		dr->Close();
 		db->Close();
 	}
+	//emoije click
 	private: System::Void set_Emojie(System::Object^ sender, System::EventArgs^ e) {
 		Clipboard::SetImage((dynamic_cast<System::Windows::Forms::PictureBox^>(sender)->BackgroundImage));
 		richTextBox7->Paste();
 		emoj = true;
+	}
+	private: System::Void richTextBox1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (Char::IsLetter(e->KeyValue)) {
+			richTextBox1->ReadOnly = true;
+		}
+		else
+			richTextBox1->ReadOnly = false;
+	}
+	private: System::Void richTextBox6_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (Char::IsDigit(e->KeyValue)) {
+			richTextBox1->ReadOnly = true;
+		}
+		else
+			richTextBox1->ReadOnly = false;
+	}
+	private: bool isRecording = false;
+	private: int recName = msgsRuntime.size();
+	private: System::Void record_voice(System::Object^ sender, System::EventArgs^ e) {
+
+		if (!isRecording) {
+			RecPn->Size = System::Drawing::Size(145, 30);
+			mciSendString("open new type waveaudio alias recsound", nullptr, 0, IntPtr::Zero);
+			mciSendString("record recsound", nullptr, 0, IntPtr::Zero);
+			isRecording = true;
+		}
+		else if (isRecording) {
+			mciSendString("save recsound C:\\test\\hello"+recName.ToString()+".wav", nullptr, 0, IntPtr::Zero);
+			mciSendString("close recsound", nullptr, 0, IntPtr::Zero);
+			RecPn->Size = System::Drawing::Size(0, 0);
+			isRecording = false;
+
+			RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+			int Hour, Seconds;
+			String^ zone;
+			String^ Minutes;
+			DateTime localDate = DateTime::Now;
+			Minutes = localDate.Minute.ToString();
+			Seconds = localDate.Second;
+			if (localDate.Hour == 0) {
+				Hour = 12;
+				zone = "AM";
+			}
+			else if (localDate.Hour >= 1 && localDate.Hour < 12) {
+				Hour = localDate.Hour;
+				zone = "AM";
+			}
+			else if (localDate.Hour >= 13 && localDate.Hour <= 23) {
+				Hour = localDate.Hour - 12;
+				zone = "PM";
+			}
+			if (localDate.Minute >= 0 && localDate.Minute <= 9)
+				Minutes = "0" + localDate.Minute.ToString();
+			msg^ message = gcnew msg;
+			message->setUserID(usersRuntime[userLoggedIn]->getID());
+			message->setChatID(msg_chat_id);
+			message->setAudio("C:\\test\\hello" + recName.ToString() + ".wav");
+			db->Open();
+			cmd->CommandText = "SELECT * FROM messagesCount";
+			SQLiteDataReader^ dr = cmd->ExecuteReader();
+			if (dr->Read())
+				message->setMsgID(dr->GetInt32(0));
+			dr->Close();
+			cmd->CommandText = "UPDATE messagesCount set count=@cnt WHERE TRUE";
+			cmd->Parameters->AddWithValue("@cnt", message->getMsgID() + 1);
+			cmd->ExecuteNonQuery();
+			db->Close();
+			msgsRuntime.push_back(message);
+
+			msgStatus^ stat = gcnew msgStatus;
+			stat->setDate(localDate.ToString());
+			stat->setTime(Hour.ToString() + ":" + Minutes + ":" + Seconds.ToString() + " " + zone);
+			stat->setMsg_ID(message->getMsgID());
+			stat->setSeen(0);
+			statusRuntime.push_back(stat);
+
+			Rec->msg_id->Text = message->getMsgID().ToString();
+			Rec->timelbl->Text = Hour.ToString() + ":" + Minutes + " " + zone;
+			Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+			Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+			Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+			Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+			flowLayoutPanel2->Controls->Add(Rec);
+
+			db->Open();
+			cmd->CommandText = "INSERT INTO Message VALUES(@msgid, @text, @chatID, @userID, @rec)";
+			cmd->Parameters->AddWithValue("@msgid", message->getMsgID());
+			cmd->Parameters->AddWithValue("@text", "");
+			cmd->Parameters->AddWithValue("@userID", message->getUserIDFK());
+			cmd->Parameters->AddWithValue("@chatID", message->getChatID());
+			cmd->Parameters->AddWithValue("@rec", "C:\\test\\hello" + recName.ToString() + ".wav");
+			cmd->ExecuteNonQuery();
+			cmd->CommandText = "INSERT INTO Status VALUES(@Date, @Time, @seen, @msgID)";
+			cmd->Parameters->AddWithValue("@Date", stat->getDate());
+			cmd->Parameters->AddWithValue("@Time", stat->getTime());
+			cmd->Parameters->AddWithValue("@seen", stat->getSeen());
+			cmd->Parameters->AddWithValue("@msgID", stat->getMsg_ID());
+			cmd->ExecuteNonQuery();
+			db->Close();
+		}
+	}
+	private: System::Void button17_Click(System::Object^ sender, System::EventArgs^ e) {
+		OpenFileDialog^ open = gcnew OpenFileDialog();
+
+		open->InitialDirectory = "C://";
+		open->Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
+		open->FilterIndex = 2;
+		open->RestoreDirectory = true;
+	}
+	private: bool isPlaying = false;
+	private: System::Void Play_Rec(System::Object^ sender, System::EventArgs^ e) {
+		RecAudioComponent::AudioControl^ tempCard =
+			dynamic_cast<RecAudioComponent::AudioControl^>(static_cast<System::Windows::Forms::PictureBox^>(sender)->Parent);
+		if(!isPlaying){
+			tempCard->PlayBtn->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-pause-50.png");
+			tempCard->pictureBox1->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-audio-wave-48.png");
+			mciSendString("play C:\\test\\hello" + recName.ToString() + ".wav", nullptr, 0, IntPtr::Zero);
+			isPlaying = true;
+		}
+		else{
+			tempCard->PlayBtn->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-play-50.png");
+			tempCard->pictureBox1->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-audio-wave-50 (1).png");
+			mciSendString("pause C:\\test\\hello" + recName.ToString() + ".wav", nullptr, 0, IntPtr::Zero);
+			isPlaying = false;
+		}
 	}
 };
 }

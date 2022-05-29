@@ -8,6 +8,7 @@ private: int Msg_ID = 0;
 private: int User_ID_FK = 0;
 private: int Chat_ID_FK = 0;
 private: String^ Text;
+private: String^ AudioRec;
 
 public: int getMsgID() {
 	return this->Msg_ID;
@@ -21,8 +22,14 @@ public: int getUserIDFK() {
 public: String^ getMsg() {
 	return this->Text;
 }
+public: String^ getRec() {
+	return this->AudioRec;
+}
 public: void setMsg(String^ msg) {
 	this->Text = msg;
+}
+public: void setAudio(String^ rec) {
+	this->AudioRec = rec;
 }
 public: void setMsgID(int id) {
 	this->Msg_ID = id;

@@ -13,6 +13,8 @@ Assembly Card, Version=1.0.*, Culture=Invariant Language (Invariant Country):
 	hash=None, flags=None
 Assembly MessageComponent, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
 	hash=None, flags=None
+Assembly RecAudioComponent, Version=1.0.*, Culture=Invariant Language (Invariant Country): 
+	hash=None, flags=None
 Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
 	hash=None, flags=None
 Assembly System.Data.SQLite, Version=1.0.110.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139: 
@@ -44,13 +46,19 @@ Class Test.MyForm3: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
+    System.Windows.Forms.Button button6 : Public
+    System.Windows.Forms.RichTextBox Description : Public
     System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1 : Public
+    System.Windows.Forms.RichTextBox richTextBox1 : Public
+    System.Windows.Forms.Button ProfilePic : Public
     AddMember.membercpp membercpp1 : Public
   Methods:
     getProfilePic(): PrivateScope, Public, HideBySig
     getGroupName(): PrivateScope, Public, HideBySig
     getDesc(): PrivateScope, Public, HideBySig
     getMembers(): PrivateScope, Public, HideBySig
+    setName(String): PrivateScope, Public, HideBySig
+    setDescription(String): PrivateScope, Public, HideBySig
 Class Test.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

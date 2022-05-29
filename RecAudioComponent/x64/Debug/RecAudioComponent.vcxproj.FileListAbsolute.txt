@@ -1,0 +1,3 @@
+D:\College\Data Structure\Project\Testrecent\RecAudioComponent\x64\Debug\RecAudioComponent.vcxproj.AssemblyReference.cache
+D:\College\Data Structure\Project\Testrecent\RecAudioComponent\x64\Debug\RecAudioComponent.AudioControl.resources
+D:\College\Data Structure\Project\Testrecent\RecAudioComponent\x64\Debug\RecAudioComponent.vcxproj.GenerateResource.cache
