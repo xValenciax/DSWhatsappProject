@@ -25,6 +25,7 @@ Class RecAudioComponent.AudioControl: AutoLayout, AnsiClass, Class, Public, Befo
     System.Windows.Forms.Label rec_path : Public
     System.Windows.Forms.Label user : Public
     System.Windows.Forms.Label timelbl : Public
+    System.Windows.Forms.Label recId : Public
     System.Windows.Forms.PictureBox pictureBox1 : Public
 Class RecAudioComponent.Class1: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

@@ -42,6 +42,7 @@ namespace RecAudioComponent {
 	public: System::Windows::Forms::Label^ rec_path;
 	public: System::Windows::Forms::Label^ user;
 	public: System::Windows::Forms::Label^ timelbl;
+	public: System::Windows::Forms::Label^ recId;
 	public: System::Windows::Forms::PictureBox^ pictureBox1;
 
 	protected:
@@ -67,6 +68,7 @@ namespace RecAudioComponent {
 			this->timelbl = (gcnew System::Windows::Forms::Label());
 			this->msg_id = (gcnew System::Windows::Forms::Label());
 			this->rec_path = (gcnew System::Windows::Forms::Label());
+			this->recId = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->seenicon))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->PlayBtn))->BeginInit();

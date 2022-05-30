@@ -2625,35 +2625,33 @@ private: System::ComponentModel::IContainer^ components;
 		}
 
 #pragma endregion
-
+	// all global variables
 	private: int msg_user_id;
 	private: int msg_chat_id;
 	private: int msg_chat_type;
-	static   int log, id;
 	private: int userLoggedIn;
-	private: bool emoj;
 	private: String^ userLoggedInName;
-	private: vector<int> seenlist;
 	private: String^ userLoggedInPic;
-	private: vector<User^> users;
-	private: vector<UserChatRoom^> user_chatroom;
-	private: vector<Group^> groupChats;
+	private: vector<int> seenlist;
 	private: vector<int> contacts;
+	private: vector<User^> users;
+	private: vector<User^> usersRuntime;
+	private: vector<Profile^> profiles;
+	private: vector<Profile^> profilesRuntime;
+	private: vector<UserChatRoom^> user_chatroom;
+	private: vector<ChatInfo^> infoRuntime;
 	private: vector<ChatRoom^> chat;
 	private: vector<ChatInfo^> info;
-	private: vector<Profile^> profiles;
-	private: vector<User^> usersRuntime;
+	private: vector<Group^> groupChats;
 	private: vector<msg^> msgsRuntime;
+
+	private: vector<msgStatus^> statusRuntime;
 	private: vector<msgStatus^> status;
 	private: vector<Story^> stories;
 	private: vector<Story^> storiesRuntime;
-	private: vector<msgStatus^> statusRuntime;
-	private: vector<ChatInfo^> infoRuntime;
-	private: vector<Profile^> profilesRuntime;
 	private: MyForm1^ form1 = gcnew MyForm1;
 	private: SQLiteConnection^ db = gcnew SQLiteConnection("Data Source = DataBase.db;Version = 3;");
 	private: SQLiteCommand^ cmd = gcnew SQLiteCommand(db);
-	private: vector< System::Drawing::Color> colors;
 	
 
 	//store status into DataBase
@@ -2918,6 +2916,7 @@ private: System::ComponentModel::IContainer^ components;
 	}
 	//form Load
 	private: System::Void MyForm_Load(System::Object^ sender, System::EventArgs^ e) {
+		/*Loading all information from database once GUI has loaded*/
 		loadUsersFromDB();
 		loadProfilesFromDB();
 		loadChatRooms();
@@ -2926,72 +2925,83 @@ private: System::ComponentModel::IContainer^ components;
 		loaduserGroupFromDB();
 		loadstories();
 		loaduserchatFromDB();
+
+		/*loging in to the last user who has been logged in and hasn't logged out*/
 		for (int i = 0; i < usersRuntime.size(); i++) {
+			//if logged in state is true -> log the user in
 			if (usersRuntime[i]->getLogged() == 1) {
-				if (profilesRuntime[i]->getLogged() == 0) {
-					if (profilesRuntime[i]->getVis() == 0)
-						radioButton2->Checked = true;
-					userLoggedIn = i;
-					this->contacts.clear();
-					this->loadContacts(usersRuntime[i]->getID());
-					for (int j = 0; j < contacts.size(); j++) {
-						if (contacts.size() == 0)
-							continue;
-						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-						Card::MyUserControl^ contact = gcnew Card::MyUserControl();
-						contact->Username = usersRuntime[contacts[j] - 1]->getFirst() + " " + usersRuntime[contacts[j] - 1]->getLast();
-						if (profilesRuntime[contacts[j] - 1]->getPhoto() == "" || profilesRuntime[contacts[j] - 1]->getVis() == 0)
-							contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
-						else
-							contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[contacts[j] - 1]->getPhoto());
-						contact->userID->Text = usersRuntime[contacts[j] - 1]->getID().ToString();
-						for each (UserChatRoom ^ uchat in user_chatroom) {
-							if (uchat->getUserID() == usersRuntime[userLoggedIn]->getID() && uchat->getTaken() == 0) {
-								contact->chatID->Text = uchat->getCHID().ToString();
-								contact->chatType->Text = chat[uchat->getCHID() - 1]->getCHType().ToString();
-								uchat->setTaken(1);
-								break;
-							}
-						}
-						contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
-						flowLayoutPanel1->Controls->Add(contact);
-						profilesRuntime[i]->setLogged(1);
-					}
-					for (int k = 0; k < groupChats.size(); k++) {
-						for each (ChatInfo ^ info in infoRuntime) {
-							if (groupChats[k]->getID() == info->getID()) {
-								if (info->getUserID() == usersRuntime[userLoggedIn]->getID()) {
-									Card::MyUserControl^ contact = gcnew Card::MyUserControl();
-									contact->Username = groupChats[k]->getName();
-									if (groupChats[k]->getPic() == "")
-										contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
-									else
-										contact->pictureBox9->BackgroundImage = gcnew Bitmap(groupChats[k]->getPic());
-									contact->chatID->Text = groupChats[k]->getID().ToString();
-									contact->Click += gcnew System::EventHandler(this, &MyForm::Group_Click);
-									flowLayoutPanel1->Controls->Add(contact);
-								}
-							}
+				//checks whether the user is setting visibilty to visible or not
+				if (profilesRuntime[i]->getVis() == 0)
+					radioButton2->Checked = true;
+				userLoggedIn = i;
+				//clearing the panel that contains the contacts and then loading all user's contacts from database
+				this->contacts.clear();
+				this->loadContacts(usersRuntime[i]->getID());
+				for (int j = 0; j < contacts.size(); j++) {
+					if (contacts.size() == 0)
+						continue;
+					//creating the component card for each contact in the user's contact list
+					ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+					Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+					contact->Username = usersRuntime[contacts[j] - 1]->getFirst() + " " + usersRuntime[contacts[j] - 1]->getLast();
+					if (profilesRuntime[contacts[j] - 1]->getPhoto() == "" || profilesRuntime[contacts[j] - 1]->getVis() == 0)
+						contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+					else
+						contact->pictureBox9->BackgroundImage = gcnew Bitmap(profilesRuntime[contacts[j] - 1]->getPhoto());
+					contact->userID->Text = usersRuntime[contacts[j] - 1]->getID().ToString();
+					//loading every chat room between the user and his contacts
+					for each (UserChatRoom ^ uchat in user_chatroom) {
+						if (uchat->getUserID() == usersRuntime[userLoggedIn]->getID() && uchat->getTaken() == 0) {
+							contact->chatID->Text = uchat->getCHID().ToString();
+							contact->chatType->Text = chat[uchat->getCHID() - 1]->getCHType().ToString();
+							//an indicator if a chat room has been created before between the same users
+							uchat->setTaken(1);
+							break;
 						}
 					}
-					UserName->Text = usersRuntime[i]->getFirst() + " " + usersRuntime[i]->getLast();
-					Description->Text = profilesRuntime[i]->getDesc();
-					if (profilesRuntime[i]->getPhoto() != "") {
-						userLoggedInPic = profilesRuntime[i]->getPhoto();
-						ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-						ProfilePic->BackgroundImage = gcnew Bitmap(profilesRuntime[i]->getPhoto());
-					}
-					userLoggedInName = UserName->Text;
-					LoggedIn->BringToFront();
-					UserProfile->BringToFront();
-					return;
+					//adding a click even for each contact card then inserting the card into the panel
+					contact->Click += gcnew System::EventHandler(this, &MyForm::Contact_Click);
+					flowLayoutPanel1->Controls->Add(contact);
+					profilesRuntime[i]->setLogged(1);
 				}
+				//loading any group chat that exist
+				for (int k = 0; k < groupChats.size(); k++) {
+					for each (ChatInfo ^ info in infoRuntime) {
+						//checkin' if the groupchat id exists in the chat information table then creating a card for the group
+						if (groupChats[k]->getID() == info->getID()) {
+							if (info->getUserID() == usersRuntime[userLoggedIn]->getID()) {
+								Card::MyUserControl^ contact = gcnew Card::MyUserControl();
+								contact->Username = groupChats[k]->getName();
+								if (groupChats[k]->getPic() == "")
+									contact->pictureBox9->BackgroundImage = contact->pictureBox9->BackgroundImage;
+								else
+									contact->pictureBox9->BackgroundImage = gcnew Bitmap(groupChats[k]->getPic());
+								contact->chatID->Text = groupChats[k]->getID().ToString();
+								contact->Click += gcnew System::EventHandler(this, &MyForm::Group_Click);
+								flowLayoutPanel1->Controls->Add(contact);
+							}
+						}
+					}
+				}
+				//setting the user information to his profile
+				UserName->Text = usersRuntime[i]->getFirst() + " " + usersRuntime[i]->getLast();
+				Description->Text = profilesRuntime[i]->getDesc();
+				if (profilesRuntime[i]->getPhoto() != "") {
+					userLoggedInPic = profilesRuntime[i]->getPhoto();
+					ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
+					ProfilePic->BackgroundImage = gcnew Bitmap(profilesRuntime[i]->getPhoto());
+				}
+				userLoggedInName = UserName->Text;
+				LoggedIn->BringToFront();
+				UserProfile->BringToFront();
+				return;
 			}
 		}
 		UnLogged->BringToFront();
 	}
 	//options menu
 	private: System::Void More_Click_1(System::Object^ sender, System::EventArgs^ e) {
+
 		if (MoreList->Width == 175 && MoreList->Height == 170) {
 			MoreList->Width = 0;
 			MoreList->Height = 0;
@@ -3001,12 +3011,17 @@ private: System::ComponentModel::IContainer^ components;
 			MoreList->Height = 170;
 		}
 	}
+
+	//a flag that indicates whether the contact is a chat or a group (1 for chat, 2 for group)
 	private: int ContactCLicked;
+
 	//click contact card
 	private: System::Void Contact_Click(System::Object^ sender, System::EventArgs^ e) {
 		ContactCLicked = 1;
 		flowLayoutPanel2->Controls->Clear();
 		LoggedIn->BringToFront();
+
+		/*Loading the whole chat room including the messages and each user's information*/
 		if(sender != nullptr){
 			Card::MyUserControl^ tempCard = dynamic_cast<Card::MyUserControl^>(sender);
 			AddGroupMembers->Visible = false;
@@ -3016,6 +3031,7 @@ private: System::ComponentModel::IContainer^ components;
 				ProfilePic->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
 				ProfilePic->BackgroundImage = tempCard->pictureBox9->BackgroundImage;
 			}
+			//storing the contact id and chat room id 
 			msg_user_id = System::Int16::Parse(tempCard->userID->Text);
 			msg_chat_id = System::Int16::Parse(tempCard->chatID->Text);
 			db->Open();
@@ -3026,6 +3042,7 @@ private: System::ComponentModel::IContainer^ components;
 					else
 						seenlast->Text = "";
 					DateTime^ local = DateTime::Now;
+					//storing the time of the last time the user has opened the chat room (required for group chat)
 					cmd->CommandText = "UPDATE ChatRoomInfo set Last_Opened=@time WHERE User_ID_FK=@id";
 					cmd->Parameters->AddWithValue("@time", local);
 					cmd->Parameters->AddWithValue("@id", usersRuntime[userLoggedIn]->getID());
@@ -3039,8 +3056,9 @@ private: System::ComponentModel::IContainer^ components;
 		loadMessagesFromDB(msg_chat_id);
 		
 		for each (msg ^ message in msgsRuntime) {
-
+			//checks if current message belongs to the logged in user or the other contact
 			if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
+				//checks if current message is a text message
 				if(message->getRec() == ""){
 					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
 					msgBox->timelbl->Text = statusRuntime[message->getMsgID() -1]->getTime();
@@ -3049,6 +3067,7 @@ private: System::ComponentModel::IContainer^ components;
 					msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
 					msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
 					msgBox->msg_id->Text = message->getMsgID().ToString();
+					//checking if message has been seen
 					for each (msgStatus ^ state in statusRuntime) {
 						if (state->getMsg_ID() == message->getMsgID()) {
 							if (state->getSeen() == 1) {
@@ -3063,6 +3082,7 @@ private: System::ComponentModel::IContainer^ components;
 					flowLayoutPanel2->Controls->Add(msgBox);
 					richTextBox7->Clear();
 				}
+				//if current message is a voice record
 				else {
 					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
 					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
@@ -3071,6 +3091,7 @@ private: System::ComponentModel::IContainer^ components;
 					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
 					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
 					Rec->msg_id->Text = message->getMsgID().ToString();
+					//checkin' record is seen or not
 					for each (msgStatus ^ state in statusRuntime) {
 						if (state->getMsg_ID() == message->getMsgID()) {
 							if (state->getSeen() == 1) {
@@ -3079,7 +3100,7 @@ private: System::ComponentModel::IContainer^ components;
 						}
 					}
 					flowLayoutPanel2->Controls->Add(Rec);
-
+					//loading each record's path
 					db->Open();
 					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
 					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
@@ -4367,33 +4388,6 @@ private: System::ComponentModel::IContainer^ components;
 		}
 
 	}
-	//emojie list
-	private: System::Void button16_Click(System::Object^ sender, System::EventArgs^ e) {
-		if (emojeList->Size == System::Drawing::Size(0, 0))
-			emojeList->Size = System::Drawing::Size(503, 247);
-		else
-			emojeList->Size = System::Drawing::Size(0, 0);
-		db->Open();
-		cmd->CommandText = "SELECT * FROM Emojis";
-		SQLiteDataReader^ dr = cmd->ExecuteReader();
-		while (dr->Read()) {
-			System::Windows::Forms::PictureBox^ emojie = gcnew System::Windows::Forms::PictureBox;
-			emojie->Size = System::Drawing::Size(32, 32);
-			emojie->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Zoom;
-			emojie->BackgroundImage = gcnew Bitmap(dr->GetString(0));
-			emojie->Cursor = System::Windows::Forms::Cursors::Hand;
-			emojie->Click += gcnew System::EventHandler(this, &MyForm::set_Emojie);
-			emojeList->Controls->Add(emojie);
-		}
-		dr->Close();
-		db->Close();
-	}
-	//emoije click
-	private: System::Void set_Emojie(System::Object^ sender, System::EventArgs^ e) {
-		Clipboard::SetImage((dynamic_cast<System::Windows::Forms::PictureBox^>(sender)->BackgroundImage));
-		richTextBox7->Paste();
-		emoj = true;
-	}
 	private: System::Void richTextBox1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		if (Char::IsLetter(e->KeyValue)) {
 			richTextBox1->ReadOnly = true;
@@ -4419,8 +4413,6 @@ private: System::ComponentModel::IContainer^ components;
 			isRecording = true;
 		}
 		else if (isRecording) {
-			mciSendString("save recsound C:\\test\\hello"+recName.ToString()+".wav", nullptr, 0, IntPtr::Zero);
-			mciSendString("close recsound", nullptr, 0, IntPtr::Zero);
 			RecPn->Size = System::Drawing::Size(0, 0);
 			isRecording = false;
 
@@ -4446,9 +4438,6 @@ private: System::ComponentModel::IContainer^ components;
 			if (localDate.Minute >= 0 && localDate.Minute <= 9)
 				Minutes = "0" + localDate.Minute.ToString();
 			msg^ message = gcnew msg;
-			message->setUserID(usersRuntime[userLoggedIn]->getID());
-			message->setChatID(msg_chat_id);
-			message->setAudio("C:\\test\\hello" + recName.ToString() + ".wav");
 			db->Open();
 			cmd->CommandText = "SELECT * FROM messagesCount";
 			SQLiteDataReader^ dr = cmd->ExecuteReader();
@@ -4457,6 +4446,12 @@ private: System::ComponentModel::IContainer^ components;
 			dr->Close();
 			cmd->CommandText = "UPDATE messagesCount set count=@cnt WHERE TRUE";
 			cmd->Parameters->AddWithValue("@cnt", message->getMsgID() + 1);
+			recName = message->getMsgID();
+			mciSendString("save recsound C:\\test\\hello"+recName.ToString()+".wav", nullptr, 0, IntPtr::Zero);
+			mciSendString("close recsound", nullptr, 0, IntPtr::Zero);
+			message->setUserID(usersRuntime[userLoggedIn]->getID());
+			message->setChatID(msg_chat_id);
+			message->setAudio("C:\\test\\hello" + recName.ToString() + ".wav");
 			cmd->ExecuteNonQuery();
 			db->Close();
 			msgsRuntime.push_back(message);
@@ -4471,7 +4466,9 @@ private: System::ComponentModel::IContainer^ components;
 			Rec->msg_id->Text = message->getMsgID().ToString();
 			Rec->timelbl->Text = Hour.ToString() + ":" + Minutes + " " + zone;
 			Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+			Rec->recId->Text = recName.ToString();
 			Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+			Rec->rec_path->Text = message->getRec();
 			Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
 			Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
 			flowLayoutPanel2->Controls->Add(Rec);
@@ -4493,14 +4490,6 @@ private: System::ComponentModel::IContainer^ components;
 			db->Close();
 		}
 	}
-	private: System::Void button17_Click(System::Object^ sender, System::EventArgs^ e) {
-		OpenFileDialog^ open = gcnew OpenFileDialog();
-
-		open->InitialDirectory = "C://";
-		open->Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp)|*.jpg; *.jpeg; *.gif; *.bmp";
-		open->FilterIndex = 2;
-		open->RestoreDirectory = true;
-	}
 	private: bool isPlaying = false;
 	private: System::Void Play_Rec(System::Object^ sender, System::EventArgs^ e) {
 		RecAudioComponent::AudioControl^ tempCard =
@@ -4508,13 +4497,13 @@ private: System::ComponentModel::IContainer^ components;
 		if(!isPlaying){
 			tempCard->PlayBtn->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-pause-50.png");
 			tempCard->pictureBox1->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-audio-wave-48.png");
-			mciSendString("play C:\\test\\hello" + recName.ToString() + ".wav", nullptr, 0, IntPtr::Zero);
+			mciSendString("play " + tempCard->rec_path->Text, nullptr, 0, IntPtr::Zero);
 			isPlaying = true;
 		}
 		else{
 			tempCard->PlayBtn->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-play-50.png");
 			tempCard->pictureBox1->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\icons8-audio-wave-50 (1).png");
-			mciSendString("pause C:\\test\\hello" + recName.ToString() + ".wav", nullptr, 0, IntPtr::Zero);
+			mciSendString("pause " + tempCard->rec_path->Text, nullptr, 0, IntPtr::Zero);
 			isPlaying = false;
 		}
 	}
