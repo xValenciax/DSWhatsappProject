@@ -53,7 +53,7 @@ namespace Test {
 
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 
-	private: System::Windows::Forms::Button^ Add_Contact;
+	public: System::Windows::Forms::Button^ Add_Contact;
 	public: System::Windows::Forms::Button^ ProfilePic;
 	private: System::Windows::Forms::Label^ AppTitle;
 	private: System::Windows::Forms::Button^ CLose;

@@ -13,6 +13,7 @@
 #include "Story.h"
 #include "Group.h"
 #include <cliext/queue>
+#include <cliext/stack>
 
 namespace Test {
 
@@ -893,6 +894,7 @@ private: System::ComponentModel::IContainer^ components;
 			// 
 			// GroupMembers
 			// 
+			this->GroupMembers->AutoScroll = true;
 			this->GroupMembers->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(29)), static_cast<System::Int32>(static_cast<System::Byte>(47)),
 				static_cast<System::Int32>(static_cast<System::Byte>(47)));
 			this->GroupMembers->FlowDirection = System::Windows::Forms::FlowDirection::TopDown;
@@ -2644,7 +2646,6 @@ private: System::ComponentModel::IContainer^ components;
 	private: vector<ChatInfo^> info;
 	private: vector<Group^> groupChats;
 	private: vector<msg^> msgsRuntime;
-
 	private: vector<msgStatus^> statusRuntime;
 	private: vector<msgStatus^> status;
 	private: vector<Story^> stories;
@@ -3056,108 +3057,113 @@ private: System::ComponentModel::IContainer^ components;
 		loadMessagesFromDB(msg_chat_id);
 		
 		for each (msg ^ message in msgsRuntime) {
-			//checks if current message belongs to the logged in user or the other contact
-			if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
-				//checks if current message is a text message
-				if(message->getRec() == ""){
-					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-					msgBox->timelbl->Text = statusRuntime[message->getMsgID() -1]->getTime();
-					msgBox->mssg->Text = message->getMsg();
-					msgBox->seenicon->Visible = true;
-					msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
-					msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-					msgBox->msg_id->Text = message->getMsgID().ToString();
-					//checking if message has been seen
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							if (state->getSeen() == 1) {
-								msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+			if(msgsRuntime.size() > 0){
+				//checks if current message belongs to the logged in user or the other contact
+				if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
+					if (profilesRuntime[userLoggedIn]->getLogged() == 0) {
+						//checks if current message is a text message
+						if(message->getRec() == ""){
+							MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+							msgBox->timelbl->Text = statusRuntime[message->getMsgID() -1]->getTime();
+							msgBox->mssg->Text = message->getMsg();
+							msgBox->seenicon->Visible = true;
+							msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
+							msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+							msgBox->msg_id->Text = message->getMsgID().ToString();
+							//checking if message has been seen
+							for each (msgStatus ^ state in statusRuntime) {
+								if (state->getMsg_ID() == message->getMsgID()) {
+									if (state->getSeen() == 1) {
+										msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+									}
+								}
 							}
+							if (msgBox->Text->Length <= richTextBox7->Width)
+								richTextBox7->Multiline = false;
+							else
+								richTextBox7->Multiline = true;
+							flowLayoutPanel2->Controls->Add(msgBox);
+							richTextBox7->Clear();
 						}
-					}
-					if (msgBox->Text->Length <= richTextBox7->Width)
-						richTextBox7->Multiline = false;
-					else
-						richTextBox7->Multiline = true;
-					flowLayoutPanel2->Controls->Add(msgBox);
-					richTextBox7->Clear();
-				}
-				//if current message is a voice record
-				else {
-					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
-					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					Rec->seenicon->Visible = true;
-					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
-					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
-					Rec->msg_id->Text = message->getMsgID().ToString();
-					//checkin' record is seen or not
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							if (state->getSeen() == 1) {
-								Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+						//if current message is a voice record
+						else {
+							RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+							Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+							Rec->seenicon->Visible = true;
+							Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+							Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+							Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+							Rec->msg_id->Text = message->getMsgID().ToString();
+							//checkin' record is seen or not
+							for each (msgStatus ^ state in statusRuntime) {
+								if (state->getMsg_ID() == message->getMsgID()) {
+									if (state->getSeen() == 1) {
+										Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+									}
+								}
 							}
-						}
-					}
-					flowLayoutPanel2->Controls->Add(Rec);
-					//loading each record's path
-					db->Open();
-					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
-					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
-					SQLiteDataReader^ dr = cmd->ExecuteReader();
-					if (dr->Read()) {
-						Rec->rec_path->Text = dr->GetString(0);
-					}
-					dr->Close();
-					db->Close();
-				}
-			}
-			else if (message->getUserIDFK() == msg_user_id) {
-				if(message->getRec() == ""){
-					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							state->setSeen(1);
-						}
-					}
-					msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					msgBox->mssg->Text = message->getMsg();
-					msgBox->user->Text = usersRuntime[msg_user_id-1]->getFirst();
-					msgBox->seenicon->Visible = false;
-					msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-					msgBox->msg_id->Text = message->getMsgID().ToString();
-					if (msgBox->Text->Length <= richTextBox7->Width)
-						richTextBox7->Multiline = false;
-					else
-						richTextBox7->Multiline = true;
-					flowLayoutPanel2->Controls->Add(msgBox);
-					richTextBox7->Clear();
-				}
-				else {
-					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
-					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					Rec->seenicon->Visible = true;
-					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
-					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
-					Rec->msg_id->Text = message->getMsgID().ToString();
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							if (state->getSeen() == 1) {
-								Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+							flowLayoutPanel2->Controls->Add(Rec);
+							//loading each record's path
+							db->Open();
+							cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+							cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+							SQLiteDataReader^ dr = cmd->ExecuteReader();
+							if (dr->Read()) {
+								Rec->rec_path->Text = dr->GetString(0);
 							}
+							dr->Close();
+							db->Close();
 						}
 					}
-					flowLayoutPanel2->Controls->Add(Rec);
-					db->Open();
-					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
-					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
-					SQLiteDataReader^ dr = cmd->ExecuteReader();
-					if(dr->Read()) {
-						Rec->rec_path->Text = dr->GetString(0);
+					else if (message->getUserIDFK() == msg_user_id) {
+						if (message->getRec() == "") {
+							MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+							for each (msgStatus ^ state in statusRuntime) {
+								if (state->getMsg_ID() == message->getMsgID()) {
+									state->setSeen(1);
+								}
+							}
+							msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+							msgBox->mssg->Text = message->getMsg();
+							msgBox->user->Text = usersRuntime[msg_user_id - 1]->getFirst();
+							msgBox->seenicon->Visible = false;
+							msgBox->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+							msgBox->msg_id->Text = message->getMsgID().ToString();
+							if (msgBox->Text->Length <= richTextBox7->Width)
+								richTextBox7->Multiline = false;
+							else
+								richTextBox7->Multiline = true;
+							flowLayoutPanel2->Controls->Add(msgBox);
+							richTextBox7->Clear();
+						}
+						else {
+							RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+							Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+							Rec->seenicon->Visible = true;
+							Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+							Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+							Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+							Rec->msg_id->Text = message->getMsgID().ToString();
+							for each (msgStatus ^ state in statusRuntime) {
+								if (state->getMsg_ID() == message->getMsgID()) {
+									if (state->getSeen() == 1) {
+										Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+									}
+								}
+							}
+							flowLayoutPanel2->Controls->Add(Rec);
+							db->Open();
+							cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+							cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+							SQLiteDataReader^ dr = cmd->ExecuteReader();
+							if (dr->Read()) {
+								Rec->rec_path->Text = dr->GetString(0);
+							}
+							dr->Close();
+							db->Close();
+							profilesRuntime[userLoggedIn]->setLogged(1);
+						}
 					}
-					dr->Close();
-					db->Close();
 				}
 			}
 		}
@@ -4102,6 +4108,7 @@ private: System::ComponentModel::IContainer^ components;
 		MoreList->Width = 0;
 		MoreList->Height = 0;
 		MyForm3^ frm3 = gcnew MyForm3;
+		frm3->Add_Contact->Text = "Create";
 		frm3->ShowDialog();
 		Card::MyUserControl^ contact = gcnew Card::MyUserControl();
 		if(frm3->getGroupName() != ""){
@@ -4168,6 +4175,7 @@ private: System::ComponentModel::IContainer^ components;
 	//add new group members
 	private: System::Void AddGroupMembers_Click(System::Object^ sender, System::EventArgs^ e) {
 		MyForm3^ frm3 = gcnew MyForm3;
+		frm3->Add_Contact->Text = "Add";
 		for each (Group ^ gp in groupChats) {
 			if (gp->getID() == msg_chat_id) {
 				frm3->ProfilePic->BackgroundImage= gcnew Bitmap(gp->getPic());
@@ -4250,143 +4258,143 @@ private: System::ComponentModel::IContainer^ components;
 		}
 
 		for each (msg ^ message in msgsRuntime) {
-
-			if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
-				if(message->getRec() == ""){
-					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-					msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					msgBox->mssg->Text = message->getMsg();
-					msgBox->seenicon->Visible = true;
-					msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
-					msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							DateTime^ local = DateTime::Now;
-							db->Open();
-							cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
-							cmd->Parameters->AddWithValue("@chat", message->getChatID());
-							SQLiteDataReader^ dr = cmd->ExecuteReader();
-							while (dr->Read()) {
-								if(dr->GetString(0) != "0"){
-									local = System::DateTime::Parse(dr->GetString(0));
-									if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
-										seenCount++;
+			if(msgsRuntime.size() > 0){
+				if (message->getUserIDFK() == usersRuntime[userLoggedIn]->getID()) {
+					if(message->getRec() == ""){
+						MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+						msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+						msgBox->mssg->Text = message->getMsg();
+						msgBox->seenicon->Visible = true;
+						msgBox->user->Text = usersRuntime[userLoggedIn]->getFirst();
+						msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+						for each (msgStatus ^ state in statusRuntime) {
+							if (state->getMsg_ID() == message->getMsgID()) {
+								DateTime^ local = DateTime::Now;
+								db->Open();
+								cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
+								cmd->Parameters->AddWithValue("@chat", message->getChatID());
+								SQLiteDataReader^ dr = cmd->ExecuteReader();
+								while (dr->Read()) {
+									if(dr->GetString(0) != "0"){
+										local = System::DateTime::Parse(dr->GetString(0));
+										if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
+											seenCount++;
+										}
 									}
 								}
-							}
-							dr->Close();
-							db->Close();
-							if (seenCount == msg_chat_type) {
-								state->setSeen(1);
-							}
+								dr->Close();
+								db->Close();
+								if (seenCount == msg_chat_type) {
+									state->setSeen(1);
+								}
 
-						}
-					}
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							if (state->getSeen() == 1) {
-								msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
 							}
 						}
-					}
-					if (msgBox->Text->Length <= richTextBox7->Width)
-						richTextBox7->Multiline = false;
-					else
-						richTextBox7->Multiline = true;
-					flowLayoutPanel2->Controls->Add(msgBox);
-					richTextBox7->Clear();
-				}
-				else {
-					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
-					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					Rec->seenicon->Visible = true;
-					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
-					Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
-					Rec->msg_id->Text = message->getMsgID().ToString();
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							DateTime^ local = DateTime::Now;
-							db->Open();
-							cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
-							cmd->Parameters->AddWithValue("@chat", message->getChatID());
-							SQLiteDataReader^ dr = cmd->ExecuteReader();
-							while (dr->Read()) {
-								if (dr->GetString(0) != "0") {
-									local = System::DateTime::Parse(dr->GetString(0));
-									if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
-										seenCount++;
-									}
+						for each (msgStatus ^ state in statusRuntime) {
+							if (state->getMsg_ID() == message->getMsgID()) {
+								if (state->getSeen() == 1) {
+									msgBox->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
 								}
 							}
-							dr->Close();
-							db->Close();
-							if (seenCount == msg_chat_type) {
-								state->setSeen(1);
-							}
-
 						}
+						if (msgBox->Text->Length <= richTextBox7->Width)
+							richTextBox7->Multiline = false;
+						else
+							richTextBox7->Multiline = true;
+						flowLayoutPanel2->Controls->Add(msgBox);
+						richTextBox7->Clear();
 					}
-					for each (msgStatus ^ state in statusRuntime) {
-						if (state->getMsg_ID() == message->getMsgID()) {
-							if (state->getSeen() == 1) {
-								Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+					else {
+						RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+						Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+						Rec->seenicon->Visible = true;
+						Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+						Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+						Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+						Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+						Rec->msg_id->Text = message->getMsgID().ToString();
+						for each (msgStatus ^ state in statusRuntime) {
+							if (state->getMsg_ID() == message->getMsgID()) {
+								DateTime^ local = DateTime::Now;
+								db->Open();
+								cmd->CommandText = "SELECT Last_Opened FROM ChatRoomInfo WHERE CH_ID_FK=@chat";
+								cmd->Parameters->AddWithValue("@chat", message->getChatID());
+								SQLiteDataReader^ dr = cmd->ExecuteReader();
+								while (dr->Read()) {
+									if (dr->GetString(0) != "0") {
+										local = System::DateTime::Parse(dr->GetString(0));
+										if (local->Ticks < System::DateTime::Parse(state->getDate()).Ticks) {
+											seenCount++;
+										}
+									}
+								}
+								dr->Close();
+								db->Close();
+								if (seenCount == msg_chat_type) {
+									state->setSeen(1);
+								}
+
 							}
 						}
-					}
-					flowLayoutPanel2->Controls->Add(Rec);
+						for each (msgStatus ^ state in statusRuntime) {
+							if (state->getMsg_ID() == message->getMsgID()) {
+								if (state->getSeen() == 1) {
+									Rec->seenicon->BackgroundImage = gcnew Bitmap("D:\\College\\Data Structure\\Project\\Testrecent\\icons\\seen.png");
+								}
+							}
+						}
+						flowLayoutPanel2->Controls->Add(Rec);
 
-					db->Open();
-					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
-					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
-					SQLiteDataReader^ dr = cmd->ExecuteReader();
-					if (dr->Read()) {
-						Rec->rec_path->Text = dr->GetString(0);
+						db->Open();
+						cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+						cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+						SQLiteDataReader^ dr = cmd->ExecuteReader();
+						if (dr->Read()) {
+							Rec->rec_path->Text = dr->GetString(0);
+						}
+						dr->Close();
+						db->Close();
 					}
-					dr->Close();
-					db->Close();
 				}
-			}
-			else{
-				if(message->getRec() == ""){
-					MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
-					msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					msgBox->mssg->Text = message->getMsg();
-					msgBox->user->Text = usersRuntime[message->getUserIDFK() - 1]->getFirst();
-					msgBox->seenicon->Visible = false;
-					msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-					if (msgBox->Text->Length <= richTextBox7->Width)
-						richTextBox7->Multiline = false;
-					else
-						richTextBox7->Multiline = true;
-					flowLayoutPanel2->Controls->Add(msgBox);
-					richTextBox7->Clear();
-				}
-				else {
-					RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
-					Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
-					Rec->seenicon->Visible = true;
-					Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
-					Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
-					Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
-					Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
-					Rec->msg_id->Text = message->getMsgID().ToString();
-					flowLayoutPanel2->Controls->Add(Rec);
+				else{
+					if(message->getRec() == ""){
+						MessageComponent::MyUserControl^ msgBox = gcnew MessageComponent::MyUserControl;
+						msgBox->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+						msgBox->mssg->Text = message->getMsg();
+						msgBox->user->Text = usersRuntime[message->getUserIDFK() - 1]->getFirst();
+						msgBox->seenicon->Visible = false;
+						msgBox->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+						if (msgBox->Text->Length <= richTextBox7->Width)
+							richTextBox7->Multiline = false;
+						else
+							richTextBox7->Multiline = true;
+						flowLayoutPanel2->Controls->Add(msgBox);
+						richTextBox7->Clear();
+					}
+					else {
+						RecAudioComponent::AudioControl^ Rec = gcnew RecAudioComponent::AudioControl;
+						Rec->timelbl->Text = statusRuntime[message->getMsgID() - 1]->getTime();
+						Rec->seenicon->Visible = true;
+						Rec->user->Text = usersRuntime[userLoggedIn]->getFirst();
+						Rec->Margin = System::Windows::Forms::Padding(0, 0, 10, 10);
+						Rec->more->Click += gcnew System::EventHandler(this, &MyForm::msg_Menu);
+						Rec->PlayBtn->Click += gcnew System::EventHandler(this, &MyForm::Play_Rec);
+						Rec->msg_id->Text = message->getMsgID().ToString();
+						flowLayoutPanel2->Controls->Add(Rec);
 
-					db->Open();
-					cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
-					cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
-					SQLiteDataReader^ dr = cmd->ExecuteReader();
-					if (dr->Read()) {
-						Rec->rec_path->Text = dr->GetString(0);
+						db->Open();
+						cmd->CommandText = "SELECT Msg_Record FROM Message WHERE Msg_ID=@id";
+						cmd->Parameters->AddWithValue("@id", Rec->msg_id->Text);
+						SQLiteDataReader^ dr = cmd->ExecuteReader();
+						if (dr->Read()) {
+							Rec->rec_path->Text = dr->GetString(0);
+						}
+						dr->Close();
+						db->Close();
 					}
-					dr->Close();
-					db->Close();
 				}
 			}
 		}
-
 	}
 	private: System::Void richTextBox1_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		if (Char::IsLetter(e->KeyValue)) {

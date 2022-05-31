@@ -50,6 +50,7 @@ Class Test.MyForm3: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     System.Windows.Forms.RichTextBox Description : Public
     System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1 : Public
     System.Windows.Forms.RichTextBox richTextBox1 : Public
+    System.Windows.Forms.Button Add_Contact : Public
     System.Windows.Forms.Button ProfilePic : Public
     AddMember.membercpp membercpp1 : Public
   Methods:
